@@ -59,7 +59,7 @@ Changing the cookie consent options fires an event, that you can work with.
 
 The options in the event detail are identical to the identifiers chosen in the cookie consent configuration. Pay attention to the exact spelling of the identifier.
 
-The following example works with the google analytics option:
+The following example works with the google analytics cookie option:
 
 .. code-block:: javascript
 
