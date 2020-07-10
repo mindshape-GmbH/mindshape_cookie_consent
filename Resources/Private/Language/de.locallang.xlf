@@ -50,6 +50,9 @@
       <trans-unit id="constants.settings.ajax_page_type">
         <target>Seitentyp für AJAX Requests</target>
       </trans-unit>
+      <trans-unit id="constants.settings.statistic_items_per_page">
+        <target>Elemente pro Seite im Statistikmodul</target>
+      </trans-unit>
 
       <trans-unit id="tca.configuration">
         <target>Cookie-Consent Konfiguration</target>
@@ -209,6 +212,9 @@
       </trans-unit>
       <trans-unit id="module.statistic.visitors_total">
         <target>Besucher insgesamt</target>
+      </trans-unit>
+      <trans-unit id="module.statistic.date_select_all">
+        <target>Gesamter Zeitraum</target>
       </trans-unit>
 
       <trans-unit id="label.imprint">

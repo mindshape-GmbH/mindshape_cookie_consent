@@ -30,6 +30,14 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 class StatisticCategoryRepository extends AbstractStatisticRepository
 {
     /**
+     * @var array
+     */
+    protected $defaultOrderings = [
+        'dateBegin' => QueryInterface::ORDER_DESCENDING,
+        'cookieCategory' => QueryInterface::ORDER_ASCENDING,
+    ];
+
+    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Consent $consent
      */

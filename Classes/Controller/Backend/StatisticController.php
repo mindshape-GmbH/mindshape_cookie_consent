@@ -151,31 +151,19 @@ class StatisticController extends ActionController
             $this->currentConfiguration = $this->configurationRepository->findAll()->getFirst();
         }
 
-        $dates = [];
+        $statisticCategories = [];
+        $itemsPerPage = (int) ($this->settings['statisticItemsPerPage'] ?? 10);
 
         if ($this->currentConfiguration instanceof Configuration) {
             $statisticCategories = $this->statisticActionMethod('StatisticCategory', $this->currentConfiguration, $date);
-            $cookieCategories = [0 => 0];
-
-            /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory */
-            foreach ($this->currentConfiguration->getCookieCategories() as $cookieCategory) {
-                $cookieCategories[$cookieCategory->getUid()] = null;
-            }
-
-            /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory $statisticCategory */
-            foreach ($statisticCategories as $statisticCategory) {
-                $date = $statisticCategory->getDateBegin()->format('Y-m-d');
-
-                if (false === array_key_exists($date, $dates)) {
-                    $dates[$date] = $cookieCategories;
-                }
-
-                $cookieCategory = $statisticCategory->getCookieCategory();
-                $dates[$date][$cookieCategory instanceof CookieCategory ? $cookieCategory->getUid() : 0] = $statisticCategory;
-            }
+            // Multiply for each category having its own record + all count
+            $itemsPerPage *= 1 + $this->currentConfiguration->getCookieCategories()->count();
         }
 
-        $this->view->assign('statisticCategoriesByDate', $dates);
+        $this->view->assignMultiple([
+            'statisticCategories' => $statisticCategories,
+            'itemsPerPage' => $itemsPerPage,
+        ]);
     }
 
     /**
@@ -186,7 +174,11 @@ class StatisticController extends ActionController
      */
     public function statisticActionMethod(string $entityName, Configuration $configuration, DateTime $date = null): QueryResultInterface
     {
-        $entityName = lcfirst($entityName);
+        $repositoryName = lcfirst($entityName) . 'Repository';
+
+        if (null === $date) {
+            return $this->{$repositoryName}->findAll();
+        }
 
         try {
             $date = null === $date ? new DateTime() : $date;
@@ -196,7 +188,7 @@ class StatisticController extends ActionController
 
         $this->view->assign('date', $date);
 
-        return $this->{$entityName . 'Repository'}->findByMonth($configuration, $date);
+        return $this->{$repositoryName}->findByMonth($configuration, $date);
     }
 
     /**
@@ -298,22 +290,12 @@ class StatisticController extends ActionController
             $currentDate = null;
         }
 
-        if (!$currentDate instanceof DateTime) {
-            try {
-                $currentDate = new DateTime();
-                $currentDate->modify('first day of this month 00:00:00');
-            } catch (Exception $exception) {
-                // ignore
-            }
-        }
-
         $dateMenu->addMenuItem(
             $dateMenu
                 ->makeMenuItem()
-                ->setTitle(date('Y-m'))
-                ->setActive($currentDate->format('Y-m') === date('Y-m'))
+                ->setTitle(LocalizationUtility::translate('module.statistic.date_select_all', SettingsUtility::EXTENSION_KEY))
+                ->setActive(!$currentDate instanceof DateTime)
                 ->setHref($this->uriBuilder->reset()->uriFor($currentAction, [
-                    'date' => date('c'),
                     'configuration' => $currentConfiguration,
                 ]))
         );
@@ -323,7 +305,10 @@ class StatisticController extends ActionController
                 $dateMenu
                     ->makeMenuItem()
                     ->setTitle($availableMonth->format('Y-m'))
-                    ->setActive($currentDate->format('Y-m') === $availableMonth->format('Y-m'))
+                    ->setActive(
+                        $currentDate instanceof DateTime &&
+                        $currentDate->format('Y-m') === $availableMonth->format('Y-m')
+                    )
                     ->setHref($this->uriBuilder->reset()->uriFor($currentAction, [
                         'date' => $availableMonth->format('c'),
                         'configuration' => $currentConfiguration,

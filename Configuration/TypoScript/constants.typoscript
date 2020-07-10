@@ -34,3 +34,11 @@ plugin.tx_mindshapecookieconsent {
     addStylesheet = 1
   }
 }
+
+module.tx_mindshapecookieconsent {
+  # customsubcategory=settings=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings
+  settings {
+    # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.statistic_items_per_page
+    statisticItemsPerPage = 10
+  }
+}
