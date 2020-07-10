@@ -1,0 +1,32 @@
+{
+  "name": "mindshape/mindshape-cookie-consent",
+  "type": "typo3-cms-extension",
+  "description": "This extension provides functionality to create  a customizable cookie consent for your website. It is developed for flexibility to be customized in accordance to your data security guidelines.",
+  "license": [
+    "GPL-2.0-or-later"
+  ],
+  "authors": [
+    {
+      "name": "Daniel Dorndorf",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "~7.2",
+    "ext-json": "*",
+    "typo3/cms-core": "^9.5||^10.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mindshape\\MindshapeCookieConsent\\": "Classes"
+    }
+  },
+  "replace": {
+    "typo3-ter/mindshape-cookie-consent": "self.version"
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "mindshape_cookie_consent"
+    }
+  }
+}

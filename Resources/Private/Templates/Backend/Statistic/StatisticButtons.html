@@ -1,0 +1,47 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:m="http://typo3.org/ns/Mindshape/MindshapeCookieConsent/ViewHelpers"
+      xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+  <f:layout name="Backend/Statistic"/>
+
+  <f:section name="Content">
+
+    <h2>{f:translate(key: 'module.statistic.buttons')}</h2>
+
+    <f:if condition="0 == {configuration.enableStatistic}">
+      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled')}</strong></p>
+    </f:if>
+    <f:if condition="{statisticButtons}">
+      <f:render section="Table" arguments="{statisticButtons: statisticButtons}"/>
+    </f:if>
+
+  </f:section>
+
+
+  <f:section name="Table">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{f:translate(key: 'module.statistic.date')}</th>
+          <th>{f:translate(key: 'module.statistic.visitors_total')}</th>
+          <th>{f:translate(key: 'tca.statistic_button.agree_to_all')}</th>
+          <th>{f:translate(key: 'tca.statistic_button.save')}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <f:for each="{statisticButtons}" as="statisticButton">
+          <tr>
+            <td>{statisticButton.dateBegin -> f:format.date(format: 'Y-m-d')}</td>
+            <td>{statisticButton.total}</td>
+            <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction: statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
+            <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
+          </tr>
+        </f:for>
+      </tbody>
+    </table>
+
+  </f:section>
+
+</html>

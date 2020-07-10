@@ -1,0 +1,14 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+  <f:if condition="{configuration}">
+    <f:then>
+      <f:render section="Content" arguments="{_all}"/>
+    </f:then>
+    <f:else>
+      <span style="color: red;">{f:translate(key: 'module.statistic.no_configuration_available')}</span>
+    </f:else>
+  </f:if>
+
+</html>

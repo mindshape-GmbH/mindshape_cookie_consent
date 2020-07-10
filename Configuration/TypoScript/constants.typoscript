@@ -1,0 +1,34 @@
+plugin.tx_mindshapecookieconsent {
+  # customcategory=mindshape_cookie_consent=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:backend
+  view {
+    # cat=mindshape_cookie_consent/file; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.file.template_root_path
+    templateRootPath = EXT:mindshape_cookie_consent/Resources/Private/Templates/
+    # cat=mindshape_cookie_consent/file; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.file.partial_root_path
+    partialRootPath = EXT:mindshape_cookie_consent/Resources/Private/Partials/
+    # cat=mindshape_cookie_consent/file; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.file.layout_root_path
+    layoutRootPath = EXT:mindshape_cookie_consent/Resources/Private/Layouts/
+  }
+
+  # customsubcategory=settings=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings
+  settings {
+    # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.expiry_days
+    expiryDays = 365
+    # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.container_id
+    containerId =
+    # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.hide_if_javaScript_disabled
+    hideIfJavaScriptDisabled = 1
+    # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.iframe_replace_option_identifier
+    iframeReplaceOptionIdentifier = media
+
+    # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.ajax_page_type
+    ajaxPageType = 8641
+    # cat=mindshape_cookie_consent/settings; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.add_markup_to_footer
+    addMarkupToFooter = 1
+    # cat=mindshape_cookie_consent/settings; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.add_configuration
+    addConfiguration = 1
+    # cat=mindshape_cookie_consent/settings; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.add_javascript
+    addJavaScript = 1
+    # cat=mindshape_cookie_consent/settings; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.add_stylesheet
+    addStylesheet = 1
+  }
+}

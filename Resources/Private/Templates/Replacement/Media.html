@@ -1,0 +1,17 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+  <div class="cookie-consent-replacement" data-replacement="{iframe}">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <button class="accept btn btn--primary btn-primary" data-identifier="{cookieOption}">{f:translate(key: 'label.accept_media_and_show_iframe', extensionName: 'mindshape_cookie_consent')}</button><br>
+          <f:link.typolink parameter="{datapolicyPageTypoLink}">{f:translate(key: 'label.datapolicy', extensionName: 'mindshape_cookie_consent')}</f:link.typolink> |
+          <f:link.typolink parameter="{imprintPageTypoLink}">{f:translate(key: 'label.imprint', extensionName: 'mindshape_cookie_consent')}</f:link.typolink><br><br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</html>

@@ -1,0 +1,421 @@
+@mixin detail {
+  .detail {
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+    transition: $transition;
+
+    &.open {
+      height: auto;
+      width: 100%;
+      visibility: visible;
+      opacity: 1;
+      overflow: auto;
+      display: block;
+      margin-bottom: 15px;
+      font-size: 1rem;
+      transition: $transition;
+    }
+  }
+}
+
+$black: #000;
+$white: #fff;
+$gray: lighten($black, 60%);
+$main: #6f9322;
+$transition: all .5s ease-in-out;
+
+.text-center {
+  text-align: center;
+}
+
+p {
+  margin: 0 0 15px 0;
+}
+
+.cookie-consent-container {
+  @include detail;
+
+  position: fixed;
+  z-index: 999999;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: rgba($black, 0.5);
+  font-family: Helvetica Light, sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+  color: lighten($black, 30%);
+  line-height: 1.5;
+
+  a, a:visited, a:active, a:focus, a:focus:active   {
+    color: $gray;
+    text-decoration: none;
+
+    &:hover {
+      color: $black;
+      transition: $transition;
+    }
+
+    &.show-details {
+      display: block;
+      position: relative;
+      padding-right: 20px;
+      font-size: 0.75rem;
+      margin-bottom: 25px;
+      @media all and (min-width: 660px) {
+        margin-bottom: 15px;
+      }
+
+      &:after {
+        content: '';
+        width: 0;
+        height: 0;
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+        border-style: solid;
+        border-width: 4px 4px 0 4px;
+        border-color: $gray transparent transparent transparent;
+        margin: 7px 0 0 5px;
+        position: absolute;
+        top: 0;
+      }
+
+      &:hover {
+        &:after {
+          transition: $transition;
+          border-color: $black transparent transparent transparent;
+        }
+      }
+
+      .less {
+        display: none;
+      }
+
+      &.open {
+        .more {
+          display: none;
+        }
+
+        .less {
+          display: inline-block;
+        }
+
+        &:after {
+          -webkit-transform: rotate(180deg);
+          -moz-transform: rotate(180deg);
+          -ms-transform: rotate(1800deg);
+          -o-transform: rotate(180deg);
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+
+  .label {
+    color: lighten($black, 30%);
+    font-size: 1rem;
+    font-weight: 300;
+    display: inline-block;
+    margin: 0 0  12px 0;
+    position: relative;
+    padding: 0 0 0 30px;
+    line-height: 1.5;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+
+    &.partially-checked {
+        .checkmark {
+          background-color: $main;
+
+          &:after {
+            display: none;
+          }
+        }
+    }
+
+    input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+
+      &:checked ~ .checkmark {
+        background-color: $main;
+      }
+
+      &:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      &:disabled:checked ~ .checkmark {
+        opacity: .6;
+      }
+    }
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 22px;
+      width: 22px;
+      background: #eeeeee;
+      border: 1px solid #bfbfbf;
+
+      &:after {
+        content: "";
+        position: absolute;
+        display: none;
+        left: 6px;
+        top: 0;
+        width: 7px;
+        height: 15px;
+        border: solid $white;
+        border-width: 0 2px 2px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+      }
+    }
+  }
+
+  .consent-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 500px;
+    width: 90%;
+    height: 590px;
+    max-height: calc(100vh - 50px);
+    min-height: 295px;
+    margin: auto;
+    padding: 1em;
+    background-color: $white;
+    overflow-y: auto;
+    box-shadow: 0 0 5px black;
+    border-radius: 5px;
+    transition: $transition;
+
+    @media all and (min-width: 500px) {
+      height: 460px;
+    }
+
+    @media all and (min-width: 900px) {
+      height: 448px;
+      max-height: calc(100vh - 100px);
+    }
+
+    .option-wrapper {
+      background: #eeeeee;
+      padding: 15px;
+      margin-bottom: 15px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      p {
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      .option-headline {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 1.25rem;
+        font-weight: 400;
+      }
+
+      .option-detail-wrapper  {
+        margin-bottom: 10px;
+        border-bottom: 2px solid #afafaf;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+        .option-detail {
+          border-bottom: 1px solid #dddddd;
+          padding: 7px 10px 3px;
+          font-size: 0.875rem;
+
+          &:last-child {
+            border-bottom: none;
+            padding-bottom: 6px;
+          }
+
+          &.cookie-option {
+            background: #dedede;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: all ease-in-out .5s;
+
+            &:hover {
+              background: #d4d0d0;
+              transition: all ease-in-out .5s;
+
+              ~ .option-detail {
+                background: #f3f3f3;
+                transition: all ease-in-out .5s;
+              }
+            }
+
+            .label {
+              color: lighten($black, 30%);
+              text-align: left;
+              font-weight: 400;
+            }
+          }
+
+          .option-title {
+            font-weight: 400;
+            width: 100%;
+            text-align: left;
+            display: inline-block;
+            vertical-align: top;
+            @media all and (min-width: 500px) {
+              width: 30%;
+            }
+          }
+
+          .option-value {
+            width: 100%;
+            display: inline-block;
+            vertical-align: top;
+
+            @media all and (min-width: 500px) {
+              width: 69%;
+            }
+          }
+        }
+      }
+
+
+
+      .label {
+        margin-bottom: 0;
+        padding: 0 20px 0 0;
+        width: 100%;
+        .checkmark {
+          right: 0;
+          left: inherit;
+          background: #eeeeee;
+          border: 1px solid #bfbfbf;
+        }
+
+        input {
+          &:checked ~ .checkmark {
+            background-color: $main;
+          }
+        }
+
+
+      }
+
+    }
+
+    .cookie-headline {
+      line-height: 1.5;
+      margin: 0 0 15px 0;
+      color: lighten($black, 30%);
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 1.25rem;
+      font-weight: 400;
+    }
+
+    &.open {
+      max-width: 750px;
+      height: calc(100vh - 50px);
+    }
+
+    .options {
+      list-style: none;
+      margin: 0 0 15px 0;
+      padding: 0;
+
+      li {
+        margin-bottom: 5px;
+
+        @media all and (min-width: 500px) {
+          width: 49%;
+          display: inline-block;
+        }
+
+      }
+    }
+
+    .footer-links {
+      display: block;
+      width: 100%;
+      line-height: 90%;
+    }
+  }
+
+  .buttons {
+    margin-bottom: 25px;
+    @media all and (min-width: 660px) {
+      margin-bottom: 15px;
+    }
+    .btn {
+      font-size: 1rem;
+      padding: 11px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+      width: 100%;
+      max-width: 370px;
+      text-align: center;
+      font-weight: 300;
+      clear: both;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      line-height: 100%;
+
+      &:hover {
+        transition: $transition;
+      }
+
+      &--primary {
+        background: $main;
+        color: $white;
+        border: 2px solid $main;
+        margin-bottom: 10px;
+
+        &:hover {
+          background: darken($main, 20%);
+          border: 2px solid darken($main, 20%);
+        }
+      }
+
+      &--secondary {
+        background: transparent;
+        color: $gray;
+        border: 2px solid $gray;
+        opacity: .5;
+
+        &:hover {
+          background: transparent;
+          color: $gray;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+.cookie-consent-settings {
+  margin-bottom: 10px;
+  @include detail;
+}

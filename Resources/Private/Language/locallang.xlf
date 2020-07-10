@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="EXT:mindshape_cookie_consent/Resources/Private/Language/locallang" product-name="mindshape_cookie_consent">
+    <header/>
+    <body>
+      <trans-unit id="constants">
+        <source>mindshape Cookie Consent</source>
+      </trans-unit>
+
+      <trans-unit id="constants.file.template_root_path">
+        <source>Template root path</source>
+      </trans-unit>
+      <trans-unit id="constants.file.partial_root_path">
+        <source>Partial root path</source>
+      </trans-unit>
+      <trans-unit id="constants.file.layout_root_path">
+        <source>Layout root path</source>
+      </trans-unit>
+
+      <trans-unit id="constants.settings">
+        <source>Settings</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.expiry_days">
+        <source>Expires after days</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.container_id">
+        <source>Container ID</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.hide_if_javaScript_disabled">
+        <source>Hide if javascript is deactivated (usefull if staticfilecache is in use)</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.iframe_replace_option_identifier">
+        <source>ID of option to activate replaced iFrame (default: "media")</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.add_markup_to_footer">
+        <source>append markup automatically after footer</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.add_configuration">
+        <source>insert configuration automatically</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.add_javascript">
+        <source>insert javascript automatically</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.add_stylesheet">
+        <source>insert stylesheet automatically</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.ajax_page_type">
+        <source>pagetype for ajax requests</source>
+      </trans-unit>
+
+      <trans-unit id="tca.configuration">
+        <source>Cookie-Consent Configuration</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.site">
+        <source>Site</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.site.all">
+        <source>All sites</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.enable_statistic">
+        <source>enable anonymous statistic of cookie consent choices</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.site.none_available">
+        <source>no sites available</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.header">
+        <source>Header</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.imprint">
+        <source>Imprint</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.datapolicy">
+        <source>Datapolicy</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.hint">
+        <source>Hint</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.necessary_cookies_info">
+        <source>Information for necessary cookies</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.necessary_cookie_options">
+        <source>Necessary cookies</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.necessary_cookie_options.new_record">
+        <source>Create new necessary cookies</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.palettes.labels">
+        <source>Labels</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.select_all_label">
+        <source>Button "Select all"</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.save_label">
+        <source>Button "Save"</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.show_details_label">
+        <source>Link "Show details"</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.hide_details_label">
+        <source>Link "Hide details"</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.cookie_categories">
+        <source>cookie-categories</source>
+      </trans-unit>
+      <trans-unit id="tca.configuration.cookie_categories.new_record">
+        <source>Create new cookie-category</source>
+      </trans-unit>
+
+      <trans-unit id="tca.cookie_category">
+        <source>Cookie category</source>
+      </trans-unit>
+      <trans-unit id="tca.cookie_category.label">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="tca.cookie_category.info">
+        <source>Information</source>
+      </trans-unit>
+      <trans-unit id="tca.cookie_category.cookie_options">
+        <source>Cookies</source>
+      </trans-unit>
+      <trans-unit id="tca.cookie_category.cookie_options.new_record">
+        <source>Create new cookie</source>
+      </trans-unit>
+
+      <trans-unit id="tca.cookieoption">
+        <source>Cookie</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.label">
+        <source>Label</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.identifier">
+        <source>Identificator (name of cookie)</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.provider">
+        <source>Provider</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.purpose">
+        <source>Purpose</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.cookie_name">
+        <source>Cookie name</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.cookie_duration">
+        <source>Cookie duration</source>
+      </trans-unit>
+
+      <trans-unit id="tca.statistic_category">
+        <source>Statistics entry (cookie categories)</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_category.date_start">
+        <source>Start date</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_category.date_end">
+        <source>End date</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_category.cookiecategory">
+        <source>Chosen cookie category</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_category.counter">
+        <source>Counter</source>
+      </trans-unit>
+
+      <trans-unit id="tca.statistic_button">
+        <source>Statistics entry (buttons)</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_button.date_start">
+        <source>Start date</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_button.date_end">
+        <source>End date</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_button.save">
+        <source>Save</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_button.agree_to_all">
+        <source>Agree to all</source>
+      </trans-unit>
+
+      <trans-unit id="plugin.consent.title">
+        <source>Cookie Consent</source>
+      </trans-unit>
+      <trans-unit id="plugin.consent.description">
+        <source>Form to adjust cookie consent</source>
+      </trans-unit>
+
+      <trans-unit id="module.statistic.menu.action.buttons">
+        <source>Buttons</source>
+      </trans-unit>
+      <trans-unit id="module.statistic.menu.action.categories">
+        <source>Cookie-Categories</source>
+      </trans-unit>
+      <trans-unit id="module.statistic.buttons">
+        <source>Statistics of user choices</source>
+      </trans-unit>
+      <trans-unit id="module.statistic.options">
+        <source>Statistics of used options</source>
+      </trans-unit>
+      <trans-unit id="module.statistic.date">
+        <source>Date</source>
+      </trans-unit>
+      <trans-unit id="module.statistic.no_configuration_available">
+        <source>No configuration available</source>
+      </trans-unit>
+      <trans-unit id="module.statistic.statistic_disabled">
+        <source>The collection of new statistics is currently inactive for this configuration.</source>
+      </trans-unit>
+      <trans-unit id="module.statistic.visitors_total">
+        <source>Visitors total</source>
+      </trans-unit>
+
+      <trans-unit id="label.imprint">
+        <source>Imprint</source>
+      </trans-unit>
+      <trans-unit id="label.datapolicy">
+        <source>Datapolicy</source>
+      </trans-unit>
+      <trans-unit id="label.cookie_settings">
+        <source>Cookie Settings</source>
+      </trans-unit>
+      <trans-unit id="label.cookie_hint">
+        <source>We use cookies on our website. Some of them are technically necessary, while others help us to improve this website or provide additional functionality.</source>
+      </trans-unit>
+      <trans-unit id="label.necessary_cookies">
+        <source>Necessary cookies</source>
+      </trans-unit>
+      <trans-unit id="label.necessary_cookies.info">
+        <source>Necessary cookies enable basic functions and are necessary for the proper functioning of the website.</source>
+      </trans-unit>
+      <trans-unit id="label.statistics">
+        <source>Statistics</source>
+      </trans-unit>
+      <trans-unit id="label.statistics.info">
+        <source>Statistics Cookies collect information anonymously. This information helps us to understand how our visitors use our website.</source>
+      </trans-unit>
+      <trans-unit id="label.marketing">
+        <source>Marketing</source>
+      </trans-unit>
+      <trans-unit id="label.marketing.info">
+        <source>Marketing cookies are used by third parties to display personalized advertising. They do this by tracking visitors across websites.</source>
+      </trans-unit>
+      <trans-unit id="label.external_media">
+        <source>External media</source>
+      </trans-unit>
+      <trans-unit id="label.external_media.info">
+        <source>In order to be able to display content from video platforms and social media platforms, cookies are set by these external media.</source>
+      </trans-unit>
+      <trans-unit id="label.show_details">
+        <source>Show details</source>
+      </trans-unit>
+      <trans-unit id="label.hide_details">
+        <source>Hide details</source>
+      </trans-unit>
+      <trans-unit id="label.select_all">
+        <source>Select all</source>
+      </trans-unit>
+      <trans-unit id="label.save">
+        <source>Save</source>
+      </trans-unit>
+      <trans-unit id="label.edit_cookie_settings">
+        <source>Edit cookie settings</source>
+      </trans-unit>
+      <trans-unit id="label.accept_media_and_show_iframe">
+        <source>Accept media cookies to show this content</source>
+      </trans-unit>
+      <trans-unit id="label.accept_consent_show_replacement">
+        <source>Accept "%s" cookie to show this content</source>
+      </trans-unit>
+      <trans-unit id="label.option.name">
+        <source>Name</source>
+      </trans-unit>
+      <trans-unit id="label.option.provider">
+        <source>Provider</source>
+      </trans-unit>
+      <trans-unit id="label.option.purpose">
+        <source>Purpose</source>
+      </trans-unit>
+      <trans-unit id="label.option.duration">
+        <source>Cookie duration</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

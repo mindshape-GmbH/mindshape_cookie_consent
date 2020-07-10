@@ -1,0 +1,9 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+  <div id="{id}" class="cookie-consent-container" style="display: {f:if(condition: settings.hideIfJavaScriptDisabled, then: 'none', else: 'block')};">
+    <div class="consent-modal">{f:render(section: 'Content', arguments: _all)}</div>
+  </div>
+
+</html>

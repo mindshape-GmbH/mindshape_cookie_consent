@@ -1,0 +1,29 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+  <f:layout name="Modal"/>
+
+  <f:section name="Content">
+    <f:if condition="{configuration.header}">
+      <strong class="cookie-headline">{configuration.header}</strong>
+    </f:if>
+    <div class="hint">{configuration.hint -> f:format.html()}</div>
+
+    <f:render partial="Form" arguments="{
+      id: id,
+      idPrefix: 'modal',
+      consent: consent,
+      configuration: configuration,
+      currentUrl: currentUrl,
+      currentRootPageUid: currentRootPageUid}"/>
+
+
+    <small class="footer-links text-center">
+      <f:link.typolink parameter="{configuration.imprint}">{f:translate(key: 'label.imprint', extensionName: 'mindshape_cookie_consent')}</f:link.typolink>&nbsp;|&nbsp;<f:link.typolink parameter="{configuration.datapolicy}">{f:translate(key: 'label.datapolicy', extensionName: 'mindshape_cookie_consent')}</f:link.typolink>
+    </small>
+
+
+  </f:section>
+
+</html>

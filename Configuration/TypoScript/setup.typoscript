@@ -1,0 +1,54 @@
+plugin.tx_mindshapecookieconsent {
+  view {
+    templateRootPaths.0 = EXT:mindshape_cookie_consent/Resources/Private/Templates/
+    templateRootPaths.1 = {$plugin.tx_mindshapecookieconsent.view.templateRootPath}
+    partialRootPaths.0 = EXT:mindshape_cookie_consent/Resources/Private/Partials/
+    partialRootPaths.1 = {$plugin.tx_mindshapecookieconsent.view.partialRootPath}
+    layoutRootPaths.0 = EXT:mindshape_cookie_consent/Resources/Private/Layouts/
+    layoutRootPaths.1 = {$plugin.tx_mindshapecookieconsent.view.layoutRootPath}
+  }
+
+  settings {
+    expiryDays = {$plugin.tx_mindshapecookieconsent.settings.expiryDays}
+    containerId = {$plugin.tx_mindshapecookieconsent.settings.containerId}
+    hideIfJavaScriptDisabled = {$plugin.tx_mindshapecookieconsent.settings.hideIfJavaScriptDisabled}
+    iframeReplaceOptionIdentifier = {$plugin.tx_mindshapecookieconsent.settings.iframeReplaceOptionIdentifier}
+
+    ajaxPageType = {$plugin.tx_mindshapecookieconsent.settings.ajaxPageType}
+    addMarkupToFooter = {$plugin.tx_mindshapecookieconsent.settings.addMarkupToFooter}
+    addConfiguration = {$plugin.tx_mindshapecookieconsent.settings.addConfiguration}
+    addJavaScript = {$plugin.tx_mindshapecookieconsent.settings.addJavaScript}
+    addStylesheet = {$plugin.tx_mindshapecookieconsent.settings.addStylesheet}
+  }
+}
+
+module.tx_mindshapecookieconsent < plugin.tx_mindshapecookieconsent
+
+mindshapeCookieConsent = PAGE
+mindshapeCookieConsent {
+  typeNum = {$plugin.tx_mindshapecookieconsent.settings.ajaxPageType}
+
+  config {
+    disableAllHeaderCode = 1
+    xhtml_cleaning = 0
+    admPanel = 0
+    no_cache = 1
+    debug = 0
+    additionalHeaders {
+      10 {
+        header = Content-Type:application/json
+        replace = 1
+      }
+    }
+  }
+
+  10 = USER_INT
+  10 {
+    userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+    vendorName = Mindshape
+    extensionName = MindshapeCookieConsent
+    pluginName = Consent
+    controller = Consent
+    settings < plugin.tx_mindshapecookieconsent.settings
+  }
+}
