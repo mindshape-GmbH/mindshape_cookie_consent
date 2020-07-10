@@ -43,7 +43,7 @@ This documentation is community documentation for the TYPO3 extension mindshape 
 It is maintained as part of this third party extension.
 
 If you find an error or something is missing, please:
-`Report a Problem <https://github.com/TYPO3-Documentation/TYPO3CMS-Example-ExtensionManual/issues/new>`__
+`Report a Problem <https://github.com/mindshape-GmbH/mindshape_cookie_consent/issues/new>`__
 
 **Extension Manual**
 
