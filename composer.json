@@ -11,6 +11,11 @@
       "role": "Developer"
     }
   ],
+  "support": {
+    "email": "info@mindshape.de",
+    "issues": "https://github.com/mindshape-GmbH/mindshape_cookie_consent/issues",
+    "source": "https://github.com/mindshape-GmbH/mindshape_cookie_consent"
+  },
   "require": {
     "php": "~7.2",
     "ext-json": "*",
