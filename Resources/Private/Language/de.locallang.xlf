@@ -244,6 +244,15 @@
       <trans-unit id="label.external_media.info">
         <target>Um Inhalte von Videoplattformen und Social Media Plattformen anzeigen zu können, werden von diesen externen Medien Cookies gesetzt.</target>
       </trans-unit>
+      <trans-unit id="label.cookie_consent">
+        <target>Einverständnis-Cookie</target>
+      </trans-unit>
+      <trans-unit id="label.one_year">
+        <target>1 Jahr</target>
+      </trans-unit>
+      <trans-unit id="label.consent_cookie_purpose">
+        <target>Dieser Cookie speichert die ausgewählten Einverständnis-Optionen des Benutzers</target>
+      </trans-unit>
       <trans-unit id="label.show_details">
         <target>Details anzeigen</target>
       </trans-unit>

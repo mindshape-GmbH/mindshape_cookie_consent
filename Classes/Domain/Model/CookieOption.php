@@ -57,11 +57,6 @@ class CookieOption extends AbstractValueObject
     protected $cookieDuration = '';
 
     /**
-     * @var string
-     */
-    protected $info = '';
-
-    /**
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory
      */
     public function getCookieCategory(): ?CookieCategory

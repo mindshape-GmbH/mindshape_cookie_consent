@@ -92,12 +92,19 @@ class ExtensionInstallationSignal
             $cookieOptionVimeo->setLabel('Vimeo');
             $cookieOptionVimeo->setIdentifier('vimeo');
 
+            $cookieOptionConsent = new CookieOption();
+            $cookieOptionConsent->setLabel(LocalizationUtility::translate('label.cookie_consent', SettingsUtility::EXTENSION_KEY));
+            $cookieOptionConsent->setCookieName('cookie_consent');
+            $cookieOptionConsent->setCookieDuration(LocalizationUtility::translate('label.one_year', SettingsUtility::EXTENSION_KEY));
+            $cookieOptionConsent->setPurpose(LocalizationUtility::translate('label.consent_cookie_purpose', SettingsUtility::EXTENSION_KEY));
+
             $optionMedia->addCookieOption($cookieOptionYouTube);
             $optionMedia->addCookieOption($cookieOptionVimeo);
 
             $configuration->addCookieCategory($optionStatistic);
             $configuration->addCookieCategory($optionMarketing);
             $configuration->addCookieCategory($optionMedia);
+            $configuration->addNecessaryCookieOption($cookieOptionConsent);
 
             try {
                 $configurationRepository->add($configuration);
