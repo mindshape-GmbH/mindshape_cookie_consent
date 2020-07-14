@@ -20,6 +20,9 @@
       <trans-unit id="constants.settings">
         <target>Einstellungen</target>
       </trans-unit>
+      <trans-unit id="constants.settings.cookie_name">
+        <target>Cookie Name</target>
+      </trans-unit>
       <trans-unit id="constants.settings.expiry_days">
         <target>Verfall nach Tagen</target>
       </trans-unit>

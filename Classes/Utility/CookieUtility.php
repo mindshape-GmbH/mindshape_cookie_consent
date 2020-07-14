@@ -19,25 +19,26 @@ namespace Mindshape\MindshapeCookieConsent\Utility;
  */
 class CookieUtility
 {
-    public const COOKIE_CONSENT = 'cookie_consent';
+    public const DEFAULT_COOKIE_NAME = 'cookie_consent';
 
     /**
+     * @param string $name
      * @return array|null
      */
-    public static function getCookieValue(): ?array
+    public static function getCookieValue(string $name = self::DEFAULT_COOKIE_NAME): ?array
     {
-        if (false === self::hasCookie()) {
+        if (false === self::hasCookie($name)) {
             return null;
         }
 
-        return json_decode($_COOKIE[self::COOKIE_CONSENT], true);
+        return json_decode($_COOKIE[$name], true);
     }
 
     /**
      * @param string $name
      * @return bool
      */
-    public static function hasCookie(string $name = self::COOKIE_CONSENT): bool
+    public static function hasCookie(string $name = self::DEFAULT_COOKIE_NAME): bool
     {
         return true === array_key_exists($name, $_COOKIE);
     }
@@ -45,7 +46,7 @@ class CookieUtility
     /**
      * @param string $name
      */
-    public static function deleteCookie(string $name = self::COOKIE_CONSENT): void
+    public static function deleteCookie(string $name = self::DEFAULT_COOKIE_NAME): void
     {
         unset($_COOKIE[$name]);
     }

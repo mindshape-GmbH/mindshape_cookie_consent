@@ -54,7 +54,7 @@ class RenderPreProcessHook
 
             if (true === (bool) $settings['addConfiguration']) {
                 $javaScriptConfiguration = [
-                    'cookieName' => CookieUtility::COOKIE_CONSENT,
+                    'cookieName' => $settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME,
                     'expiryDays' => (int) $settings['expiryDays'],
                     'hideOnInit' => $isInitialHidePage,
                     'containerId' => false === empty($settings['containerId'])

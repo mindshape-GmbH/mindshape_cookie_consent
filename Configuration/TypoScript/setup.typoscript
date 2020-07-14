@@ -9,6 +9,7 @@ plugin.tx_mindshapecookieconsent {
   }
 
   settings {
+    cookieName = {$plugin.tx_mindshapecookieconsent.settings.cookieName}
     expiryDays = {$plugin.tx_mindshapecookieconsent.settings.expiryDays}
     containerId = {$plugin.tx_mindshapecookieconsent.settings.containerId}
     hideIfJavaScriptDisabled = {$plugin.tx_mindshapecookieconsent.settings.hideIfJavaScriptDisabled}

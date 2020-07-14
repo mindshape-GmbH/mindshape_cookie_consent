@@ -181,7 +181,9 @@ class CookieConsentService implements SingletonInterface
      */
     public function getConsentFromCookie(): ?Consent
     {
-        $cookieValue = CookieUtility::getCookieValue();
+        $cookieValue = CookieUtility::getCookieValue(
+            $this->settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME
+        );
 
         if (
             false === is_array($cookieValue) ||

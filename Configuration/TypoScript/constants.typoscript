@@ -11,6 +11,8 @@ plugin.tx_mindshapecookieconsent {
 
   # customsubcategory=settings=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings
   settings {
+    # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.cookie_name
+    cookieName = cookie_consent
     # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.expiry_days
     expiryDays = 365
     # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.container_id
