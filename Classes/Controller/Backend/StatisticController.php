@@ -19,9 +19,12 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
+use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
 use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
@@ -91,7 +94,6 @@ class StatisticController extends ActionController
 
     /**
      * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function initializeView(ViewInterface $view): void
     {
@@ -200,7 +202,6 @@ class StatisticController extends ActionController
     /**
      * @param \TYPO3\CMS\Backend\View\BackendTemplateView $view
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration|null $currentConfiguration
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     protected function buildActionMenu(BackendTemplateView $view, Configuration $currentConfiguration = null): void
     {
@@ -212,14 +213,32 @@ class StatisticController extends ActionController
         /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration */
         foreach ($this->configurationRepository->findAllLanguages() as $configuration) {
             $siteIdentifier = $configuration->getSite();
-            $site = $siteFinder->getSiteByIdentifier($siteIdentifier);
             $siteLabel = $siteIdentifier;
+            $languageLabel = null;
+
+            try {
+                $site = $siteFinder->getSiteByIdentifier($siteIdentifier);
+            } catch (SiteNotFoundException $exception) {
+                $site = null;
+            }
 
             if (Configuration::SITE_ALL_SITES === $siteIdentifier) {
                 $siteLabel = LocalizationUtility::translate('tca.configuration.site.all', SettingsUtility::EXTENSION_KEY);
             }
 
-            $siteLabel .= ' (' . $site->getLanguageById($configuration->getLanguageUid())->getTitle() . ')';
+            if ($site instanceof Site) {
+                $languageLabel = $site->getLanguageById($configuration->getLanguageUid())->getTitle();
+            } elseif (0 < $configuration->getLanguageUid()) {
+                $languageLabel = DatabaseUtility::databaseConnection()->select(
+                    ['title'],
+                    'sys_language',
+                    ['uid' => $configuration->getLanguageUid()]
+                )->fetchColumn();
+            }
+
+            if (true === is_string($languageLabel)) {
+                $siteLabel .= ' (' . $languageLabel . ')';
+            }
 
             $actionMenu->addMenuItem(
                 $actionMenu
