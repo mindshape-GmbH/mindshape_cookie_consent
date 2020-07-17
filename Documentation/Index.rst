@@ -52,11 +52,6 @@ This documentation is for the TYPO3 extension mindshape_cookie_consent.
 .. toctree::
    :maxdepth: 3
 
-   Introduction/Index
    Editor/Index
-   Installation/Index
-   Configuration/Index
    Developer/Index
-   KnownProblems/Index
    Changelog/Index
-   Sitemap
