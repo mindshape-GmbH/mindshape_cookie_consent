@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 1.0.2
+
+  * Alternative language label determination for "All sites" configuraiton
+
 * 1.0.1
 
   * Make cookie name editable over TypoScript
