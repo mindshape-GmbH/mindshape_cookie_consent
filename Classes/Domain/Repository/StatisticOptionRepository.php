@@ -17,8 +17,8 @@ use DateTimeZone;
 use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Consent;
-use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
-use Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
+use Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -27,14 +27,14 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 /**
  * @package Mindshape\MindshapeCookieConsent\Domain\Repository
  */
-class StatisticCategoryRepository extends AbstractStatisticRepository
+class StatisticOptionRepository extends AbstractStatisticRepository
 {
     /**
      * @var array
      */
     protected $defaultOrderings = [
         'dateBegin' => QueryInterface::ORDER_DESCENDING,
-        'cookieCategory' => QueryInterface::ORDER_ASCENDING,
+        'cookieOption' => QueryInterface::ORDER_ASCENDING,
     ];
 
     /**
@@ -54,16 +54,16 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
             $currentTime = null;
         }
 
-        $cookieCategories = [];
-        $cookieCategories[] = null;
+        $cookieOptions = [];
+        $cookieOptions[] = null;
 
         /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption $cookieOption */
         foreach ($consent->getCookieOptions() as $cookieOption) {
-            $cookieCategories[$cookieOption->getCookieCategory()->getUid()] = $cookieOption->getCookieCategory();
+            $cookieOptions[$cookieOption->getUid()] = $cookieOption;
         }
 
-        /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory */
-        foreach ($cookieCategories as $cookieCategory) {
+        /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption $cookieOption */
+        foreach ($cookieOptions as $cookieOption) {
             try {
                 $query->matching(
                     $query->logicalAnd([
@@ -71,9 +71,9 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
                         $query->lessThan('dateBegin', $currentTime->format('c')),
                         $query->greaterThan('dateEnd', $currentTime->format('c')),
                         $query->equals(
-                            'cookieCategory',
-                            $cookieCategory instanceof CookieCategory
-                                ? $cookieCategory->getUid()
+                            'cookieOption',
+                            $cookieOption instanceof CookieOption
+                                ? $cookieOption->getUid()
                                 : 0
                         ),
                     ])
@@ -82,10 +82,10 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
                 // ignore
             }
 
-            $statisticOptions[] = $this->getOrCreateStatisticCategory($query, $configuration, $cookieCategory);
+            $statisticOptions[] = $this->getOrCreateStatisticOption($query, $configuration, $cookieOption);
         }
 
-        /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory $statisticOption */
+        /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption $statisticOption */
         foreach ($statisticOptions as $statisticOption) {
             $statisticOption->increaseCounter();
             $this->save($statisticOption);
@@ -93,9 +93,9 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
     }
 
     /**
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory $statistic
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption $statistic
      */
-    public function save(StatisticCategory $statistic): void
+    public function save(StatisticOption $statistic): void
     {
         try {
             if (true === $statistic->_isNew()) {
@@ -111,24 +111,24 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory
-     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption $cookieOption
+     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption
      */
-    protected function getOrCreateStatisticCategory(QueryInterface $query, Configuration $configuration, CookieCategory $cookieCategory = null): StatisticCategory
+    protected function getOrCreateStatisticOption(QueryInterface $query, Configuration $configuration, CookieOption $cookieOption = null): StatisticOption
     {
-        /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory|null $statisticCategory */
-        $statisticCategory = $query->execute()->getFirst();
+        /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption|null $statisticOption */
+        $statisticOption = $query->execute()->getFirst();
 
-        if (!$statisticCategory instanceof StatisticCategory) {
+        if (!$statisticOption instanceof StatisticOption) {
             try {
                 $dateBegin = new DateTime('00:00:00');
                 $dateEnd = new DateTime('23:59:59');
-                $statisticCategory = new StatisticCategory($configuration, $dateBegin, $dateEnd, $cookieCategory);
+                $statisticOption = new StatisticOption($configuration, $dateBegin, $dateEnd, $cookieOption);
             } catch (Exception $exception) {
                 // ignore
             }
         }
 
-        return $statisticCategory;
+        return $statisticOption;
     }
 }

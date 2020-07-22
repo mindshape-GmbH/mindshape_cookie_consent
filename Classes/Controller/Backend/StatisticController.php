@@ -15,10 +15,10 @@ namespace Mindshape\MindshapeCookieConsent\Controller\Backend;
 use DateTime;
 use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
-use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
+use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
 use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
@@ -59,6 +59,11 @@ class StatisticController extends ActionController
     protected $statisticCategoryRepository;
 
     /**
+     * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository
+     */
+    protected $statisticOptionRepository;
+
+    /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
      */
     protected $statisticButtonRepository;
@@ -74,6 +79,14 @@ class StatisticController extends ActionController
     public function injectStatisticCategoryRepository(StatisticCategoryRepository $statisticCategoryRepository): void
     {
         $this->statisticCategoryRepository = $statisticCategoryRepository;
+    }
+
+    /**
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository $statisticOptionRepository
+     */
+    public function injectStatisticOptionRepository(StatisticOptionRepository $statisticOptionRepository): void
+    {
+        $this->statisticOptionRepository = $statisticOptionRepository;
     }
 
     /**
@@ -129,10 +142,6 @@ class StatisticController extends ActionController
      */
     public function statisticButtonsAction(DateTime $date = null): void
     {
-        if (!$this->currentConfiguration instanceof Configuration) {
-            $this->currentConfiguration = $this->configurationRepository->findAll()->getFirst();
-        }
-
         $statisticButtons = null;
 
         if ($this->currentConfiguration instanceof Configuration) {
@@ -147,10 +156,6 @@ class StatisticController extends ActionController
      */
     public function statisticCategoriesAction(DateTime $date = null): void
     {
-        if (!$this->currentConfiguration instanceof Configuration) {
-            $this->currentConfiguration = $this->configurationRepository->findAll()->getFirst();
-        }
-
         $statisticCategories = [];
         $itemsPerPage = (int) ($this->settings['statisticItemsPerPage'] ?? 10);
 
@@ -162,6 +167,41 @@ class StatisticController extends ActionController
 
         $this->view->assignMultiple([
             'statisticCategories' => $statisticCategories,
+            'itemsPerPage' => $itemsPerPage,
+        ]);
+    }
+
+    /**
+     * @param \DateTime|null $date
+     */
+    public function statisticOptionsAction(DateTime $date = null): void
+    {
+        $statisticOptions = [];
+        $cookieOptions = [];
+        $itemsPerPage = (int) ($this->settings['statisticItemsPerPage'] ?? 10);
+
+        if ($this->currentConfiguration instanceof Configuration) {
+            $statisticOptions = $this->statisticActionMethod('StatisticOption', $this->currentConfiguration, $date);
+            // Multiply for each category having its own record + all count
+            $cookieOptionsCount = 0;
+
+            /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory */
+            foreach ($this->currentConfiguration->getCookieCategories() as $cookieCategory) {
+                $cookieOptionsCount += $cookieCategory->getCookieOptions()->count();
+
+                /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption $cookieOption */
+                foreach ($cookieCategory->getCookieOptions() as $cookieOption) {
+                    $cookieOptions[$cookieOption->getUid()] = $cookieOption;
+                }
+            }
+
+            $itemsPerPage *= 1 + $cookieOptionsCount;
+            ksort($cookieOptions);
+        }
+
+        $this->view->assignMultiple([
+            'statisticOptions' => $statisticOptions,
+            'cookieOptions' => $cookieOptions,
             'itemsPerPage' => $itemsPerPage,
         ]);
     }
@@ -250,6 +290,17 @@ class StatisticController extends ActionController
                     ->setHref($this->uriBuilder->reset()->uriFor('statisticCategories', ['configuration' => $configuration]))
                     ->setActive(
                         'statisticCategoriesAction' === $this->actionMethodName &&
+                        $configuration->getUid() === $currentConfiguration->getUid()
+                    )
+            );
+
+            $actionMenu->addMenuItem(
+                $actionMenu
+                    ->makeMenuItem()
+                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.options', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
+                    ->setHref($this->uriBuilder->reset()->uriFor('statisticOptions', ['configuration' => $configuration]))
+                    ->setActive(
+                        'statisticOptionsAction' === $this->actionMethodName &&
                         $configuration->getUid() === $currentConfiguration->getUid()
                     )
             );

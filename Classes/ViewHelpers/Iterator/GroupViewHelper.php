@@ -45,6 +45,7 @@ class GroupViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('objects', 'mixed', 'Objects to group', true);
         $this->registerArgument('field', 'string', 'The field to group by', true);
+        $this->registerArgument('fillSmallerGroups', 'bool', 'Fills grouped chunks to be equal in size', false, false);
         $this->registerArgument('as', 'string', 'The field to group by', false, 'groupedObjects');
     }
 
@@ -52,11 +53,12 @@ class GroupViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
+     * @return string
      * @throws \Mindshape\MindshapeCookieConsent\Exception\NonIterableObjectException
      * @throws \Mindshape\MindshapeCookieConsent\Exception\NotAnObjectException
      * @throws \Mindshape\MindshapeCookieConsent\Exception\UnknownObjectException
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         if (
             !$arguments['objects'] instanceof \Traversable &&
@@ -65,7 +67,8 @@ class GroupViewHelper extends AbstractViewHelper
             throw new NonIterableObjectException('This viewhelper accepts numbers only');
         }
 
-        $groupedObjects = [];
+        $groupedObjectsChunks = [];
+        $chunkSize = 0;
 
         /** @var \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|array $object */
         foreach ($arguments['objects'] as $object) {
@@ -83,14 +86,27 @@ class GroupViewHelper extends AbstractViewHelper
                 $groupValue = $groupValue->format('c');
             }
 
-            if (false === array_key_exists($groupValue, $groupedObjects)) {
-                $groupedObjects[$groupValue] = [];
+            if (false === array_key_exists($groupValue, $groupedObjectsChunks)) {
+                $groupedObjectsChunks[$groupValue] = [];
             }
 
-            $groupedObjects[$groupValue][] = $object;
+            $groupedObjectsChunks[$groupValue][] = $object;
+            $groupedObjectsChunkSize = count($groupedObjectsChunks[$groupValue]);
+
+            if ($chunkSize < $groupedObjectsChunkSize) {
+                $chunkSize = $groupedObjectsChunkSize;
+            }
         }
 
-        $renderingContext->getVariableProvider()->add($arguments['as'], $groupedObjects);
+        if (true === (bool) $arguments['fillSmallerGroups'] && 0 < $chunkSize) {
+            foreach ($groupedObjectsChunks as $key => &$groupedObjects) {
+                while ($chunkSize > count($groupedObjects)) {
+                    $groupedObjects[] = null;
+                }
+            }
+        }
+
+        $renderingContext->getVariableProvider()->add($arguments['as'], $groupedObjectsChunks);
 
         return $renderChildrenClosure();
     }

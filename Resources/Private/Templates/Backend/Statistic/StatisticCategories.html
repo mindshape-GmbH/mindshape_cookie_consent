@@ -7,18 +7,18 @@
 
   <f:section name="Content">
 
-    <h2>{f:translate(key: 'module.statistic.options')}</h2>
+    <h2>{f:translate(key: 'module.statistic.categories')}</h2>
 
     <f:if condition="0 == {configuration.enableStatistic}">
       <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled')}</strong></p>
     </f:if>
     <f:if condition="{statisticCategories}">
-      <f:if condition="{itemsPerPage} < {statisticButtons -> f:count()}">
+      <f:if condition="{itemsPerPage} < {statisticCategories -> f:count()}">
         <f:then>
           <f:render section="Pagination" arguments="{configuration: configuration, statisticCategories: statisticCategories, itemsPerPage: itemsPerPage}"/>
         </f:then>
         <f:else>
-          <f:render section="Table" arguments="{configuration: configuration, statisticCategories: statisticCategories, itemsPerPage: itemsPerPage}"/>
+          <f:render section="Table" arguments="{configuration: configuration, statisticCategories: statisticCategories}"/>
         </f:else>
       </f:if>
     </f:if>
@@ -48,16 +48,16 @@
         </tr>
       </thead>
       <tbody>
-        <m:iterator.group field="dateBegin" objects="{statisticCategories}" as="statisticCategoriesByDate">
-          <f:for each="{statisticCategoriesByDate}" as="statisticCategories" key="date">
+        <m:iterator.group field="dateBegin" fillSmallerGroups="1" objects="{statisticCategories}" as="statisticCategoriesByDate">
+          <f:for each="{statisticCategoriesByDate}" as="groupedStatisticCategories" key="date">
             <tr>
               <td>{date -> f:format.date(format: 'Y-m-d')}</td>
-              <td>{statisticCategories.0.counter}</td>
-              <f:for each="{statisticCategories}" as="statisticCategory" key="cookieCategory">
+              <td>{groupedStatisticCategories.0.counter}</td>
+              <f:for each="{groupedStatisticCategories}" as="statisticCategory" key="cookieCategory">
                 <f:if condition="{cookieCategory}">
                   <f:if condition="{statisticCategory}">
                     <f:then>
-                      <td>{statisticCategory.counter} ({m:percentage(total: statisticCategories.0.counter, fraction: statisticCategory.counter) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
+                      <td>{statisticCategory.counter} ({m:percentage(total: groupedStatisticCategories.0.counter, fraction: statisticCategory.counter) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
                     </f:then>
                     <f:else>
                       <td>0 (0,0 %)</td>

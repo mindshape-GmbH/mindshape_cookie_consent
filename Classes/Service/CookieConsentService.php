@@ -19,6 +19,7 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\CookieOptionRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
+use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -59,6 +60,11 @@ class CookieConsentService implements SingletonInterface
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
      */
     protected $statisticButtonRepository;
+
+    /**
+     * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository
+     */
+    protected $statisticOptionRepository;
 
     /**
      * @var \TYPO3\CMS\Core\Site\Entity\Site
@@ -113,6 +119,14 @@ class CookieConsentService implements SingletonInterface
     public function injectStatisticButtonRepository(StatisticButtonRepository $statisticButtonRepository): void
     {
         $this->statisticButtonRepository = $statisticButtonRepository;
+    }
+
+    /**
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository $statisticOptionRepository
+     */
+    public function injectStatisticOptionRepository(StatisticOptionRepository $statisticOptionRepository): void
+    {
+        $this->statisticOptionRepository = $statisticOptionRepository;
     }
 
     public function __construct()
@@ -173,6 +187,7 @@ class CookieConsentService implements SingletonInterface
         ) {
             $this->statisticCategoryRepository->updateStatistic($configuration, $consent);
             $this->statisticButtonRepository->updateStatistic($configuration, $consent);
+            $this->statisticOptionRepository->updateStatistic($configuration, $consent);
         }
     }
 

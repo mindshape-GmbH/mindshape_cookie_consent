@@ -1,0 +1,76 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:m="http://typo3.org/ns/Mindshape/MindshapeCookieConsent/ViewHelpers"
+      xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+  <f:layout name="Backend/Statistic"/>
+
+  <f:section name="Content">
+
+    <h2>{f:translate(key: 'module.statistic.options')}</h2>
+
+    <f:if condition="0 == {configuration.enableStatistic}">
+      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled')}</strong></p>
+    </f:if>
+    <f:if condition="{statisticOptions}">
+      <f:if condition="{itemsPerPage} < {statisticOptions -> f:count()}">
+        <f:then>
+          <f:render section="Pagination" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: statisticOptions, itemsPerPage: itemsPerPage, cookieOptionsCount: cookieOptionsCount}"/>
+        </f:then>
+        <f:else>
+          <f:render section="Table" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: statisticOptions, itemsPerPage: itemsPerPage, cookieOptionsCount: cookieOptionsCount}"/>
+        </f:else>
+      </f:if>
+    </f:if>
+
+  </f:section>
+
+
+  <f:section name="Pagination">
+
+    <f:widget.paginate objects="{statisticOptions}" as="paginatedStatisticOptions" configuration="{itemsPerPage: itemsPerPage}">
+      <f:render section="Table" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: paginatedStatisticOptions, cookieOptionsCount: cookieOptionsCount}"/>
+    </f:widget.paginate>
+
+  </f:section>
+
+
+  <f:section name="Table">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{f:translate(key: 'module.statistic.date')}</th>
+          <th>{f:translate(key: 'module.statistic.visitors_total')}</th>
+          <f:for each="{cookieOptions}" as="cookieOption">
+            <th>{cookieOption.label}</th>
+          </f:for>
+        </tr>
+      </thead>
+      <tbody>
+        <m:iterator.group field="dateBegin" fillSmallerGroups="1" objects="{statisticOptions}" as="statisticOptionsByDate">
+          <f:for each="{statisticOptionsByDate}" as="groupedStatisticOptions" key="date">
+            <tr>
+              <td>{date -> f:format.date(format: 'Y-m-d')}</td>
+              <td>{groupedStatisticOptions.0.counter}</td>
+              <f:for each="{groupedStatisticOptions}" as="statisticOption" key="cookieCategory">
+                <f:if condition="{cookieCategory}">
+                  <f:if condition="{statisticOption}">
+                    <f:then>
+                      <td>{statisticOption.counter} ({m:percentage(total: groupedStatisticOptions.0.counter, fraction: statisticOption.counter) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
+                    </f:then>
+                    <f:else>
+                      <td>0 (0,0 %)</td>
+                    </f:else>
+                  </f:if>
+                </f:if>
+              </f:for>
+            </tr>
+          </f:for>
+        </m:iterator.group>
+      </tbody>
+    </table>
+
+  </f:section>
+
+</html>

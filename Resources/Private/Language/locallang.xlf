@@ -166,6 +166,22 @@
         <source>Counter</source>
       </trans-unit>
 
+      <trans-unit id="tca.statistic_option">
+        <source>Statistics entry (cookie)</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.date_start">
+        <source>Start date</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.date_end">
+        <source>End date</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.cookiecategory">
+        <source>Chosen cookie</source>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.counter">
+        <source>Counter</source>
+      </trans-unit>
+
       <trans-unit id="tca.statistic_button">
         <source>Statistics entry (buttons)</source>
       </trans-unit>
@@ -195,11 +211,17 @@
       <trans-unit id="module.statistic.menu.action.categories">
         <source>Cookie-Categories</source>
       </trans-unit>
+      <trans-unit id="module.statistic.menu.action.options">
+        <source>Cookie-Selection</source>
+      </trans-unit>
       <trans-unit id="module.statistic.buttons">
         <source>Statistics of user choices</source>
       </trans-unit>
+      <trans-unit id="module.statistic.categories">
+        <source>Statistics of used categories</source>
+      </trans-unit>
       <trans-unit id="module.statistic.options">
-        <source>Statistics of used options</source>
+        <source>Statistics of used cookies</source>
       </trans-unit>
       <trans-unit id="module.statistic.date">
         <source>Date</source>
