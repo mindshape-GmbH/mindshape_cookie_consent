@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 1.0.3
+
+  * Add total period for statistic date select
+  * Add statistic for single cookie selection
+
 * 1.0.2
 
   * Alternative language label determination for "All sites" configuraiton
