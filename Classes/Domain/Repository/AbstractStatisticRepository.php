@@ -101,7 +101,6 @@ abstract class AbstractStatisticRepository extends Repository
         }
 
         $dates = [];
-        $currentDate = date('Y-m');
 
         foreach ($dateRecords as $dateRecord) {
             try {
@@ -109,9 +108,7 @@ abstract class AbstractStatisticRepository extends Repository
                 $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
                 $date->modify('first day of this month 00:00:00');
 
-                if ($currentDate !== $date->format('Y-m')) {
-                    $dates[] = $date;
-                }
+                $dates[] = $date;
             } catch (Exception $exception) {
                 // ignore
             }

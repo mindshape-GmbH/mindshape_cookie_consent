@@ -51,7 +51,7 @@ call_user_func(
             'statistic',
             '',
             [
-                'Backend\\Statistic' => 'statisticButtons,statisticCategories',
+                'Backend\\Statistic' => 'statisticButtons,statisticCategories,statisticOptions',
             ],
             [
                 'access' => 'user,group',

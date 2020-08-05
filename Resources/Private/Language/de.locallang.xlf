@@ -50,6 +50,9 @@
       <trans-unit id="constants.settings.ajax_page_type">
         <target>Seitentyp für AJAX Requests</target>
       </trans-unit>
+      <trans-unit id="constants.settings.statistic_items_per_page">
+        <target>Elemente pro Seite im Statistikmodul</target>
+      </trans-unit>
 
       <trans-unit id="tca.configuration">
         <target>Cookie-Consent Konfiguration</target>
@@ -163,6 +166,22 @@
         <target>Zähler</target>
       </trans-unit>
 
+      <trans-unit id="tca.statistic_option">
+        <target>Statistik Eintrag (Cookie)</target>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.date_start">
+        <target>Startzeitpunk</target>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.date_end">
+        <target>Endzeitpunkt</target>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.cookie_category">
+        <target>Ausgewählter Cookie</target>
+      </trans-unit>
+      <trans-unit id="tca.statistic_option.counter">
+        <target>Zähler</target>
+      </trans-unit>
+
       <trans-unit id="tca.statistic_button">
         <target>Statistik Eintrag (Buttons)</target>
       </trans-unit>
@@ -192,11 +211,17 @@
       <trans-unit id="module.statistic.menu.action.categories">
         <target>Cookie-Kategorien</target>
       </trans-unit>
+      <trans-unit id="module.statistic.menu.action.options">
+        <target>Cookie-Auswahl</target>
+      </trans-unit>
       <trans-unit id="module.statistic.buttons">
         <target>Statistik der verwendeten Buttons</target>
       </trans-unit>
+      <trans-unit id="module.statistic.categories">
+        <target>Statistik der verwendeten Kategorien</target>
+      </trans-unit>
       <trans-unit id="module.statistic.options">
-        <target>Statistik der verwendeten Auswahl</target>
+        <target>Statistik der verwendeten Cookies</target>
       </trans-unit>
       <trans-unit id="module.statistic.date">
         <target>Datum</target>
@@ -209,6 +234,9 @@
       </trans-unit>
       <trans-unit id="module.statistic.visitors_total">
         <target>Besucher insgesamt</target>
+      </trans-unit>
+      <trans-unit id="module.statistic.date_select_all">
+        <target>Gesamter Zeitraum</target>
       </trans-unit>
 
       <trans-unit id="label.imprint">

@@ -42,7 +42,10 @@ class MediaViewHelper extends CoreMediaViewHelper
         $this->templateRenderingService = ObjectUtility::makeInstance(TemplateRenderingService::class);
     }
 
-    public function render()
+    /**
+     * @return string
+     */
+    public function render(): string
     {
         $media = parent::render();
 
