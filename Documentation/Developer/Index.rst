@@ -34,7 +34,7 @@ If you want to collect statistics about which cookies get accepted, you need to 
 
    enable statistics in the Cookie Consent Configuration
 
-You also need to configure the route enhancer for cookie.json. Otherwise the ajax request send by the cookie consent form will not work.
+You also need to configure the route enhancer for cookie.json. Otherwise the ajax request sent by the cookie consent form will not work.
 
 .. code-block:: yaml
 
