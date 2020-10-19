@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 1.0.4
+
+  * Move global css styles into consent container
+
 * 1.0.3
 
   * Add total period for statistic date select
