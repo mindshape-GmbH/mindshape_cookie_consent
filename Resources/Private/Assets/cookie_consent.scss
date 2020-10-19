@@ -27,14 +27,6 @@ $gray: lighten($black, 60%);
 $main: #6f9322;
 $transition: all .5s ease-in-out;
 
-.text-center {
-  text-align: center;
-}
-
-p {
-  margin: 0 0 15px 0;
-}
-
 .cookie-consent-container {
   @include detail;
 
@@ -50,6 +42,14 @@ p {
   font-size: 1rem;
   color: lighten($black, 30%);
   line-height: 1.5;
+
+  .text-center {
+    text-align: center;
+  }
+
+  p {
+    margin: 0 0 15px 0;
+  }
 
   a, a:visited, a:active, a:focus, a:focus:active   {
     color: $gray;
