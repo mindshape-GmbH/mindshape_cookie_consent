@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 1.0.5
+
+  * Add option to push consent options to TagManager
+
 * 1.0.4
 
   * Move global css styles into consent container
