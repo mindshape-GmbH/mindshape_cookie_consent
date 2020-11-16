@@ -32,6 +32,9 @@
       <trans-unit id="constants.settings.hide_if_javaScript_disabled">
         <source>Hide if javascript is deactivated (usefull if staticfilecache is in use)</source>
       </trans-unit>
+      <trans-unit id="constants.settings.push_consent_to_tag_manager">
+        <source>Send approved options as an event to Google TagManager</source>
+      </trans-unit>
       <trans-unit id="constants.settings.iframe_replace_option_identifier">
         <source>ID of option to activate replaced iFrame (default: "media")</source>
       </trans-unit>

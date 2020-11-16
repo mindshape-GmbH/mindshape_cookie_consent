@@ -30,7 +30,10 @@
         <target>ID des Containers</target>
       </trans-unit>
       <trans-unit id="constants.settings.hide_if_javaScript_disabled">
-        <target>Verstecken wenn JavaScript deaktiviert ist (Sinnvoll bei Verwendung von staticfilecache)</target>
+        <target>Verstecken wenn JavaScript deaktiviert ist (sinnvoll bei Verwendung von staticfilecache)</target>
+      </trans-unit>
+      <trans-unit id="constants.settings.push_consent_to_tag_manager">
+        <target>Zugestimmte Optionen als ein Event an den Google TagManager senden</target>
       </trans-unit>
       <trans-unit id="constants.settings.iframe_replace_option_identifier">
         <target>ID der Option für das aktivieren der ersetzten iFrames (Standard: "media")</target>

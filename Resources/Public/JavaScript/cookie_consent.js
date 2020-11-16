@@ -63,6 +63,7 @@
     saveButton: null,
     selectAllButton: null,
     isSelectAll: false,
+    pushConsentToTagManager: false,
     consentButtons: [],
     consentScripts: [],
 
@@ -75,6 +76,7 @@
       this.openButtonClass = 'openButtonClass' in configuration ? configuration.openButtonClass : 'cookie-consent-open';
       this.expiryDays = 'expiryDays' in configuration ? parseInt(configuration.expiryDays) : 365;
       this.hideOnInit = 'hideOnInit' in configuration ? Boolean(configuration.hideOnInit) : false;
+      this.pushConsentToTagManager = 'pushConsentToTagManager' in configuration ? Boolean(configuration.pushConsentToTagManager) : false;
 
       this.updateConsentButtons();
 
@@ -406,6 +408,17 @@
           if (true === checkbox.checked && null !== checkbox.getAttribute('data-identifier')) {
             cookieOptions.push(checkbox.getAttribute('data-identifier'));
           }
+        });
+      }
+
+      if (
+        true === this.pushConsentToTagManager &&
+        window.dataLayer instanceof Object &&
+        window.dataLayer.push instanceof Function
+      ) {
+        window.dataLayer.push({
+          'event': 'cookieConsent',
+          'options': cookieOptions
         });
       }
 

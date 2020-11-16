@@ -57,6 +57,7 @@ class RenderPreProcessHook
                     'cookieName' => $settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME,
                     'expiryDays' => (int) $settings['expiryDays'],
                     'hideOnInit' => $isInitialHidePage,
+                    'pushConsentToTagManager' => (bool) $settings['pushConsentToTagManager'],
                     'containerId' => false === empty($settings['containerId'])
                         ? $settings['containerId']
                         : CookieConsentService::DEFAULT_CONTAINER_ID,
