@@ -41,8 +41,8 @@
             <f:for each="{configuration.necessaryCookieOptions}" as="necessaryCookieOption">
               <div class="option-detail-wrapper">
                 <div class="option-detail cookie-option">
-                  <label for="{idPrefix}-cookieoption-{necessaryCookieOption.identifier}" class="label">
-                    <input id="{idPrefix}-cookieoption-{necessaryCookieOption.identifier}" type="checkbox" checked disabled>
+                  <label for="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" class="label">
+                    <input id="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" type="checkbox" checked disabled>
                     {necessaryCookieOption.label}
                     <span class="checkmark"></span>
                   </label>
