@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 1.0.6
+
+  * Use uid instead of identifier for necessary cookies
+
 * 1.0.5
 
   * Add option to push consent options to TagManager
