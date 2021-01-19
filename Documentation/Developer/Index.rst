@@ -110,7 +110,7 @@ If you need an event, that you can listen to, you implement the viewhelper like 
     }">
        <div id="maps"></div>
     </m:consent>
-    <script type="text/javascript" data-ignore="1">
+    <script data-ignore="1">
        window.addEventListener('googleMaps', function () {
           // initialize google Maps
        });

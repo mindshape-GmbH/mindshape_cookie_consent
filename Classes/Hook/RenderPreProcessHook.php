@@ -63,7 +63,7 @@ class RenderPreProcessHook
                         : CookieConsentService::DEFAULT_CONTAINER_ID,
                 ];
 
-                $pageRenderer->addHeaderData('<script type="text/javascript" data-ignore="1">const cookieConsentConfiguration = JSON.parse(\'' . json_encode($javaScriptConfiguration) . '\');</script>');
+                $pageRenderer->addHeaderData('<script data-ignore="1">const cookieConsentConfiguration = JSON.parse(\'' . json_encode($javaScriptConfiguration) . '\');</script>');
             }
 
             if (true === (bool) $settings['addJavaScript']) {
