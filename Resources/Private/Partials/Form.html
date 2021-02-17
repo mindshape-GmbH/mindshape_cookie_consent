@@ -18,9 +18,12 @@
     <f:render section="Categories" arguments="{id: id, configuration: configuration, idPrefix: idPrefix}"/>
 
     <div class="buttons text-center">
-      <f:form.button class="select-all btn btn--primary" type="submit" property="selectAll" value="1">
-        {f:if(condition: configuration.selectAllLabel, then: configuration.selectAllLabel, else: '{f:translate(key: \'label.select_all\', extensionName: \'mindshape_cookie_consent\')}')}
-      </f:form.button>
+      <f:if condition="0 < {configuration.cookieCategories -> f:count()}">
+        <f:form.button class="select-all btn btn--primary" type="submit" property="selectAll" value="1">
+          {f:if(condition: configuration.selectAllLabel, then: configuration.selectAllLabel, else: '{f:translate(key: \'label.select_all\', extensionName: \'mindshape_cookie_consent\')}')}
+        </f:form.button>
+      </f:if>
+
       <f:form.button class="save btn btn--secondary" type="submit" property="selectAll" value="0">
         {f:if(condition: configuration.saveLabel, then: configuration.saveLabel, else: '{f:translate(key: \'label.save\', extensionName: \'mindshape_cookie_consent\')}')}
       </f:form.button>

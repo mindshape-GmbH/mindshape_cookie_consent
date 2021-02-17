@@ -450,7 +450,10 @@
      * @param {boolean} state
      */
     toggleFormDisabledState: function (state) {
-      this.selectAllButton.disabled = state;
+      if (null !== this.selectAllButton) {
+        this.selectAllButton.disabled = state;
+      }
+
       this.saveButton.disabled = state;
 
       this.modalForm.querySelectorAll('input[type="checkbox"]:not(.option-necessary)').forEach(function (checkbox) {
