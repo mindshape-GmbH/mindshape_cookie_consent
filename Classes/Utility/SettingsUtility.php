@@ -58,7 +58,11 @@ class SettingsUtility
             $typoscript = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
             $typoscript = GeneralUtility::removeDotsFromTS($typoscript);
 
-            if (false === array_key_exists(self::EXTENSION_TYPOSCRIPT_KEY, $typoscript['plugin'])) {
+            if (
+                false === is_array($typoscript) ||
+                false === is_array($typoscript['plugin']) ||
+                false === array_key_exists(self::EXTENSION_TYPOSCRIPT_KEY, $typoscript['plugin'])
+            ) {
                 return [];
             }
 
