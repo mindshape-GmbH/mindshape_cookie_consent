@@ -69,13 +69,13 @@ class RenderPreProcessHook
             if (true === (bool) $settings['addJavaScript']) {
                 $pageRenderer->addJsFooterLibrary(
                     'cookie_consent',
-                    PathUtility::getAbsoluteWebPath('/typo3conf/ext/mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js')
+                    PathUtility::getAbsoluteWebPath('typo3conf/ext/mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js')
                 );
             }
 
             if (true === (bool) $settings['addStylesheet']) {
                 $pageRenderer->addCssFile(
-                    PathUtility::getAbsoluteWebPath('/typo3conf/ext/mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css')
+                    PathUtility::getAbsoluteWebPath('typo3conf/ext/mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css')
                 );
             }
 
