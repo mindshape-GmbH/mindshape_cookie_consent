@@ -6,6 +6,12 @@
 Changelog
 =========
 
+* 1.0.7
+
+  * Add check if TypoScript is available
+  * Hide "select all" button if no optional cookies are available
+  * Remove trailing slash from assets path to properly resolve TYPO3 in a subfolder
+
 * 1.0.6
 
   * Use uid instead of identifier for necessary cookies
