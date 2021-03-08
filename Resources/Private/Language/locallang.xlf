@@ -35,6 +35,9 @@
       <trans-unit id="constants.settings.push_consent_to_tag_manager">
         <source>Send approved options as an event to Google TagManager</source>
       </trans-unit>
+      <trans-unit id="constants.settings.hide_cookiecategories_in_overview">
+        <source>Hide cookie categories in overview plugin</source>
+      </trans-unit>
       <trans-unit id="constants.settings.iframe_replace_option_identifier">
         <source>ID of option to activate replaced iFrame (default: "media")</source>
       </trans-unit>
@@ -152,6 +155,9 @@
       <trans-unit id="tca.cookieoption.cookie_duration">
         <source>Cookie duration</source>
       </trans-unit>
+      <trans-unit id="tca.cookieoption.info">
+        <source>Information</source>
+      </trans-unit>
 
       <trans-unit id="tca.statistic_category">
         <source>Statistics entry (cookie categories)</source>
@@ -206,6 +212,13 @@
       </trans-unit>
       <trans-unit id="plugin.consent.description">
         <source>Form to adjust cookie consent</source>
+      </trans-unit>
+
+      <trans-unit id="plugin.cookielist.title">
+        <source>Cookie List</source>
+      </trans-unit>
+      <trans-unit id="plugin.cookielist.description">
+        <source>Overview for all cookies</source>
       </trans-unit>
 
       <trans-unit id="module.statistic.menu.action.buttons">

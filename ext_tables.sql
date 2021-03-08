@@ -67,6 +67,7 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_cookieoption (
   `purpose`          varchar(255)        DEFAULT ''  NOT NULL,
   `cookie_name`      varchar(255)        DEFAULT ''  NOT NULL,
   `cookie_duration`  varchar(255)        DEFAULT ''  NOT NULL,
+  `info`             text,
 
   `hidden`           tinyint(4) unsigned DEFAULT '0' NOT NULL,
   `sys_language_uid` int(11)             DEFAULT '0' NOT NULL,

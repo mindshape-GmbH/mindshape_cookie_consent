@@ -252,6 +252,20 @@ class CookieConsentService implements SingletonInterface
     }
 
     /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage
+     */
+    public function getCurrentConfigurationCookieCategories(): ObjectStorage
+    {
+        $configuration = $this->currentConfiguration();
+
+        if ($configuration instanceof Configuration) {
+            return $configuration->getCookieCategories();
+        }
+
+        return new ObjectStorage();
+    }
+
+    /**
      * @return string|null
      */
     public function getDatapolicyPageTypoLink(): ?string

@@ -1,0 +1,39 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
+
+  <f:if condition="{categories}">
+    <f:if condition="{settings.hideCategoriesInOverview}">
+      <f:then>
+        <f:for each="{categories}" as="category">
+          <f:render section="CookieList" arguments="{cookies: category.cookieOptions}"/>
+        </f:for>
+      </f:then>
+      <f:else>
+        <f:render section="CategoryList" arguments="{categories: categories}"/>
+      </f:else>
+    </f:if>
+  </f:if>
+
+  <f:section name="CategoryList">
+
+    <f:for each="{categories}" as="category">
+      <h3>{category.label}</h3>
+      {category.info -> f:format.html()}
+      <f:render section="CookieList" arguments="{cookies: category.cookieOptions}"/>
+    </f:for>
+
+  </f:section>
+
+  <f:section name="CookieList">
+
+    <dl>
+      <f:for each="{cookies}" as="cookie">
+        <dt>{cookie.label}</dt>
+        <dd>{cookie.info -> f:format.html()}</dd>
+      </f:for>
+    </dl>
+
+  </f:section>
+
+</html>
