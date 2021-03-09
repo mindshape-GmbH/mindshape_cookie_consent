@@ -18,7 +18,7 @@
     <f:render section="Categories" arguments="{id: id, configuration: configuration, idPrefix: idPrefix}"/>
 
     <div class="buttons text-center">
-      <f:if condition="0 < {configuration.cookieCategories -> f:count()}">
+      <f:if condition="{configuration.noneNecessaryCookies}">
         <f:form.button class="select-all btn btn--primary" type="submit" property="selectAll" value="1">
           {f:if(condition: configuration.selectAllLabel, then: configuration.selectAllLabel, else: '{f:translate(key: \'label.select_all\', extensionName: \'mindshape_cookie_consent\')}')}
         </f:form.button>

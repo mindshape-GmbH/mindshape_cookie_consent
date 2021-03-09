@@ -341,4 +341,19 @@ class Configuration extends AbstractEntity
     {
         return $this->_languageUid;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasNoneNecessaryCookies(): bool
+    {
+        /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory */
+        foreach ($this->cookieCategories as $cookieCategory) {
+            if (0 < $cookieCategory->getCookieOptions()->count()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
