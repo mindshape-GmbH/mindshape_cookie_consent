@@ -1,12 +1,22 @@
 mod.wizards.newContentElement.wizardItems.plugins {
   elements {
     mindshapecookieconsent_consent {
-      iconIdentifier = mindshape_cookie_consent-wizard-icon
+      iconIdentifier = mindshape_cookie_consent-plugin-consent-icon
       title = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.consent.title
       description = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.consent.description
       tt_content_defValues {
         CType = list
         list_type = mindshapecookieconsent_consent
+      }
+    }
+
+    mindshapecookieconsent_cookielist {
+      iconIdentifier = mindshape_cookie_consent-plugin-cookielist-icon
+      title = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.cookielist.title
+      description = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.cookielist.description
+      tt_content_defValues {
+        CType = list
+        list_type = mindshapecookieconsent_cookielist
       }
     }
   }

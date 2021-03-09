@@ -10,7 +10,7 @@ return [
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
         'sortby' => 'sorting',
-        'searchFields' => 'label,info',
+        'searchFields' => 'label,identifier,provider,purpose,cookie_name,cookie_duration,info',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_cookieoption.png',
         'hideTable' => true,
         'enablecolumns' => [
@@ -132,6 +132,14 @@ return [
                 'size' => 30,
                 'max' => 255,
                 'eval' => 'trim',
+            ],
+        ],
+        'info' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.info',
+            'config' => [
+                'type' => 'text',
+                'enableRichtext' => true,
             ],
         ],
     ],

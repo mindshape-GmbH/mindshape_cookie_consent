@@ -18,6 +18,12 @@ call_user_func(
             ['Consent' => 'settings,consent']
         );
 
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+            'Mindshape.' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY,
+            'Cookielist',
+            ['Cookie' => 'list']
+        );
+
         $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
         $signalSlotDispatcher->connect(
             \TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class,

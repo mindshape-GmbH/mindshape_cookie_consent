@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Controller;
 
 /***
@@ -22,31 +23,8 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 /**
  * @package Mindshape\MindshapeCookieConsent\Controller
  */
-class ConsentController extends ActionController
+class ConsentController extends AbstractController
 {
-    /**
-     * @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService
-     */
-    protected $cookieConsentService;
-
-    /**
-     * @param \Mindshape\MindshapeCookieConsent\Service\CookieConsentService $cookieConsentService
-     */
-    public function injectCookieConsentService(CookieConsentService $cookieConsentService): void
-    {
-        $this->cookieConsentService = $cookieConsentService;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-     */
-    public function initializeView(ViewInterface $view)
-    {
-        parent::initializeView($view);
-
-        $view->assign('data', $this->configurationManager->getContentObject()->data);
-    }
-
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Consent $consent
      * @return string

@@ -17,6 +17,7 @@ plugin.tx_mindshapecookieconsent {
     hideIfJavaScriptDisabled = {$plugin.tx_mindshapecookieconsent.settings.hideIfJavaScriptDisabled}
     iframeReplaceOptionIdentifier = {$plugin.tx_mindshapecookieconsent.settings.iframeReplaceOptionIdentifier}
     pushConsentToTagManager = {$plugin.tx_mindshapecookieconsent.settings.pushConsentToTagManager}
+    hideCategoriesInOverview = {$plugin.tx_mindshapecookieconsent.settings.hideCategoriesInOverview}
 
     ajaxPageType = {$plugin.tx_mindshapecookieconsent.settings.ajaxPageType}
     addMarkupToFooter = {$plugin.tx_mindshapecookieconsent.settings.addMarkupToFooter}

@@ -12,9 +12,15 @@ call_user_func(
         $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 
         $iconRegistry->registerIcon(
-            \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '-wizard-icon',
+            \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '-plugin-consent-icon',
             \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
             ['name' => 'pie-chart']
+        );
+
+        $iconRegistry->registerIcon(
+            \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '-plugin-cookielist-icon',
+            \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
+            ['name' => 'list']
         );
 
         $iconRegistry->registerIcon(
