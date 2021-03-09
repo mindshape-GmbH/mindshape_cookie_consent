@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 1.1.0
+
+  * Add new plugin to list all cookies options & -categories
+  * Optimize the hide condition for "select all" button
+
 * 1.0.7
 
   * Add check if TypoScript is available

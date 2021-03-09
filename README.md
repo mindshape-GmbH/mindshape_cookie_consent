@@ -6,6 +6,6 @@ It is developed for flexibility to be customized in accordance to your data secu
 
 Links:
 - [TER](https://extensions.typo3.org/extension/mindshape_cookie_consent/)
-- [Documentation](https://docs.typo3.org/p/mindshape/mindshape-cookie-consent/1.0/en-us/)
+- [Documentation](https://docs.typo3.org/p/mindshape/mindshape-cookie-consent/1.1/en-us/)
 - [Bug Tracker](https://github.com/mindshape-GmbH/mindshape_cookie_consent/issues)
 - [Contact](mailto:info@mindshape.de)
