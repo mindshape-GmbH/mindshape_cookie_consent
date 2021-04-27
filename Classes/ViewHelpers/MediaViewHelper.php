@@ -50,6 +50,8 @@ class MediaViewHelper extends CoreMediaViewHelper
         $media = parent::render();
 
         if ('<iframe' === substr($media, 0, 7)) {
+            $cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
+
             $cookieOption = 'media';
 
             if (1 === preg_match('/src=".*?\/\/(www\.)?(youtube|youtu\.be)/i', $media)) {
@@ -66,6 +68,7 @@ class MediaViewHelper extends CoreMediaViewHelper
                 [
                     'iframe' => htmlentities($media),
                     'cookieOption' => $cookieOption,
+                    'cookieOptionObject' => $cookieConsentService->getCookieOptionFromIdentifier($cookieOption),
                     'datapolicyPageTypoLink' => $this->cookieConsentService->getDatapolicyPageTypoLink(),
                     'imprintPageTypoLink' => $this->cookieConsentService->getImprintPageTypoLink(),
                 ]
