@@ -66,6 +66,7 @@ class MediaViewHelper extends CoreMediaViewHelper
                 [
                     'iframe' => htmlentities($media),
                     'cookieOption' => $cookieOption,
+                    'cookieOptionObject' => $this->cookieConsentService->getCookieOptionFromIdentifier($cookieOption),
                     'datapolicyPageTypoLink' => $this->cookieConsentService->getDatapolicyPageTypoLink(),
                     'imprintPageTypoLink' => $this->cookieConsentService->getImprintPageTypoLink(),
                 ]
