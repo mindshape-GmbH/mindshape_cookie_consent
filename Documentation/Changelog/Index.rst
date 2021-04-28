@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 1.1.1
+
+  * Add cookie option object to iframe replacement media template
+  * Add flexform option to change the settings plugin button label
+
 * 1.1.0
 
   * Add new plugin to list all cookies options & -categories
