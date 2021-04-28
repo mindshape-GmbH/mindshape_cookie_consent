@@ -1,0 +1,24 @@
+<T3DataStructure>
+  <sheets>
+    <sDEF>
+      <ROOT>
+        <TCEforms>
+          <sheetTitle>LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:flexforms.settings</sheetTitle>
+        </TCEforms>
+        <type>array</type>
+        <el>
+          <settings.buttonLabel>
+            <TCEforms>
+              <label>LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:flexforms.settings.button_label</label>
+              <config>
+                <type>input</type>
+                <eval>trim</eval>
+                <placeholder>LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:label.edit_cookie_settings</placeholder>
+              </config>
+            </TCEforms>
+          </settings.buttonLabel>
+        </el>
+      </ROOT>
+    </sDEF>
+  </sheets>
+</T3DataStructure>

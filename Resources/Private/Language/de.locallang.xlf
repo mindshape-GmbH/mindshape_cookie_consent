@@ -207,6 +207,13 @@
         <target>Alle auswählen</target>
       </trans-unit>
 
+      <trans-unit id="flexforms.settings">
+        <target>Einstellungen</target>
+      </trans-unit>
+      <trans-unit id="flexforms.settings.button_label">
+        <target>Buttonbeschriftung zum Öffnen des Einwilligungs-Modals</target>
+      </trans-unit>
+
       <trans-unit id="plugin.consent.title">
         <target>Cookie Einwilligung</target>
       </trans-unit>

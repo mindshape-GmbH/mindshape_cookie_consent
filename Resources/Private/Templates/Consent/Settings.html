@@ -6,7 +6,12 @@
     <div class="row">
       <div class="col-12">
         <div class="cookie-consent-settings">
-          <button class="cookie-consent-open btn btn--primary btn-primary">{f:translate(key: 'label.edit_cookie_settings')}</button>
+          <button class="cookie-consent-open btn btn--primary btn-primary">
+            <f:if condition="{settings.buttonLabel}">
+              <f:then>{settings.buttonLabel}</f:then>
+              <f:else>{f:translate(key: 'label.edit_cookie_settings')}</f:else>
+            </f:if>
+          </button>
         </div>
       </div>
     </div>

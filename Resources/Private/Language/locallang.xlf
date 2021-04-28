@@ -207,6 +207,13 @@
         <source>Agree to all</source>
       </trans-unit>
 
+      <trans-unit id="flexforms.settings">
+        <source>Settings</source>
+      </trans-unit>
+      <trans-unit id="flexforms.settings.button_label">
+        <source>Button label for opening the consent modal</source>
+      </trans-unit>
+
       <trans-unit id="plugin.consent.title">
         <source>Cookie Consent</source>
       </trans-unit>

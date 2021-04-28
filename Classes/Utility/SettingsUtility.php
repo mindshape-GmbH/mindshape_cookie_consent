@@ -25,9 +25,9 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
  */
 class SettingsUtility
 {
-    const EXTENSION_NAME = 'mindshapecookieconsent';
-    const EXTENSION_KEY = 'mindshape_cookie_consent';
-    const EXTENSION_TYPOSCRIPT_KEY = 'tx_' . self::EXTENSION_NAME;
+    public const EXTENSION_NAME = 'mindshapecookieconsent';
+    public const EXTENSION_KEY = 'mindshape_cookie_consent';
+    public const EXTENSION_TYPOSCRIPT_KEY = 'tx_' . self::EXTENSION_NAME;
 
     /**
      * @return null|array
