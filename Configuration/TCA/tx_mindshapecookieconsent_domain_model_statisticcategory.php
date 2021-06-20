@@ -3,7 +3,7 @@
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_category',
-        'label' => 'label',
+        'label' => 'date_begin',
         'versioningWS' => false,
         'languageField' => 'sys_language_uid',
         'searchFields' => 'date_begin,date_end,cookieoption,counter',
