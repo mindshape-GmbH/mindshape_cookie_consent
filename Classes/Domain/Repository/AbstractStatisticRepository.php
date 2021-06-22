@@ -20,6 +20,7 @@ use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
 use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -65,7 +66,7 @@ abstract class AbstractStatisticRepository extends Repository
                     $query->lessThan('dateEnd', $date->modify('last day of this month 23:59:59')->format('c')),
                 ])
             );
-        } catch (Exception $exception) {
+        } catch (InvalidQueryException $exception) {
             // ignore
         }
 
@@ -115,5 +116,21 @@ abstract class AbstractStatisticRepository extends Repository
         }
 
         return $dates;
+    }
+
+    /**
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
+     * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
+     */
+    public function findAllByConfiguration(Configuration $configuration): QueryResultInterface
+    {
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setLanguageUid($configuration->getLanguageUid());
+
+        $query->matching(
+            $query->equals('configuration', $configuration->getUid())
+        );
+
+        return $query->execute();
     }
 }

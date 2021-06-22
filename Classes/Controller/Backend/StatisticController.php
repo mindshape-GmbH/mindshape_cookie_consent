@@ -217,13 +217,7 @@ class StatisticController extends ActionController
         $repositoryName = lcfirst($entityName) . 'Repository';
 
         if (null === $date) {
-            return $this->{$repositoryName}->findAll();
-        }
-
-        try {
-            $date = null === $date ? new DateTime() : $date;
-        } catch (Exception $exception) {
-            // ignore
+            return $this->{$repositoryName}->findAllByConfiguration($configuration);
         }
 
         $this->view->assign('date', $date);
