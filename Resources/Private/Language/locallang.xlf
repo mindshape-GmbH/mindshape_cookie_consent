@@ -35,6 +35,12 @@
       <trans-unit id="constants.settings.push_consent_to_tag_manager">
         <source>Send approved options as an event to Google TagManager</source>
       </trans-unit>
+      <trans-unit id="constants.settings.lazyloading">
+        <source>Show the modal only after an interaction of the user</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.lazyloading_timeout">
+        <source>After how many seconds the modal should appear automatically when lazyloading (0 = disabled)</source>
+      </trans-unit>
       <trans-unit id="constants.settings.hide_cookiecategories_in_overview">
         <source>Hide cookie categories in overview plugin</source>
       </trans-unit>

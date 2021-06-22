@@ -58,6 +58,8 @@ class RenderPreProcessHook
                     'expiryDays' => (int) $settings['expiryDays'],
                     'hideOnInit' => $isInitialHidePage,
                     'pushConsentToTagManager' => (bool) $settings['pushConsentToTagManager'],
+                    'lazyloading' => (bool) $settings['lazyloading'],
+                    'lazyloadingTimeout' => (int) $settings['lazyloadingTimeout'],
                     'containerId' => false === empty($settings['containerId'])
                         ? $settings['containerId']
                         : CookieConsentService::DEFAULT_CONTAINER_ID,

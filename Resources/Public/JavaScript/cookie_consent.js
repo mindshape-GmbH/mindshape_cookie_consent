@@ -3,7 +3,7 @@
 (function () {
   // Polyfill for IE missing custom javascript events ---------------------------------------------
   // (see: https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent#Polyfill) -----
-  if (typeof window.CustomEvent === "function") return false;
+  if (typeof window.CustomEvent === 'function') return false;
 
   function CustomEvent(event, params) {
     let customEvent = document.createEvent('CustomEvent');
@@ -52,9 +52,9 @@
 (function (cookieConsentConfiguration) {
   const _cookieConsent = {
 
-    cookieName: '',
+    cookieName: 'cookie_consent',
     settingsClass: '',
-    openButtonClass: '',
+    openButtonClass: 'cookie-consent-open',
     detailsOpenContainerSelector: '.detail, .show-details, .consent-modal',
     consentVariableName: 'cookieConsent',
     containerDisplayStyle: 'block',
@@ -64,7 +64,11 @@
     saveButton: null,
     selectAllButton: null,
     isSelectAll: false,
+    hideOnInit: false,
     pushConsentToTagManager: false,
+    lazyloading: false,
+    lazyloadingTimeout: 120000,
+    lazyloadingEvents: ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'],
     consentButtons: [],
     consentScripts: [],
 
@@ -73,11 +77,13 @@
      */
     init: function (configuration) {
       const that = this;
-      this.cookieName = 'cookieName' in configuration ? configuration.cookieName : 'cookie_consent';
-      this.openButtonClass = 'openButtonClass' in configuration ? configuration.openButtonClass : 'cookie-consent-open';
-      this.expiryDays = 'expiryDays' in configuration ? parseInt(configuration.expiryDays) : 365;
-      this.hideOnInit = 'hideOnInit' in configuration ? Boolean(configuration.hideOnInit) : false;
+      this.cookieName = 'cookieName' in configuration ? configuration.cookieName : this.cookieName;
+      this.openButtonClass = 'openButtonClass' in configuration ? configuration.openButtonClass : this.openButtonClass;
+      this.expiryDays = 'expiryDays' in configuration ? parseInt(configuration.expiryDays) : this.expiryDays;
+      this.hideOnInit = 'hideOnInit' in configuration ? Boolean(configuration.hideOnInit) : this.hideOnInit;
       this.pushConsentToTagManager = 'pushConsentToTagManager' in configuration ? Boolean(configuration.pushConsentToTagManager) : false;
+      this.lazyloading = 'lazyloading' in configuration ? Boolean(configuration.lazyloading) : this.lazyloading;
+      this.lazyloadingTimeout = 'lazyloadingTimeout' in configuration ? parseInt(configuration.lazyloadingTimeout) * 1000 : this.lazyloadingTimeout;
 
       this.updateConsentButtons();
 
@@ -106,8 +112,10 @@
 
       if (true === this.hasCookie()) {
         this.consentEventDispatch();
-      } else if (false === this.hideOnInit) {
-        this.modalContainer.style.display = this.containerDisplayStyle;
+      } else if (false === this.hideOnInit && false === this.lazyloading) {
+        this.openModal(this.modalContainer);
+      } else if (true === this.lazyloading) {
+        this.lazyOpenModal(this.modalContainer);
       }
 
       document.querySelectorAll('.' + this.openButtonClass).forEach(function (openButton) {
@@ -120,11 +128,11 @@
       this.consentButtons.forEach(function (acceptButton) {
         acceptButton.addEventListener('click', function () {
           let cookie = that.getCookie();
-          let cookieOpions = null !== cookie ? cookie.options : []
+          let cookieOpions = null !== cookie ? cookie.options : [];
 
           cookieOpions.push(this.getAttribute('data-identifier'));
 
-          that.setConsentCookie(cookieOpions)
+          that.setConsentCookie(cookieOpions);
           that.replaceConsentButtons(this.getAttribute('data-identifier'));
         });
       });
@@ -139,7 +147,7 @@
           });
 
           that.updateParentOptionState(cookieOptionsList);
-        })
+        });
       });
 
       this.modalForm.querySelectorAll('.cookieoptions input[type="checkbox"]').forEach(function (cookieOptionCheckbox) {
@@ -150,6 +158,30 @@
             that.updateParentOptionState(cookieOptionsList);
           }
         });
+      });
+    },
+
+    /**
+     * @param {HTMLElement} container
+     */
+    lazyOpenModal: function (container) {
+      const that = this;
+      let lazyloadingTimeout = null;
+
+      if (0 < this.lazyloadingTimeout) {
+        lazyloadingTimeout = setTimeout(function () {that.openModal(container);}, this.lazyloadingTimeout);
+      }
+
+      const interactionEventListener = function () {
+        that.openModal(container);
+        clearTimeout(lazyloadingTimeout);
+        that.lazyloadingEvents.forEach(function (eventName) {
+          document.removeEventListener(eventName, interactionEventListener);
+        });
+      };
+
+      this.lazyloadingEvents.forEach(function (eventName) {
+        document.addEventListener(eventName, interactionEventListener);
       });
     },
 
@@ -204,7 +236,7 @@
 
             if (-1 === that.consentScripts.indexOf(src)) {
               that.consentScripts.push(src);
-              that.addScript(src, async, defer, eventName)
+              that.addScript(src, async, defer, eventName);
             }
           }
         }
@@ -253,7 +285,7 @@
           that.toggleFormDisabledState(true);
 
           that.modalForm.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
-            checkbox.checked = true
+            checkbox.checked = true;
           });
 
           // Workaround for older edge versions not supporting URLSearchParams
@@ -337,7 +369,7 @@
       if (null !== consent) {
         consent['hasOption'] = function (identifier) {
           return 0 <= this.options.indexOf(identifier);
-        }
+        };
       }
 
       return consent;
@@ -349,7 +381,7 @@
       this.setXhrSubmit(this.modalForm, true);
 
       setTimeout(function () {
-        that.closeModal();
+        that.closeModal(that.modalContainer);
       }, 200);
 
       try {
@@ -371,7 +403,7 @@
         }
 
         if (true === this.isSelectAll) {
-          parameters.append(this.modalForm.querySelector('.select-all').getAttribute('name'), '1')
+          parameters.append(this.modalForm.querySelector('.select-all').getAttribute('name'), '1');
         }
 
         fetch(
@@ -381,19 +413,17 @@
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: parameters
           }
-        )
-          .then(function (response) {
-            if (200 !== response.status) {
-              throw new Error('xhr request failed: ' + response.status + ' - reason: "' + response.statusText + '"');
-            }
+        ).then(function (response) {
+          if (200 !== response.status) {
+            throw new Error('xhr request failed: ' + response.status + ' - reason: "' + response.statusText + '"');
+          }
 
-            that.isSelectAll = false;
-            that.toggleFormDisabledState(false);
-          })
-          .catch(function (error) {
-            that.toggleFormDisabledState(false);
-            console.error(error);
-          });
+          that.isSelectAll = false;
+          that.toggleFormDisabledState(false);
+        }).catch(function (error) {
+          that.toggleFormDisabledState(false);
+          console.error(error);
+        });
       } catch (error) {
         that.toggleFormDisabledState(false);
         console.error(error);
@@ -428,7 +458,7 @@
       expiryDate.setDate(expiryDate.getDate() + this.expiryDays);
 
       if (false === Array.isArray(cookieOptions)) {
-        cookieOptions = []
+        cookieOptions = [];
 
         this.modalForm.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
           if (true === checkbox.checked && null !== checkbox.getAttribute('data-identifier')) {
@@ -483,22 +513,39 @@
       this.saveButton.disabled = state;
 
       this.modalForm.querySelectorAll('input[type="checkbox"]:not(.option-necessary)').forEach(function (checkbox) {
-        checkbox.disabled = state
+        checkbox.disabled = state;
       });
     },
 
-    closeModal: function () {
-      if (null !== this.modalContainer) {
-        this.modalContainer.style.display = 'none';
-        this.closeModalDetails(this.modalContainer);
-      }
+    /**
+     * @param {HTMLElement} container
+     * @return {boolean}
+     */
+    isModalOpen: function (container) {
+      return container.style.display === this.containerDisplayStyle;
+    },
+
+    /**
+     * @param {HTMLElement} container
+     */
+    openModal: function (container) {
+      container.style.display = this.containerDisplayStyle;
+      this.closeModalDetails(container);
+    },
+
+    /**
+     * @param {HTMLElement} container
+     */
+    closeModal: function (container) {
+      container.style.display = 'none';
+      this.closeModalDetails(container);
     },
 
     consentEventDispatch: function () {
       const that = this;
 
       if (false === this.hasCookie()) {
-        throw new Error('Can\'t do event dispatch if the necessary cookie hasn\'t been set')
+        throw new Error('Can\'t do event dispatch if the necessary cookie hasn\'t been set');
       }
 
       window[this.consentVariableName] = this.getCookie();

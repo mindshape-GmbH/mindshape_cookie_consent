@@ -23,6 +23,10 @@ plugin.tx_mindshapecookieconsent {
     iframeReplaceOptionIdentifier = media
     # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.push_consent_to_tag_manager
     pushConsentToTagManager = 0
+    # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.lazyloading
+    lazyloading = 0
+    # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.lazyloading_timeout
+    lazyloadingTimeout = 120
     # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.hide_cookiecategories_in_overview
     hideCategoriesInOverview = 0
 
