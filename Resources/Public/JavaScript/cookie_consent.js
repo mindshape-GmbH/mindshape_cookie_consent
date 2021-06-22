@@ -55,6 +55,7 @@
     cookieName: '',
     settingsClass: '',
     openButtonClass: '',
+    detailsOpenContainerSelector: '.detail, .show-details, .consent-modal',
     consentVariableName: 'cookieConsent',
     containerDisplayStyle: 'block',
     expiryDays: 365,
@@ -240,7 +241,7 @@
     },
 
     /**
-     * @param {object} container
+     * @param {HTMLElement} container
      */
     registerButtonEvents: function (container) {
       const that = this;
@@ -285,12 +286,36 @@
       if (null !== showDetailsButton) {
         showDetailsButton.addEventListener('click', function (event) {
           event.preventDefault();
-
-          container.querySelectorAll('.detail, .show-details, .consent-modal').forEach(function (element) {
-            element.classList.toggle('open')
-          });
+          that.toggleModalDetails(container);
         });
       }
+    },
+
+    /**
+     * @param {HTMLElement} container
+     */
+    toggleModalDetails: function (container) {
+      container.querySelectorAll(this.detailsOpenContainerSelector).forEach(function (element) {
+        element.classList.toggle('open');
+      });
+    },
+
+    /**
+     * @param {HTMLElement} container
+     */
+    openModalDetails: function (container) {
+      container.querySelectorAll(this.detailsOpenContainerSelector).forEach(function (element) {
+        element.classList.add('open');
+      });
+    },
+
+    /**
+     * @param {HTMLElement} container
+     */
+    closeModalDetails: function (container) {
+      container.querySelectorAll(this.detailsOpenContainerSelector).forEach(function (element) {
+        element.classList.remove('open');
+      });
     },
 
     /**
@@ -438,7 +463,7 @@
     },
 
     /**
-     * @param {object} form
+     * @param {HTMLElement} form
      * @param {boolean} enable
      */
     setXhrSubmit: function (form, enable) {
@@ -465,6 +490,7 @@
     closeModal: function () {
       if (null !== this.modalContainer) {
         this.modalContainer.style.display = 'none';
+        this.closeModalDetails(this.modalContainer);
       }
     },
 
