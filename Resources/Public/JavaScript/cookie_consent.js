@@ -118,7 +118,8 @@
 
       this.consentButtons.forEach(function (acceptButton) {
         acceptButton.addEventListener('click', function () {
-          let cookieOpions = that.getCookie().options
+          let cookie = that.getCookie();
+          let cookieOpions = null !== cookie ? cookie.options : []
 
           cookieOpions.push(this.getAttribute('data-identifier'));
 
