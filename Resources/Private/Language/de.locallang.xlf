@@ -44,9 +44,6 @@
       <trans-unit id="constants.settings.hide_cookiecategories_in_overview">
         <target>Verstecke Cookie-Kategorien in Übersicht Plugin</target>
       </trans-unit>
-      <trans-unit id="constants.settings.iframe_replace_option_identifier">
-        <target>ID der Option für das aktivieren der ersetzten iFrames (Standard: "media")</target>
-      </trans-unit>
       <trans-unit id="constants.settings.add_markup_to_footer">
         <target>Markup automatisch dem Footer anfügen</target>
       </trans-unit>

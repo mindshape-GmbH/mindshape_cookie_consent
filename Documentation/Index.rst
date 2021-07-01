@@ -50,7 +50,7 @@ If you find an error or something is missing, please:
 This documentation is for the TYPO3 extension mindshape_cookie_consent.
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    Editor/Index
    Developer/Index

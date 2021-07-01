@@ -6,6 +6,11 @@
 For Developers
 ==============
 
+.. toctree::
+   :maxdepth: 2
+
+   TypoScript
+
 Configuration
 =============
 
@@ -24,7 +29,7 @@ If you want the same configuration for every site you can choose "All Sites" in 
 As the developers of this extension, we have already implemented it for several of our customers. If you need any assistance with the configuration of the cookies on your website, feel free to contact us - we gladly provide assistance on an hourly basis.
 
 Site configuration for statistics backend module
-------------------------------------------------
+================================================
 
 If you want to collect statistics about which cookies get accepted, you need to enable statistics in the configuration.
 

@@ -15,7 +15,6 @@ plugin.tx_mindshapecookieconsent {
     expiryDays = {$plugin.tx_mindshapecookieconsent.settings.expiryDays}
     containerId = {$plugin.tx_mindshapecookieconsent.settings.containerId}
     hideIfJavaScriptDisabled = {$plugin.tx_mindshapecookieconsent.settings.hideIfJavaScriptDisabled}
-    iframeReplaceOptionIdentifier = {$plugin.tx_mindshapecookieconsent.settings.iframeReplaceOptionIdentifier}
     pushConsentToTagManager = {$plugin.tx_mindshapecookieconsent.settings.pushConsentToTagManager}
     lazyloading = {$plugin.tx_mindshapecookieconsent.settings.lazyloading}
     lazyloadingTimeout = {$plugin.tx_mindshapecookieconsent.settings.lazyloadingTimeout}

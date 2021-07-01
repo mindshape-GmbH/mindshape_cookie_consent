@@ -44,7 +44,7 @@ You can edit header and hint-text, that will appear above the single cookies.
    Cookie Hint in FE
 
 Creating new cookies
---------------------
+====================
 
 When you create new necessary cookies, they will get listed in the cookie consent modal in the frontend. The user will not be able to uncheck the boxes for the necessary cookies, but you can provide the names, purposes and duration of those cookies.
 
