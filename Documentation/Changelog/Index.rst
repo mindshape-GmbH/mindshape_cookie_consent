@@ -6,6 +6,14 @@
 Changelog
 =========
 
+* 1.2.0
+
+  * Add lazyloading option for consent modal
+  * Close details when modal is closed
+  * Check existing cookie if other consent buttons are clicked
+  * Respect current configuration in "all time" statistics
+  * Use existing field as tca label to prevent errors in database comparison
+
 * 1.1.1
 
   * Add cookie option object to iframe replacement media template
