@@ -17,7 +17,11 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService;
 use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\MediaViewHelper as CoreMediaViewHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * @package Mindshape\PerbitCookieConsent\ViewHelpers
@@ -25,14 +29,19 @@ use TYPO3\CMS\Fluid\ViewHelpers\MediaViewHelper as CoreMediaViewHelper;
 class MediaViewHelper extends CoreMediaViewHelper
 {
     /**
-     * @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService
+     * @var CookieConsentService
      */
     protected $cookieConsentService;
 
     /**
-     * @var \Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService
+     * @var TemplateRenderingService
      */
     protected $templateRenderingService;
+
+    /**
+     * @var OnlineMediaHelperRegistry
+     */
+    protected $onlineMediaHelperRegistry;
 
     public function __construct()
     {
@@ -40,6 +49,7 @@ class MediaViewHelper extends CoreMediaViewHelper
 
         $this->cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
         $this->templateRenderingService = ObjectUtility::makeInstance(TemplateRenderingService::class);
+        $this->onlineMediaHelperRegistry = OnlineMediaHelperRegistry::getInstance();
     }
 
     /**
@@ -51,6 +61,32 @@ class MediaViewHelper extends CoreMediaViewHelper
 
         if ('<iframe' === substr($media, 0, 7)) {
             $cookieOption = 'media';
+            $file = $this->arguments['file']->getOriginalFile();
+            $previewImage = '';
+            $onlineMediaHelper = $this->onlineMediaHelperRegistry->getOnlineMediaHelper($file);
+
+            if ($onlineMediaHelper !== false) {
+                $previewImage = $onlineMediaHelper->getPreviewImage($file);
+
+                if (Environment::getVarPath() !== Environment::getPublicPath() . '/typo3temp/var') {
+                    $tempFile = str_replace(Environment::getVarPath() . '/transient', Environment::getPublicPath() . '/typo3temp/assets/images', $previewImage);
+                    GeneralUtility::writeFileToTypo3tempDir($tempFile, @file_get_contents($previewImage));
+                    $previewImage = $tempFile;
+                }
+
+                $conf = [
+                    'file' => $previewImage,
+                    'file.' => [
+                        'maxW' => 1200,
+                        'maxH' => 1200,
+                    ],
+                ];
+
+                /** @var ContentObjectRenderer $contentObjectRenderer */
+                $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class, $GLOBALS['TSFE']);
+
+                $previewImage = $contentObjectRenderer->cObjGetSingle('IMG_RESOURCE', $conf);
+            }
 
             if (1 === preg_match('/src=".*?\/\/(www\.)?(youtube|youtu\.be)/i', $media)) {
                 $cookieOption = 'youtube';
@@ -64,6 +100,7 @@ class MediaViewHelper extends CoreMediaViewHelper
                 'Replacement',
                 'Media',
                 [
+                    'previewImage' => $previewImage,
                     'iframe' => htmlentities($media),
                     'cookieOption' => $cookieOption,
                     'cookieOptionObject' => $this->cookieConsentService->getCookieOptionFromIdentifier($cookieOption),
