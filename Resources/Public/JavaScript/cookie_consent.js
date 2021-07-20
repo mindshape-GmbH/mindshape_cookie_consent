@@ -204,11 +204,7 @@
           textArea.innerHTML = consentReplacement.getAttribute('data-replacement');
           replacement.innerHTML = textArea.innerText;
 
-          replacement.childNodes.forEach(function (childElement) {
-            consentReplacement.parentNode.appendChild(childElement.cloneNode(true));
-          });
-
-          consentReplacement.parentNode.removeChild(consentReplacement);
+          consentReplacement.parentNode.replaceChild(replacement, consentReplacement);
 
           that.updateConsentButtons();
         }
