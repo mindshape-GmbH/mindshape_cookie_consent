@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 1.2.1
+
+  * Use proper replace method for consent replacements
+
 * 1.2.0
 
   * Add lazyloading option for consent modal
