@@ -194,11 +194,11 @@
      */
     replaceConsentButtons: function (cookieOption) {
       const that = this;
-      const textArea = document.createElement('textarea');
-      const replacement = document.createElement('div');
 
       this.consentButtons.forEach(function (acceptButton) {
         const consentReplacement = acceptButton.closest('.cookie-consent-replacement');
+        const textArea = document.createElement('textarea');
+        const replacement = document.createElement('div');
 
         if (cookieOption === acceptButton.getAttribute('data-identifier')) {
           textArea.innerHTML = consentReplacement.getAttribute('data-replacement');
