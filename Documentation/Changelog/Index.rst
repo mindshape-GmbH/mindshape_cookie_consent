@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 1.2.2
+
+  * Fixed not replaced multiple replacement buttons
+
 * 1.2.1
 
   * Use proper replace method for consent replacements
