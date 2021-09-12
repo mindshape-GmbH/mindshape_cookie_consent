@@ -8,3 +8,12 @@ services:
     resource: '../Classes/*'
     exclude: '../Classes/{Domain/Model,Utility}'
 
+  Mindshape\MindshapeCookieConsent\EventListener\AfterPackageActivationEventListener:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent
+
+  Mindshape\MindshapeCookieConsent\EventListener\AfterExtensionStaticDatabaseContentHasBeenImportedEventListener:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent
