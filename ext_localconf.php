@@ -14,14 +14,15 @@ call_user_func(
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Mindshape.' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY,
             'Consent',
-            ['Consent' => 'settings,consent'],
-            ['Consent' => 'settings,consent']
+            [\Mindshape\MindshapeCookieConsent\Controller\ConsentController::class => 'settings,consent'],
+            [\Mindshape\MindshapeCookieConsent\Controller\ConsentController::class => 'settings,consent']
         );
 
         \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
             'Mindshape.' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY,
             'Cookielist',
-            ['Cookie' => 'list']
+            [\Mindshape\MindshapeCookieConsent\Controller\CookieController::class => 'list'],
+            [\Mindshape\MindshapeCookieConsent\Controller\CookieController::class => '']
         );
 
         $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
