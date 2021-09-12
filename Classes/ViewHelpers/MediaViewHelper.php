@@ -16,7 +16,7 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
 
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\MediaViewHelper as CoreMediaViewHelper;
 
 /**
@@ -38,8 +38,8 @@ class MediaViewHelper extends CoreMediaViewHelper
     {
         parent::__construct();
 
-        $this->cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
-        $this->templateRenderingService = ObjectUtility::makeInstance(TemplateRenderingService::class);
+        $this->cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
+        $this->templateRenderingService = GeneralUtility::makeInstance(TemplateRenderingService::class);
     }
 
     /**

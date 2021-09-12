@@ -14,10 +14,11 @@ namespace Mindshape\MindshapeCookieConsent\Utility;
  *
  ***/
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Utility
@@ -39,12 +40,12 @@ class DatabaseUtility
         }
 
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = ObjectUtility::makeInstance(ConnectionPool::class);
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = null;
 
         try {
             $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        } catch (DBALException $exception) {
+        } catch (Exception $exception) {
             // ignore
         }
 

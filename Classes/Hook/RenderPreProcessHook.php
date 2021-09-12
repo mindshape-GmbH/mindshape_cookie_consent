@@ -17,10 +17,9 @@ namespace Mindshape\MindshapeCookieConsent\Hook;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -36,7 +35,7 @@ class RenderPreProcessHook
     {
         if ('FE' === TYPO3_MODE) {
             /** @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService $cookieConsentService */
-            $cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
+            $cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
             $datapolicyPageUid = null;
             $imprintPageUid = null;
 

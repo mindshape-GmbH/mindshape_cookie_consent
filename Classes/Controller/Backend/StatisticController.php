@@ -20,7 +20,6 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
@@ -234,7 +233,7 @@ class StatisticController extends ActionController
         $actionMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_action');
         /** @var \TYPO3\CMS\Core\Site\SiteFinder $siteFinder */
-        $siteFinder = ObjectUtility::makeInstance(SiteFinder::class);
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
 
         /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration */
         foreach ($this->configurationRepository->findAllLanguages() as $configuration) {
