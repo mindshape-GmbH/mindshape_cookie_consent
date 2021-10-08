@@ -343,6 +343,19 @@
       <trans-unit id="label.option.duration">
         <target>Cookie Laufzeit</target>
       </trans-unit>
+
+      <trans-unit id="label.pagination.first">
+        <target>Erste Seite</target>
+      </trans-unit>
+      <trans-unit id="label.pagination.last">
+        <target>Letzte Seite</target>
+      </trans-unit>
+      <trans-unit id="label.pagination.previous">
+        <target>Vorherige Seite</target>
+      </trans-unit>
+      <trans-unit id="label.pagination.next">
+        <target>Nächste Seite</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
