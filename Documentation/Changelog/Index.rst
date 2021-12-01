@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.0.1
+
+  * Add missing changes to emconf
+
 * 2.0.0
 
   * Add TYPO3 v11 compatibility
