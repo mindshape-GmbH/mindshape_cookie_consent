@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Controller\Backend;
 
 /***
@@ -8,7 +9,7 @@ namespace Mindshape\MindshapeCookieConsent\Controller\Backend;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2020 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -20,16 +21,17 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -75,33 +77,19 @@ class StatisticController extends ActionController
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository $statisticCategoryRepository
-     */
-    public function injectStatisticCategoryRepository(StatisticCategoryRepository $statisticCategoryRepository): void
-    {
-        $this->statisticCategoryRepository = $statisticCategoryRepository;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository $statisticOptionRepository
-     */
-    public function injectStatisticOptionRepository(StatisticOptionRepository $statisticOptionRepository): void
-    {
-        $this->statisticOptionRepository = $statisticOptionRepository;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository $statisticButtonRepository
-     */
-    public function injectStatisticButtonRepository(StatisticButtonRepository $statisticButtonRepository): void
-    {
-        $this->statisticButtonRepository = $statisticButtonRepository;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository $configurationRepository
      */
-    public function injectConfigurationRepository(ConfigurationRepository $configurationRepository): void
-    {
+    public function __construct(
+        StatisticCategoryRepository $statisticCategoryRepository,
+        StatisticOptionRepository $statisticOptionRepository,
+        StatisticButtonRepository $statisticButtonRepository,
+        ConfigurationRepository $configurationRepository
+    ) {
+        $this->statisticCategoryRepository = $statisticCategoryRepository;
+        $this->statisticOptionRepository = $statisticOptionRepository;
+        $this->statisticButtonRepository = $statisticButtonRepository;
         $this->configurationRepository = $configurationRepository;
     }
 
@@ -114,13 +102,17 @@ class StatisticController extends ActionController
         parent::initializeView($view);
 
         $currentConfiguration = null;
+        $currentPage = 1;
         $parameters = GeneralUtility::_GET('tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic');
 
-        if (
-            true === is_array($parameters) &&
-            true === array_key_exists('configuration', $parameters)
-        ) {
-            $currentConfiguration = $this->configurationRepository->findByUidIgnoreLanguage((int) $parameters['configuration']);
+        if (true === is_array($parameters)) {
+            if (true === array_key_exists('configuration', $parameters)) {
+                $currentConfiguration = $this->configurationRepository->findByUidIgnoreLanguage((int)$parameters['configuration']);
+            }
+
+            if (true === array_key_exists('page', $parameters)) {
+                $currentPage = (int)$parameters['page'];
+            }
         }
 
         if (!$currentConfiguration instanceof Configuration) {
@@ -139,46 +131,55 @@ class StatisticController extends ActionController
 
     /**
      * @param \DateTime|null $date
+     * @param int $page
      */
-    public function statisticButtonsAction(DateTime $date = null): void
+    public function statisticButtonsAction(DateTime $date = null, int $page = 1): void
     {
         $statisticButtons = null;
 
         if ($this->currentConfiguration instanceof Configuration) {
             $statisticButtons = $this->statisticActionMethod('StatisticButton', $this->currentConfiguration, $date);
-        }
-
-        $this->view->assign('statisticButtons', $statisticButtons);
-    }
-
-    /**
-     * @param \DateTime|null $date
-     */
-    public function statisticCategoriesAction(DateTime $date = null): void
-    {
-        $statisticCategories = [];
-        $itemsPerPage = (int) ($this->settings['statisticItemsPerPage'] ?? 10);
-
-        if ($this->currentConfiguration instanceof Configuration) {
-            $statisticCategories = $this->statisticActionMethod('StatisticCategory', $this->currentConfiguration, $date);
-            // Multiply for each category having its own record + all count
-            $itemsPerPage *= 1 + $this->currentConfiguration->getCookieCategories()->count();
+            $this->addPaginationToView($statisticButtons, $page, (int)($this->settings['statisticItemsPerPage'] ?? 10));
         }
 
         $this->view->assignMultiple([
-            'statisticCategories' => $statisticCategories,
-            'itemsPerPage' => $itemsPerPage,
+            'date' => $date,
+            'statisticButtons' => $statisticButtons,
         ]);
     }
 
     /**
      * @param \DateTime|null $date
+     * @param int $page
      */
-    public function statisticOptionsAction(DateTime $date = null): void
+    public function statisticCategoriesAction(DateTime $date = null, int $page = 1): void
+    {
+        $statisticCategories = [];
+        $itemsPerPage = (int)($this->settings['statisticItemsPerPage'] ?? 10);
+
+        if ($this->currentConfiguration instanceof Configuration) {
+            $statisticCategories = $this->statisticActionMethod('StatisticCategory', $this->currentConfiguration, $date);
+            // Multiply for each category having its own record + all count
+            $itemsPerPage *= 1 + $this->currentConfiguration->getCookieCategories()->count();
+
+            $this->addPaginationToView($statisticCategories, $page, $itemsPerPage);
+        }
+
+        $this->view->assignMultiple([
+            'date' => $date,
+            'statisticCategories' => $statisticCategories,
+        ]);
+    }
+
+    /**
+     * @param \DateTime|null $date
+     * @param int $page
+     */
+    public function statisticOptionsAction(DateTime $date = null, int $page = 1): void
     {
         $statisticOptions = [];
         $cookieOptions = [];
-        $itemsPerPage = (int) ($this->settings['statisticItemsPerPage'] ?? 10);
+        $itemsPerPage = (int)($this->settings['statisticItemsPerPage'] ?? 10);
 
         if ($this->currentConfiguration instanceof Configuration) {
             $statisticOptions = $this->statisticActionMethod('StatisticOption', $this->currentConfiguration, $date);
@@ -197,12 +198,30 @@ class StatisticController extends ActionController
 
             $itemsPerPage *= 1 + $cookieOptionsCount;
             ksort($cookieOptions);
+
+            $this->addPaginationToView($statisticOptions, $page, $itemsPerPage);
         }
 
         $this->view->assignMultiple([
+            'date' => $date,
             'statisticOptions' => $statisticOptions,
             'cookieOptions' => $cookieOptions,
-            'itemsPerPage' => $itemsPerPage,
+        ]);
+    }
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $queryResult
+     * @param int $currentPage
+     * @param int $itemsPerPage
+     */
+    protected function addPaginationToView(QueryResultInterface $queryResult, int $currentPage, int $itemsPerPage): void
+    {
+        $paginator = new QueryResultPaginator($queryResult, $currentPage, $itemsPerPage);
+        $pagination = new SimplePagination($paginator);
+
+        $this->view->assignMultiple([
+            'paginator' => $paginator,
+            'pagination' => $pagination,
         ]);
     }
 
@@ -212,7 +231,7 @@ class StatisticController extends ActionController
      * @param \DateTime|null $date
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    public function statisticActionMethod(string $entityName, Configuration $configuration, DateTime $date = null): QueryResultInterface
+    protected function statisticActionMethod(string $entityName, Configuration $configuration, DateTime $date = null): QueryResultInterface
     {
         $repositoryName = lcfirst($entityName) . 'Repository';
 
@@ -234,7 +253,7 @@ class StatisticController extends ActionController
         $actionMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_action');
         /** @var \TYPO3\CMS\Core\Site\SiteFinder $siteFinder */
-        $siteFinder = ObjectUtility::makeInstance(SiteFinder::class);
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
 
         /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration */
         foreach ($this->configurationRepository->findAllLanguages() as $configuration) {

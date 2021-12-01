@@ -10,7 +10,7 @@ namespace Mindshape\MindshapeCookieConsent\Utility;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2020 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -35,7 +35,7 @@ class SettingsUtility
     public static function pluginTypoScriptSettings(): array
     {
         /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = ObjectUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
 
         try {
             $settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, self::EXTENSION_NAME);
@@ -52,7 +52,7 @@ class SettingsUtility
     public static function extensionTypoScriptSettings(): array
     {
         /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = ObjectUtility::makeInstance(ConfigurationManager::class);
+        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
 
         try {
             $typoscript = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);

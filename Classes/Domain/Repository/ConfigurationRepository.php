@@ -8,12 +8,12 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2020 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -26,7 +26,7 @@ class ConfigurationRepository extends Repository
     public function initializeObject(): void
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = ObjectUtility::makeInstance(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
 
         $this->setDefaultQuerySettings($querySettings);

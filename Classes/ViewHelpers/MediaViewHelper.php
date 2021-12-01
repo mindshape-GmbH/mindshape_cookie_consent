@@ -10,13 +10,13 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2020 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\MediaViewHelper as CoreMediaViewHelper;
 
 /**
@@ -38,8 +38,8 @@ class MediaViewHelper extends CoreMediaViewHelper
     {
         parent::__construct();
 
-        $this->cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
-        $this->templateRenderingService = ObjectUtility::makeInstance(TemplateRenderingService::class);
+        $this->cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
+        $this->templateRenderingService = GeneralUtility::makeInstance(TemplateRenderingService::class);
     }
 
     /**

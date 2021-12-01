@@ -26,7 +26,7 @@ call_user_func(
         $iconRegistry->registerIcon(
             'module-' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_NAME,
             \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-            ['source' => 'EXT:' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '/ext_icon.svg']
+            ['source' => 'EXT:' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '/Resources/Public/Icons/extension.svg']
         );
 
         $iconRegistry->registerIcon(
@@ -57,7 +57,7 @@ call_user_func(
             'statistic',
             '',
             [
-                'Backend\\Statistic' => 'statisticButtons,statisticCategories,statisticOptions',
+                \Mindshape\MindshapeCookieConsent\Controller\Backend\StatisticController::class => 'statisticButtons,statisticCategories,statisticOptions',
             ],
             [
                 'access' => 'user,group',

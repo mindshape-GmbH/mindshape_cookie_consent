@@ -1,0 +1,55 @@
+<html data-namespace-typo3-fluid="true" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+
+  <ul class="pagination">
+    <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
+      <f:then>
+        <li class="page-item">
+          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: 1, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.first')}">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: pagination.previousPageNumber, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.previous')}">
+            <span aria-hidden="true">&lt;</span>
+          </a>
+        </li>
+      </f:then>
+      <f:else>
+        <li class="page-item disabled">
+          <a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#"><span aria-hidden="true">&lt;</span></a>
+        </li>
+      </f:else>
+    </f:if>
+
+    <f:for each="{pagination.allPageNumbers}" as="page">
+      <li class="page-item {f:if(condition: '{page} == {paginator.currentPageNumber}', then: ' active')}">
+        <a class="page-link" href="{f:uri.action(action: action, arguments:{page: page, date: '{date -> f:format.date(format: \'c\')}'})}">{page}</a>
+      </li>
+    </f:for>
+
+    <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
+      <f:then>
+        <li class="page-item">
+          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: pagination.nextPageNumber, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.next')}">
+            <span aria-hidden="true">&gt;</span>
+          </a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: pagination.lastPageNumber, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.last')}">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </f:then>
+      <f:else>
+        <li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&gt;</span></a></li>
+        <li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>
+      </f:else>
+    </f:if>
+  </ul>
+
+</html>

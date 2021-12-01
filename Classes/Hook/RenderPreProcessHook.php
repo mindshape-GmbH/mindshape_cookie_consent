@@ -10,17 +10,16 @@ namespace Mindshape\MindshapeCookieConsent\Hook;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2020 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -36,7 +35,7 @@ class RenderPreProcessHook
     {
         if ('FE' === TYPO3_MODE) {
             /** @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService $cookieConsentService */
-            $cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
+            $cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
             $datapolicyPageUid = null;
             $imprintPageUid = null;
 

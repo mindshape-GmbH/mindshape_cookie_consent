@@ -15,7 +15,7 @@
     <f:if condition="{statisticButtons}">
       <f:if condition="{settings.statisticItemsPerPage} < {statisticButtons -> f:count()}">
         <f:then>
-          <f:render section="Pagination" arguments="{statisticButtons: statisticButtons}"/>
+          <f:render section="Pagination" arguments="{statisticButtons: statisticButtons, date: date, pagination: pagination, paginator: paginator}"/>
         </f:then>
         <f:else>
           <f:render section="Table" arguments="{statisticButtons: statisticButtons}"/>
@@ -28,9 +28,8 @@
 
   <f:section name="Pagination">
 
-    <f:widget.paginate objects="{statisticButtons}" as="paginatedStatisticButtons" configuration="{itemsPerPage: settings.statisticItemsPerPage}">
-      <f:render section="Table" arguments="{statisticButtons: paginatedStatisticButtons}"/>
-    </f:widget.paginate>
+    <f:render section="Table" arguments="{statisticButtons: paginator.paginatedItems}"/>
+    <f:render partial="Utility/Pagination" arguments="{pagination: pagination, paginator: paginator, action: 'statisticButtons', date: date}"/>
 
   </f:section>
 
@@ -51,8 +50,12 @@
           <tr>
             <td>{statisticButton.dateBegin -> f:format.date(format: 'Y-m-d')}</td>
             <td>{statisticButton.total}</td>
-            <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction: statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
-            <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
+            <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction:
+              statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
+            </td>
+            <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) ->
+              f:format.number(decimals: 1, decimalSeparator: ',')} %)
+            </td>
           </tr>
         </f:for>
       </tbody>

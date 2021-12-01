@@ -10,12 +10,12 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2020 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -46,7 +46,7 @@ class ConsentModalViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
         /** @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService $cookieConsentService */
-        $cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
+        $cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
 
         return $cookieConsentService->renderConsentModal($arguments['id']);
     }

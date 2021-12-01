@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2020 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -19,7 +19,7 @@ use Doctrine\DBAL\ParameterType;
 use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
@@ -42,7 +42,7 @@ abstract class AbstractStatisticRepository extends Repository
     public function initializeObject(): void
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = ObjectUtility::makeInstance(Typo3QuerySettings::class);
+        $querySettings = GeneralUtility::makeInstance(Typo3QuerySettings::class);
         $querySettings->setRespectStoragePage(false);
 
         $this->setDefaultQuerySettings($querySettings);
@@ -79,7 +79,7 @@ abstract class AbstractStatisticRepository extends Repository
      */
     public function findAvailableMonths(int $languageUid = 0): array
     {
-        $tableName = ObjectUtility::makeInstance(DataMapper::class)->convertClassNameToTableName($this->objectType);
+        $tableName = GeneralUtility::makeInstance(DataMapper::class)->convertClassNameToTableName($this->objectType);
         $languageField = $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
 
         $queryBuilder = DatabaseUtility::queryBuilder();

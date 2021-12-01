@@ -6,8 +6,6 @@ plugin.tx_mindshapecookieconsent {
     partialRootPaths.1 = {$plugin.tx_mindshapecookieconsent.view.partialRootPath}
     layoutRootPaths.0 = EXT:mindshape_cookie_consent/Resources/Private/Layouts/
     layoutRootPaths.1 = {$plugin.tx_mindshapecookieconsent.view.layoutRootPath}
-
-    widget.TYPO3\CMS\Fluid\ViewHelpers\Widget\PaginateViewHelper.templateRootPath = {$plugin.tx_mindshapecookieconsent.view.templateRootPath}
   }
 
   settings {

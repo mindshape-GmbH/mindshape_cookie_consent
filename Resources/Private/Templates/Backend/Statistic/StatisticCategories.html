@@ -15,7 +15,7 @@
     <f:if condition="{statisticCategories}">
       <f:if condition="{itemsPerPage} < {statisticCategories -> f:count()}">
         <f:then>
-          <f:render section="Pagination" arguments="{configuration: configuration, statisticCategories: statisticCategories, itemsPerPage: itemsPerPage}"/>
+          <f:render section="Pagination" arguments="{configuration: configuration, statisticCategories: statisticCategories, date: date, pagination: pagination, paginator: paginator}"/>
         </f:then>
         <f:else>
           <f:render section="Table" arguments="{configuration: configuration, statisticCategories: statisticCategories}"/>
@@ -28,9 +28,8 @@
 
   <f:section name="Pagination">
 
-    <f:widget.paginate objects="{statisticCategories}" as="paginatedStatisticCategories" configuration="{itemsPerPage: itemsPerPage}">
-      <f:render section="Table" arguments="{configuration: configuration, statisticCategories: paginatedStatisticCategories}"/>
-    </f:widget.paginate>
+    <f:render section="Table" arguments="{configuration: configuration, statisticCategories: paginator.paginatedItems}"/>
+    <f:render partial="Utility/Pagination" arguments="{pagination: pagination, paginator: paginator, action: 'statisticCategories', date: date}"/>
 
   </f:section>
 
@@ -57,7 +56,9 @@
                 <f:if condition="{cookieCategory}">
                   <f:if condition="{statisticCategory}">
                     <f:then>
-                      <td>{statisticCategory.counter} ({m:percentage(total: groupedStatisticCategories.0.counter, fraction: statisticCategory.counter) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
+                      <td>{statisticCategory.counter} ({m:percentage(total: groupedStatisticCategories.0.counter,
+                        fraction: statisticCategory.counter) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
+                      </td>
                     </f:then>
                     <f:else>
                       <td>0 (0,0 %)</td>

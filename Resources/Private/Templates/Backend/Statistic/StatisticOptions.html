@@ -15,10 +15,10 @@
     <f:if condition="{statisticOptions}">
       <f:if condition="{itemsPerPage} < {statisticOptions -> f:count()}">
         <f:then>
-          <f:render section="Pagination" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: statisticOptions, itemsPerPage: itemsPerPage, cookieOptionsCount: cookieOptionsCount}"/>
+          <f:render section="Pagination" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: statisticOptions, date: date, pagination: pagination, paginator: paginator}"/>
         </f:then>
         <f:else>
-          <f:render section="Table" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: statisticOptions, itemsPerPage: itemsPerPage, cookieOptionsCount: cookieOptionsCount}"/>
+          <f:render section="Table" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: statisticOptions}"/>
         </f:else>
       </f:if>
     </f:if>
@@ -28,9 +28,8 @@
 
   <f:section name="Pagination">
 
-    <f:widget.paginate objects="{statisticOptions}" as="paginatedStatisticOptions" configuration="{itemsPerPage: itemsPerPage}">
-      <f:render section="Table" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: paginatedStatisticOptions, cookieOptionsCount: cookieOptionsCount}"/>
-    </f:widget.paginate>
+    <f:render section="Table" arguments="{configuration: configuration, cookieOptions: cookieOptions, statisticOptions: paginator.paginatedItems}"/>
+    <f:render partial="Utility/Pagination" arguments="{pagination: pagination, paginator: paginator, action: 'statisticOptions', date: date}"/>
 
   </f:section>
 

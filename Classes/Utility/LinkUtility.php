@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Mindshape\MindshapeCookieConsent\Utility;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***
@@ -54,7 +55,7 @@ class LinkUtility
     public static function renderTypoLink(string $parameter, bool $absolute = false): string
     {
         /** @var ContentObjectRenderer $contentObjectRenderer */
-        $contentObjectRenderer = ObjectUtility::makeInstance(ContentObjectRenderer::class);
+        $contentObjectRenderer = GeneralUtility::makeInstance(ContentObjectRenderer::class);
 
         return $contentObjectRenderer->typoLink_URL([
             'parameter' => $parameter,
