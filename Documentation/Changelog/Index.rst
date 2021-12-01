@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 2.0.0
+
+  * Add TYPO3 v11 compatibility
+  * Drop support for TYPO3 v9
+
 * 1.2.2
 
   * Fixed not replaced multiple replacement buttons
