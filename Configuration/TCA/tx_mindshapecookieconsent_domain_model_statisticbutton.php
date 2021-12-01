@@ -11,7 +11,6 @@ return [
         'hideTable' => true,
     ],
     'interface' => [
-        'showRecordFieldList' => 'date_begin, date_end, save, agree_to_all',
     ],
     'types' => [
         '1' => ['showitem' => 'date_begin, date_end, save, agree_to_all'],

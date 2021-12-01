@@ -19,8 +19,10 @@ use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
 use Mindshape\MindshapeCookieConsent\Utility\ObjectUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -34,7 +36,7 @@ class RenderPreProcessHook
      */
     public function preProcess(array &$params, PageRenderer $pageRenderer): void
     {
-        if ('FE' === TYPO3_MODE) {
+        if (ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
             /** @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService $cookieConsentService */
             $cookieConsentService = ObjectUtility::makeInstance(CookieConsentService::class);
             $datapolicyPageUid = null;

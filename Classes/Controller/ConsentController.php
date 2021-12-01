@@ -16,6 +16,7 @@ namespace Mindshape\MindshapeCookieConsent\Controller;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Consent;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
+use Psr\Http\Message\ResponseFactoryInterface;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -25,6 +26,12 @@ use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
  */
 class ConsentController extends AbstractController
 {
+    // Inject PSR-17 ResponseFactoryInterface
+    public function __construct(ResponseFactoryInterface $responseFactory)
+    {
+        $this->responseFactory = $responseFactory;
+   }
+
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Consent $consent
      * @return string
@@ -44,7 +51,10 @@ class ConsentController extends AbstractController
                 ? LinkUtility::renderPageLink($GLOBALS['TSFE']->id)
                 : $consent->getCurrentUrl();
 
-            HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_303);
+            $response = $this->responseFactory
+                ->createResponse(303)
+                ->withAddedHeader('location', $redirectUrl);
+            return $response;
         }
 
         return '[]';

@@ -36,12 +36,10 @@ class AbstractController extends ActionController
     }
 
     /**
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
+     * @param ViewInterface $view
      */
     public function initializeView(ViewInterface $view)
     {
-        parent::initializeView($view);
-
         $view->assign('data', $this->configurationManager->getContentObject()->data);
     }
 }

@@ -11,7 +11,6 @@ return [
         'hideTable' => true,
     ],
     'interface' => [
-        'showRecordFieldList' => 'date_begin, date_end, cookie_option, counter',
     ],
     'types' => [
         '1' => ['showitem' => 'date_begin, date_end, cookie_option, counter'],
