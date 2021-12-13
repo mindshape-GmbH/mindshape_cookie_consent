@@ -28,6 +28,11 @@ class Consent extends AbstractValueObject
     /**
      * @var bool
      */
+    protected $deny = false;
+
+    /**
+     * @var bool
+     */
     protected $isAjaxRequest = false;
 
     /**
@@ -59,6 +64,23 @@ class Consent extends AbstractValueObject
     public function setSelectAll(bool $selectAll): void
     {
         $this->selectAll = $selectAll;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeny(): bool
+    {
+        return $this->deny;
+    }
+
+    /**
+     * @param bool $deny
+     * @return void
+     */
+    public function setDeny(bool $deny): void
+    {
+        $this->deny = $deny;
     }
 
     /**

@@ -19,6 +19,7 @@ use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Controller
@@ -31,7 +32,9 @@ class ConsentController extends AbstractController
      */
     public function consentAction(Consent $consent): string
     {
-        if (true === $consent->isSelectAll()) {
+        if (true === $consent->isDeny()) {
+            $consent->setCookieOptions(new ObjectStorage());
+        } elseif (true === $consent->isSelectAll()) {
             $consent->setCookieOptions(
                 $this->cookieConsentService->getCurrentConfigurationCookieOptions()
             );

@@ -71,7 +71,9 @@ class StatisticButtonRepository extends AbstractStatisticRepository
             }
         }
 
-        if (true === $consent->isSelectAll()) {
+        if (true === $consent->isDeny()) {
+            $statisticButton->increaseDeny();
+        } elseif (true === $consent->isSelectAll()) {
             $statisticButton->increaseAgreeToAll();
         } else {
             $statisticButton->increaseSave();

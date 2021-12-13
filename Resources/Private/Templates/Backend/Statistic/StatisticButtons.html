@@ -43,6 +43,7 @@
           <th>{f:translate(key: 'module.statistic.visitors_total')}</th>
           <th>{f:translate(key: 'tca.statistic_button.agree_to_all')}</th>
           <th>{f:translate(key: 'tca.statistic_button.save')}</th>
+          <th>{f:translate(key: 'tca.statistic_button.deny')}</th>
         </tr>
       </thead>
       <tbody>
@@ -50,11 +51,9 @@
           <tr>
             <td>{statisticButton.dateBegin -> f:format.date(format: 'Y-m-d')}</td>
             <td>{statisticButton.total}</td>
-            <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction:
-              statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
-            </td>
-            <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) ->
-              f:format.number(decimals: 1, decimalSeparator: ',')} %)
+            <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction: statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
+            <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
+            <td>{statisticButton.deny} ({m:percentage(total: statisticButton.deny, fraction: statisticButton.deny) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
             </td>
           </tr>
         </f:for>

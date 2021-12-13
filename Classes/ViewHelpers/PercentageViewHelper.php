@@ -52,6 +52,10 @@ class PercentageViewHelper extends AbstractViewHelper
         $total = (float) $arguments['total'];
         $fraction = (float) $arguments['fraction'];
 
+        if ($total === 0.0) {
+            return 0;
+        }
+
         return 100 / $total * $fraction;
     }
 }

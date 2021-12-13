@@ -32,6 +32,11 @@ class StatisticButton extends AbstractStatistic
     protected $agreeToAll = 0;
 
     /**
+     * @var int
+     */
+    protected $deny = 0;
+
+    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
      */
     public function __construct(Configuration $configuration)
@@ -59,9 +64,17 @@ class StatisticButton extends AbstractStatistic
     /**
      * @return int
      */
+    public function getDeny(): int
+    {
+        return $this->deny;
+    }
+
+    /**
+     * @return int
+     */
     public function getTotal(): int
     {
-        return $this->save + $this->agreeToAll;
+        return $this->save + $this->agreeToAll + $this->deny;
     }
 
     public function increaseSave(): void
@@ -72,5 +85,10 @@ class StatisticButton extends AbstractStatistic
     public function increaseAgreeToAll(): void
     {
         $this->agreeToAll++;
+    }
+
+    public function increaseDeny(): void
+    {
+        $this->deny++;
     }
 }
