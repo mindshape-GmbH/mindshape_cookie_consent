@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.1.0
+
+  * Add deny button due to ePrivacy changes
+
 * 2.0.1
 
   * Add missing changes to emconf
