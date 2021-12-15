@@ -24,6 +24,10 @@
         </f:form.button>
       </f:if>
 
+      <f:form.button class="deny btn btn--secondary" type="submit" property="deny" value="1">
+        {f:if(condition: configuration.denyLabel, then: configuration.denyLabel, else: '{f:translate(key: \'label.deny\', extensionName: \'mindshape_cookie_consent\')}')}
+      </f:form.button>
+
       <f:form.button class="save btn btn--secondary" type="submit" property="selectAll" value="0">
         {f:if(condition: configuration.saveLabel, then: configuration.saveLabel, else: '{f:translate(key: \'label.save\', extensionName: \'mindshape_cookie_consent\')}')}
       </f:form.button>
@@ -45,7 +49,7 @@
               <div class="option-detail-wrapper">
                 <div class="option-detail cookie-option">
                   <label for="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" class="label">
-                    <input id="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" type="checkbox" checked disabled>
+                    <input id="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" class="option-necessary" type="checkbox" checked disabled>
                     {necessaryCookieOption.label}
                     <span class="checkmark"></span>
                   </label>

@@ -62,8 +62,10 @@
     modalContainer: null,
     modalForm: null,
     saveButton: null,
+    denyButton: null,
     selectAllButton: null,
     isSelectAll: false,
+    isDeny: false,
     hideOnInit: false,
     pushConsentToTagManager: false,
     lazyloading: false,
@@ -104,6 +106,7 @@
 
       if (null !== this.modalContainer) {
         this.saveButton = this.modalContainer.querySelector('button.save, input.save');
+        this.denyButton = this.modalContainer.querySelector('button.deny, input.deny');
         this.selectAllButton = this.modalContainer.querySelector('button.select-all, input.select-all');
 
         this.registerButtonEvents(this.modalContainer);
@@ -278,6 +281,7 @@
       if (null !== this.selectAllButton) {
         this.selectAllButton.addEventListener('click', function (event) {
           that.isSelectAll = true;
+          that.isDeny = false;
           that.toggleFormDisabledState(true);
 
           that.modalForm.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
@@ -298,6 +302,32 @@
 
       if (null !== this.saveButton) {
         this.saveButton.addEventListener('click', function (event) {
+          that.isSelectAll = false;
+          that.isDeny = false;
+          // Workaround for older edge versions not supporting URLSearchParams
+          if (typeof URLSearchParams === 'undefined') {
+            that.fallbackSubmitForm();
+            return;
+          } else {
+            event.preventDefault();
+          }
+
+          that.toggleFormDisabledState(true);
+          that.submitForm();
+        });
+      }
+
+      if (null !== this.denyButton) {
+        this.denyButton.addEventListener('click', function (event) {
+          that.isSelectAll = false;
+          that.isDeny = true;
+          that.toggleFormDisabledState(true);
+
+          that.modalForm.querySelectorAll('input[type="checkbox"]:not(.option-necessary)').forEach(function (checkbox) {
+            console.debug(checkbox);
+            checkbox.checked = false;
+          });
+
           // Workaround for older edge versions not supporting URLSearchParams
           if (typeof URLSearchParams === 'undefined') {
             that.fallbackSubmitForm();
@@ -384,7 +414,13 @@
         const formData = new FormData();
 
         this.modalForm.querySelectorAll('input').forEach(function (input) {
-          if ('checkbox' !== input.type || true === input.checked) {
+          if (
+            false === input.disabled &&
+            (
+              'checkbox' !== input.type ||
+              true === input.checked
+            )
+          ) {
             formData.append(input.name, input.value);
           }
         });
@@ -398,7 +434,9 @@
           formDataEntry = formDataEntries.next();
         }
 
-        if (true === this.isSelectAll) {
+        if (true === this.isDeny) {
+          parameters.append(this.modalForm.querySelector('.deny').getAttribute('name'), '1');
+        } else if (true === this.isSelectAll) {
           parameters.append(this.modalForm.querySelector('.select-all').getAttribute('name'), '1');
         }
 

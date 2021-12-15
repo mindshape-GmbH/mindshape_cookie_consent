@@ -6,15 +6,15 @@ return [
         'label' => 'date_begin',
         'versioningWS' => false,
         'languageField' => 'sys_language_uid',
-        'searchFields' => 'date_begin,date_end,decline,agree,agree_to_all',
+        'searchFields' => 'date_begin,date_end,decline,agree,agree_to_all,deny',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_statistic.png',
         'hideTable' => true,
     ],
     'interface' => [
-        'showRecordFieldList' => 'date_begin, date_end, save, agree_to_all',
+        'showRecordFieldList' => 'date_begin, date_end, save, agree_to_all, deny',
     ],
     'types' => [
-        '1' => ['showitem' => 'date_begin, date_end, save, agree_to_all'],
+        '1' => ['showitem' => 'date_begin, date_end, save, agree_to_all, deny'],
     ],
     'palettes' => [],
     'columns' => [
@@ -65,6 +65,17 @@ return [
         'agree_to_all' => [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.agree_to_all',
+            'config' => [
+                'type' => 'input',
+                'eval' => 'int',
+                'range' => [
+                    'lower' => 0,
+                ],
+            ],
+        ],
+        'deny' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.deny',
             'config' => [
                 'type' => 'input',
                 'eval' => 'int',

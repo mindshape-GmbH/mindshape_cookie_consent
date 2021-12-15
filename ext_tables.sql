@@ -126,6 +126,7 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_statisticbutton (
   `date_begin`       datetime         DEFAULT NULL,
   `date_end`         datetime         DEFAULT NULL,
   `save`             int(11) unsigned DEFAULT '0' NOT NULL,
+  `deny`             int(11) unsigned DEFAULT '0' NOT NULL,
   `agree_to_all`     int(11) unsigned DEFAULT '0' NOT NULL,
 
   `sys_language_uid` int(11)          DEFAULT '0' NOT NULL,
