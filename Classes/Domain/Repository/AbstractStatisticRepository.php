@@ -19,6 +19,7 @@ use Doctrine\DBAL\ParameterType;
 use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -33,6 +34,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 abstract class AbstractStatisticRepository extends Repository
 {
     /**
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
+     */
+    protected $dataMapper;
+
+    /**
      * @var array
      */
     protected $defaultOrderings = [
@@ -46,6 +52,12 @@ abstract class AbstractStatisticRepository extends Repository
         $querySettings->setRespectStoragePage(false);
 
         $this->setDefaultQuerySettings($querySettings);
+
+        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
+
+        $this->dataMapper = version_compare('10.4', $typo3Version->getBranch(), '==')
+            ? $this->objectManager->get(DataMapper::class)
+            : GeneralUtility::makeInstance(DataMapper::class);
     }
 
     /**
@@ -79,7 +91,7 @@ abstract class AbstractStatisticRepository extends Repository
      */
     public function findAvailableMonths(int $languageUid = 0): array
     {
-        $tableName = GeneralUtility::makeInstance(DataMapper::class)->convertClassNameToTableName($this->objectType);
+        $tableName = $this->dataMapper->convertClassNameToTableName($this->objectType);
         $languageField = $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
 
         $queryBuilder = DatabaseUtility::queryBuilder();
