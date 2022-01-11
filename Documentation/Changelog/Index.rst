@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.1.1
+
+  * Use object manager in TYPO3 v10 to instantiate dataMapper
+
 * 2.1.0
 
   * Add deny button due to ePrivacy changes
