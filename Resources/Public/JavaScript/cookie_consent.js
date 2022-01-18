@@ -324,7 +324,6 @@
           that.toggleFormDisabledState(true);
 
           that.modalForm.querySelectorAll('input[type="checkbox"]:not(.option-necessary)').forEach(function (checkbox) {
-            console.debug(checkbox);
             checkbox.checked = false;
           });
 
