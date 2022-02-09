@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.1.2
+
+  * Add redirect url host check to prevent an "open redirect"
+
 * 2.1.1
 
   * Use object manager in TYPO3 v10 to instantiate dataMapper
