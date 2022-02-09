@@ -16,6 +16,7 @@ namespace Mindshape\MindshapeCookieConsent\Controller;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Consent;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
@@ -43,9 +44,22 @@ class ConsentController extends AbstractController
         $this->cookieConsentService->updateConsentStatistic($consent);
 
         if (false === $consent->isAjaxRequest()) {
-            $redirectUrl = true === empty($consent->getCurrentUrl())
-                ? LinkUtility::renderPageLink($GLOBALS['TSFE']->id)
-                : $consent->getCurrentUrl();
+            $redirectUrl = null;
+
+            if (false === empty($consent->getCurrentUrl())) {
+                $redirectUrl = $consent->getCurrentUrl();
+
+                $redirectHost = parse_url($redirectUrl, PHP_URL_HOST);
+                $currentHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+
+                if ($redirectHost !== $currentHost) {
+                    HttpUtility::setResponseCodeAndExit(HttpUtility::HTTP_STATUS_400);
+                }
+            }
+
+            if (true === empty($redirectUrl)) {
+                $redirectUrl = LinkUtility::renderPageLink($GLOBALS['TSFE']->id);
+            }
 
             HttpUtility::redirect($redirectUrl, HttpUtility::HTTP_STATUS_303);
         }
