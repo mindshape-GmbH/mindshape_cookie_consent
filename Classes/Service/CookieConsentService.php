@@ -24,10 +24,12 @@ use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Service
@@ -72,6 +74,11 @@ class CookieConsentService implements SingletonInterface
     protected $currentSite;
 
     /**
+     * @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage
+     */
+    protected $currentSiteLanguage;
+
+    /**
      * @var array
      */
     protected $settings;
@@ -83,63 +90,38 @@ class CookieConsentService implements SingletonInterface
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService $templateRenderingService
-     */
-    public function injectTemplateRenderingService(TemplateRenderingService $templateRenderingService): void
-    {
-        $this->templateRenderingService = $templateRenderingService;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository $configurationRepository
-     */
-    public function injectConfigurationRepository(ConfigurationRepository $configurationRepository): void
-    {
-        $this->configurationRepository = $configurationRepository;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\CookieOptionRepository $cookieOptionRepository
-     */
-    public function injectCookieOptionRepository(CookieOptionRepository $cookieOptionRepository): void
-    {
-        $this->cookieOptionRepository = $cookieOptionRepository;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository $statisticCategoryRepository
-     */
-    public function injectStatisticCategoryRepository(StatisticCategoryRepository $statisticCategoryRepository): void
-    {
-        $this->statisticCategoryRepository = $statisticCategoryRepository;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository $statisticButtonRepository
-     */
-    public function injectStatisticButtonRepository(StatisticButtonRepository $statisticButtonRepository): void
-    {
-        $this->statisticButtonRepository = $statisticButtonRepository;
-    }
-
-    /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository $statisticOptionRepository
      */
-    public function injectStatisticOptionRepository(StatisticOptionRepository $statisticOptionRepository): void
-    {
+    public function __construct(
+        SiteFinder $siteFinder,
+        TemplateRenderingService $templateRenderingService,
+        ConfigurationRepository $configurationRepository,
+        CookieOptionRepository $cookieOptionRepository,
+        StatisticCategoryRepository $statisticCategoryRepository,
+        StatisticButtonRepository $statisticButtonRepository,
+        StatisticOptionRepository $statisticOptionRepository
+    ) {
+        $this->templateRenderingService = $templateRenderingService;
+        $this->configurationRepository = $configurationRepository;
+        $this->cookieOptionRepository = $cookieOptionRepository;
+        $this->statisticCategoryRepository = $statisticCategoryRepository;
+        $this->statisticButtonRepository = $statisticButtonRepository;
         $this->statisticOptionRepository = $statisticOptionRepository;
-    }
-
-    public function __construct()
-    {
         $this->settings = SettingsUtility::pluginTypoScriptSettings();
-
-        /** @var \TYPO3\CMS\Core\Site\SiteFinder $siteFinder */
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
 
         try {
             $this->currentSite = $siteFinder->getSiteByPageId($GLOBALS['TSFE']->id);
+
+            if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
+                $this->currentSiteLanguage = $GLOBALS['TSFE']->getLanguage();
+            }
         } catch (SiteNotFoundException $exception) {
-            $this->currentSite = null;
+            $this->currentSite = new NullSite();
+            $this->currentSiteLanguage = $this->currentSite->getDefaultLanguage();
         }
     }
 
@@ -310,11 +292,17 @@ class CookieConsentService implements SingletonInterface
         $configuration = null;
 
         if ($this->currentSite instanceof Site) {
-            $configuration = $this->configurationRepository->findBySiteIdentifier($this->currentSite->getIdentifier());
+            $configuration = $this->configurationRepository->findBySiteIdentifier(
+                $this->currentSite->getIdentifier(),
+                $this->currentSiteLanguage->getLanguageId()
+            );
         }
 
         if (null === $configuration) {
-            $configuration = $this->configurationRepository->findBySiteIdentifier(Configuration::SITE_ALL_SITES);
+            $configuration = $this->configurationRepository->findBySiteIdentifier(
+                Configuration::SITE_ALL_SITES,
+                $this->currentSiteLanguage->getLanguageId()
+            );
         }
 
         return $configuration;

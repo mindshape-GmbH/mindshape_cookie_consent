@@ -39,7 +39,9 @@ class ConfigurationRepository extends Repository
     {
         $query = $this->createQuery();
 
-        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()
+            ->setLanguageOverlayMode(false)
+            ->setRespectSysLanguage(false);
 
         return $query->execute();
     }
@@ -64,10 +66,13 @@ class ConfigurationRepository extends Repository
      * @param string $siteIdentifier
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration|null
      */
-    public function findBySiteIdentifier(string $siteIdentifier): ?Configuration
+    public function findBySiteIdentifier(string $siteIdentifier, int $languageId): ?Configuration
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setLanguageOverlayMode(false);
+        $query
+            ->getQuerySettings()
+            ->setLanguageOverlayMode(false)
+            ->setLanguageUid($languageId);
 
         $query->matching(
             $query->equals('site', $siteIdentifier)

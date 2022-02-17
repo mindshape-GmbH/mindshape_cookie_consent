@@ -16,6 +16,7 @@ namespace Mindshape\MindshapeCookieConsent\UserFunc;
 
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
+use PDO;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,6 +27,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ConfigurationTcaUserFunc
 {
     /**
+     * @var \TYPO3\CMS\Core\Site\SiteFinder
+     */
+    protected $siteFinder;
+
+    public function __construct()
+    {
+        $this->siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+    }
+
+    /**
      * @param array $parameters
      * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $tcaSelectItems
      */
@@ -33,13 +44,18 @@ class ConfigurationTcaUserFunc
     {
         $items = &$parameters['items'];
         $currentSite = $parameters['row']['site'];
+        $currentLanguageId = (int) (is_array($parameters['row']['sys_language_uid']) ? $parameters['row']['sys_language_uid'][0] : $parameters['row']['sys_language_uid']);
+        $queryBuilder = DatabaseUtility::queryBuilder();
 
-        /** @var \TYPO3\CMS\Core\Site\SiteFinder $siteFinder */
-        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
-
-        $existingConfigurations = DatabaseUtility::queryBuilder()
+        $existingConfigurations = $queryBuilder
             ->select('site')
             ->from(Configuration::TABLE)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'sys_language_uid',
+                    $queryBuilder->createNamedParameter($currentLanguageId, PDO::PARAM_INT)
+                )
+            )
             ->execute()
             ->fetchAll();
 
@@ -52,7 +68,7 @@ class ConfigurationTcaUserFunc
             $items = [];
         }
 
-        foreach ($siteFinder->getAllSites() as $site) {
+        foreach ($this->siteFinder->getAllSites() as $site) {
             if (
                 false === in_array($site->getIdentifier(), $existingConfigurations) ||
                 $currentSite === $site->getIdentifier()

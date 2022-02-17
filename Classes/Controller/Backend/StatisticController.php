@@ -102,16 +102,11 @@ class StatisticController extends ActionController
         parent::initializeView($view);
 
         $currentConfiguration = null;
-        $currentPage = 1;
         $parameters = GeneralUtility::_GET('tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic');
 
         if (true === is_array($parameters)) {
             if (true === array_key_exists('configuration', $parameters)) {
                 $currentConfiguration = $this->configurationRepository->findByUidIgnoreLanguage((int)$parameters['configuration']);
-            }
-
-            if (true === array_key_exists('page', $parameters)) {
-                $currentPage = (int)$parameters['page'];
             }
         }
 

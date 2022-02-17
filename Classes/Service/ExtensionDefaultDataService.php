@@ -12,7 +12,8 @@ namespace Mindshape\MindshapeCookieConsent\Service;
  *
  ***/
 
-use Doctrine\DBAL\Driver\Exception;
+use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\FetchMode;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
@@ -66,12 +67,12 @@ class ExtensionDefaultDataService implements SingletonInterface
                 ->count('*')
                 ->from(Configuration::TABLE)
                 ->execute()
-                ->fetchOne();
+                ->fetch(FetchMode::ASSOCIATIVE);
 
             if (0 === $resultCount) {
                 $this->addDefaultConfigurations();
             }
-        } catch (Exception $exception) {
+        } catch (DBALException $exception) {
             // ignore
         }
     }
