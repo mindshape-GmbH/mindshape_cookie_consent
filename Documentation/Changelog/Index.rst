@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.1.3
+
+  * Solve translation and compatibility issues
+
 * 2.1.2
 
   * Add redirect url host check to prevent an "open redirect"
