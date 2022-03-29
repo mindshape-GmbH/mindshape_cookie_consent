@@ -80,6 +80,14 @@ The following example works with the google analytics cookie option:
       }
     });
 
+There is also an event when the consent buttons are replaced with the real content:
+
+.. code-block:: javascript
+
+    window.addEventListener('cookieConsentButtonsReplaced', function (event) {
+      // do something here
+    });
+
 How to use the viewhelper to block videos
 =========================================
 

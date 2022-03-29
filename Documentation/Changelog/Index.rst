@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 2.1.4
+
+  * Don't open modal on imprint & datapolicy page on active lazyloading
+  * Add custom event for replaced consent buttons
+
 * 2.1.3
 
   * Solve translation and compatibility issues
