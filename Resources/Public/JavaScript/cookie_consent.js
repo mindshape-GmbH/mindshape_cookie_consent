@@ -117,7 +117,7 @@
         this.consentEventDispatch();
       } else if (false === this.hideOnInit && false === this.lazyloading) {
         this.openModal(this.modalContainer);
-      } else if (true === this.lazyloading) {
+      } else if (false === this.hideOnInit && true === this.lazyloading) {
         this.lazyOpenModal(this.modalContainer);
       }
 
