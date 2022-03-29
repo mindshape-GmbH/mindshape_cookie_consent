@@ -600,6 +600,10 @@
       this.getCookie().options.forEach(function (cookieOption) {
         that.replaceConsentButtons(cookieOption);
       });
+      
+      window.dispatchEvent(
+        new CustomEvent('cookieConsentButtonsReplaced', { detail: this.getCookie() })
+      );
     },
 
     /**
