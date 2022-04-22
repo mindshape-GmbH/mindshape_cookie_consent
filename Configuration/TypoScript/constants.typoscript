@@ -1,5 +1,4 @@
 plugin.tx_mindshapecookieconsent {
-  # customcategory=mindshape_cookie_consent=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:backend
   view {
     # cat=mindshape_cookie_consent/file; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.file.template_root_path
     templateRootPath = EXT:mindshape_cookie_consent/Resources/Private/Templates/
@@ -27,7 +26,6 @@ plugin.tx_mindshapecookieconsent {
     lazyloadingTimeout = 120
     # cat=mindshape_cookie_consent/settings; type=string; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.hide_cookiecategories_in_overview
     hideCategoriesInOverview = 0
-
     # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.ajax_page_type
     ajaxPageType = 8641
     # cat=mindshape_cookie_consent/settings; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.add_markup_to_footer
@@ -38,6 +36,8 @@ plugin.tx_mindshapecookieconsent {
     addJavaScript = 1
     # cat=mindshape_cookie_consent/settings; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.add_stylesheet
     addStylesheet = 1
+    # cat=mindshape_cookie_consent/settings; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.disable_consent
+    disableConsent = 0
   }
 }
 

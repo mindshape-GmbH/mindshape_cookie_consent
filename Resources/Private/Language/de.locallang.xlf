@@ -56,6 +56,9 @@
       <trans-unit id="constants.settings.add_stylesheet">
         <target>Stylesheet automatisch einfügen</target>
       </trans-unit>
+      <trans-unit id="constants.settings.disable_consent">
+        <target>Deaktiviere den Consent</target>
+      </trans-unit>
       <trans-unit id="constants.settings.ajax_page_type">
         <target>Seitentyp für AJAX Requests</target>
       </trans-unit>

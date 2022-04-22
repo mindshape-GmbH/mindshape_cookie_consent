@@ -89,6 +89,7 @@ class CookieConsentService implements SingletonInterface
     protected static $editCookieButtonIsUsed = false;
 
     /**
+     * @param \TYPO3\CMS\Core\Site\SiteFinder $siteFinder
      * @param \Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService $templateRenderingService
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository $configurationRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\CookieOptionRepository $cookieOptionRepository
