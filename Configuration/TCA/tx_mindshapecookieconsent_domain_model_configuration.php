@@ -19,7 +19,7 @@ return [
         '1' => ['showitem' => 'hidden, sys_language_uid, site, enable_statistic, header, imprint, datapolicy, hint, necessary_cookies_info, necessary_cookie_options, cookie_categories, --palette--;LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.palettes.labels;labels'],
     ],
     'palettes' => [
-        'labels' => ['showitem' => 'select_all_label, save_label, --linebreak--, show_details_label, hide_details_label'],
+        'labels' => ['showitem' => 'select_all_label, save_label, deny_label, --linebreak--, show_details_label, hide_details_label'],
     ],
     'columns' => [
         'sys_language_uid' => [
@@ -181,6 +181,16 @@ return [
             'config' => [
                 'type' => 'input',
                 'placeholder' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:label.save',
+                'size' => 30,
+                'max' => 255,
+            ],
+        ],
+        'deny_label' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.deny_label',
+            'config' => [
+                'type' => 'input',
+                'placeholder' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:label.deny',
                 'size' => 30,
                 'max' => 255,
             ],
