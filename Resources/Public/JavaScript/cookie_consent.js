@@ -58,6 +58,7 @@
     detailsOpenContainerSelector: '.detail, .show-details, .consent-modal',
     consentVariableName: 'cookieConsent',
     containerDisplayStyle: 'block',
+    currentLanguageCode: null,
     expiryDays: 365,
     modalContainer: null,
     modalForm: null,
@@ -81,6 +82,7 @@
       const that = this;
       this.cookieName = 'cookieName' in configuration ? configuration.cookieName : this.cookieName;
       this.openButtonClass = 'openButtonClass' in configuration ? configuration.openButtonClass : this.openButtonClass;
+      this.currentLanguageCode = 'currentLanguageCode' in configuration ? configuration.currentLanguageCode : this.currentLanguageCode;
       this.expiryDays = 'expiryDays' in configuration ? parseInt(configuration.expiryDays) : this.expiryDays;
       this.hideOnInit = 'hideOnInit' in configuration ? Boolean(configuration.hideOnInit) : this.hideOnInit;
       this.pushConsentToTagManager = 'pushConsentToTagManager' in configuration ? Boolean(configuration.pushConsentToTagManager) : false;
@@ -113,7 +115,7 @@
         this.modalForm = this.modalContainer.querySelector('form');
       }
 
-      if (true === this.hasCookie()) {
+      if (true === this.hasConsent()) {
         this.consentEventDispatch();
       } else if (false === this.hideOnInit && false === this.lazyloading) {
         this.openModal(this.modalContainer);
@@ -379,21 +381,52 @@
      * @returns {boolean}
      */
     hasCookie: function () {
-      return null !== this.getCookie()
-        && this.getCookie() instanceof Object
-        && true === this.getCookie()['consent'];
+      return null !== this.getCookie() && this.getCookie() instanceof Object;
+    },
+
+    /**
+     * @returns {boolean}
+     */
+    hasConsent: function() {
+      return true === this.hasCookie() && true === this.getCookie().getConsent();
     },
 
     /**
      * @returns {object|null}
      */
     getCookie: function () {
+      const that = this;
       const cookie = document.cookie.match('(^|[^;]+)\\s*' + this.cookieName + '\\s*=\\s*([^;]+)');
       const consent = null !== cookie ? JSON.parse(decodeURIComponent(cookie.pop())) : null;
 
       if (null !== consent) {
         consent['hasOption'] = function (identifier) {
-          return 0 <= this.options.indexOf(identifier);
+          if (null === that.currentLanguageCode) {
+            return 0 <= this.options.indexOf(identifier);
+          } else {
+            return that.currentLanguageCode in this.languageOptions &&
+              0 <= this.languageOptions[that.currentLanguageCode].indexOf(identifier);
+          }
+        };
+
+        consent['getOptions'] = function () {
+          if (null === that.currentLanguageCode) {
+            return this.options;
+          } else if (that.currentLanguageCode in this.languageOptions) {
+            return this.languageOptions[that.currentLanguageCode];
+          }
+
+          return [];
+        };
+
+        consent['getConsent'] = function () {
+          if (null === that.currentLanguageCode) {
+            return this.consent;
+          } else if (that.currentLanguageCode in this.languageConsent) {
+            return this.languageConsent[that.currentLanguageCode];
+          }
+
+          return false;
         };
       }
 
@@ -511,12 +544,32 @@
         });
       }
 
+      let cookie = {};
+
+      if (null === this.currentLanguageCode) {
+        cookie.consent = true;
+        cookie.options = cookieOptions;
+      } else {
+        cookie.languageConsent = {};
+        cookie.languageOptions = {};
+
+        if (true === this.hasCookie()) {
+          if ('languageOptions' in this.getCookie()) {
+            cookie.languageOptions = this.getCookie()['languageOptions'];
+          }
+
+          if ('languageConsent' in this.getCookie()) {
+            cookie.languageConsent = this.getCookie()['languageConsent'];
+          }
+        }
+
+        cookie.languageConsent[this.currentLanguageCode] = true;
+        cookie.languageOptions[this.currentLanguageCode] = cookieOptions;
+      }
+
       document.cookie = that.cookieName
         + '='
-        + encodeURI(JSON.stringify({
-          consent: true,
-          options: cookieOptions
-        }))
+        + encodeURI(JSON.stringify(cookie))
         + ';expires='
         + expiryDate.toUTCString()
         + ';samesite=strict'
@@ -597,10 +650,10 @@
         that.updateParentOptionState(cookieOptionsList);
       });
 
-      this.getCookie().options.forEach(function (cookieOption) {
+      this.getCookie().getOptions().forEach(function (cookieOption) {
         that.replaceConsentButtons(cookieOption);
       });
-      
+
       window.dispatchEvent(
         new CustomEvent('cookieConsentButtonsReplaced', { detail: this.getCookie() })
       );

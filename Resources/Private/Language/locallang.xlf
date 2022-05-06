@@ -56,6 +56,9 @@
       <trans-unit id="constants.settings.add_stylesheet">
         <source>insert stylesheet automatically</source>
       </trans-unit>
+      <trans-unit id="constants.settings.add_language_to_cookie">
+        <source>add the current language to consent cookie</source>
+      </trans-unit>
       <trans-unit id="constants.settings.ajax_page_type">
         <source>pagetype for ajax requests</source>
       </trans-unit>

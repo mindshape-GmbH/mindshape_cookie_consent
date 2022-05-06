@@ -19,6 +19,7 @@ use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
@@ -63,6 +64,15 @@ class RenderPreProcessHook
                         ? $settings['containerId']
                         : CookieConsentService::DEFAULT_CONTAINER_ID,
                 ];
+
+                if ($settings['addLanguageToCookie']) {
+                    /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $siteLanguage */
+                    $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+
+                    $javaScriptConfiguration['currentLanguageCode'] = $siteLanguage instanceof SiteLanguage
+                        ? $siteLanguage->getTwoLetterIsoCode()
+                        : $pageRenderer->getLanguage();
+                }
 
                 $pageRenderer->addHeaderData('<script data-ignore="1">const cookieConsentConfiguration = JSON.parse(\'' . json_encode($javaScriptConfiguration) . '\');</script>');
             }

@@ -23,6 +23,7 @@ plugin.tx_mindshapecookieconsent {
     addConfiguration = {$plugin.tx_mindshapecookieconsent.settings.addConfiguration}
     addJavaScript = {$plugin.tx_mindshapecookieconsent.settings.addJavaScript}
     addStylesheet = {$plugin.tx_mindshapecookieconsent.settings.addStylesheet}
+    addLanguageToCookie = {$plugin.tx_mindshapecookieconsent.settings.addLanguageToCookie}
   }
 }
 
