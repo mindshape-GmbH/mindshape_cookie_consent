@@ -30,9 +30,9 @@ class SettingsUtility
     public const EXTENSION_TYPOSCRIPT_KEY = 'tx_' . self::EXTENSION_NAME;
 
     /**
-     * @return null|array
+     * @return array|null
      */
-    public static function pluginTypoScriptSettings(): array
+    public static function pluginTypoScriptSettings(): ?array
     {
         /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
@@ -40,16 +40,16 @@ class SettingsUtility
         try {
             $settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, self::EXTENSION_NAME);
         } catch (InvalidConfigurationTypeException $exception) {
-            $settings = [];
+            return null;
         }
 
         return $settings;
     }
 
     /**
-     * @return null|array
+     * @return array|null
      */
-    public static function extensionTypoScriptSettings(): array
+    public static function extensionTypoScriptSettings(): ?array
     {
         /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
@@ -63,7 +63,7 @@ class SettingsUtility
                 false === is_array($typoscript['plugin']) ||
                 false === array_key_exists(self::EXTENSION_TYPOSCRIPT_KEY, $typoscript['plugin'])
             ) {
-                return [];
+                return null;
             }
 
             $typoscript = $typoscript['plugin'][self::EXTENSION_TYPOSCRIPT_KEY];
