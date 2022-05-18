@@ -67,7 +67,7 @@ class ExtensionDefaultDataService implements SingletonInterface
                 ->count('*')
                 ->from(Configuration::TABLE)
                 ->execute()
-                ->fetch(FetchMode::ASSOCIATIVE);
+                ->fetchColumn();
 
             if (0 === $resultCount) {
                 $this->addDefaultConfigurations();
