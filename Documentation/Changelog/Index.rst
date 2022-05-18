@@ -6,6 +6,13 @@
 Changelog
 =========
 
+* 2.2.0
+
+  * Fix install event check query for initial default configuration
+  * Add disable option for the consent
+  * Add option to add the language into the consent cookie
+  * Add missing deny label field for configuration
+
 * 2.1.4
 
   * Don't open modal on imprint & datapolicy page on active lazyloading
