@@ -13,6 +13,7 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_configuration (
   `necessary_cookie_options` varchar(255)        DEFAULT ''  NOT NULL,
   `select_all_label`         varchar(255)        DEFAULT ''  NOT NULL,
   `save_label`               varchar(255)        DEFAULT ''  NOT NULL,
+  `deny_label`               varchar(255)        DEFAULT ''  NOT NULL,
   `show_details_label`       varchar(255)        DEFAULT ''  NOT NULL,
   `hide_details_label`       varchar(255)        DEFAULT ''  NOT NULL,
   `cookie_categories`        int(11) unsigned    DEFAULT '0',

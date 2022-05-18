@@ -114,6 +114,9 @@
       <trans-unit id="tca.configuration.save_label">
         <target>Button "Speichern"</target>
       </trans-unit>
+      <trans-unit id="tca.configuration.deny_label">
+        <target>Button "Ablehnen"</target>
+      </trans-unit>
       <trans-unit id="tca.configuration.show_details_label">
         <target>Link "Details anzeigen"</target>
       </trans-unit>

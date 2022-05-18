@@ -76,6 +76,11 @@ class Configuration extends AbstractEntity
     /**
      * @var string
      */
+    protected $denyLabel = '';
+
+    /**
+     * @var string
+     */
     protected $showDetailsLabel = '';
 
     /**
@@ -268,6 +273,22 @@ class Configuration extends AbstractEntity
     public function setSaveLabel(string $saveLabel): void
     {
         $this->saveLabel = $saveLabel;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDenyLabel(): string
+    {
+        return $this->denyLabel;
+    }
+
+    /**
+     * @param string $denyLabel
+     */
+    public function setDenyLabel(string $denyLabel): void
+    {
+        $this->denyLabel = $denyLabel;
     }
 
     /**
