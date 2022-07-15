@@ -133,7 +133,7 @@
       this.consentButtons.forEach(function (acceptButton) {
         acceptButton.addEventListener('click', function () {
           let cookie = that.getCookie();
-          let cookieOpions = null !== cookie ? cookie.options : [];
+          let cookieOpions = null !== cookie ? cookie.getOptions() : [];
 
           cookieOpions.push(this.getAttribute('data-identifier'));
 
@@ -694,5 +694,5 @@
 // Example
 // window.addEventListener('cookieConsent', function (event) {
 //   console.debug('Cookie Consent:')
-//   console.debug(event.detail.options)
+//   console.debug(event.detail.getOptions())
 // });
