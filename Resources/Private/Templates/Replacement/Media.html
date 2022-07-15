@@ -6,7 +6,18 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <button class="accept btn btn--primary btn-primary" data-identifier="{cookieOption}">{f:translate(key: 'label.accept_media_and_show_iframe', extensionName: 'mindshape_cookie_consent')}</button><br>
+          <button class="accept btn btn--primary btn-primary" data-identifier="{cookieOption}">
+            <f:if condition="{cookieOptionObject}">
+              <f:else>{f:translate(key: 'label.accept_media_and_show_iframe', extensionName: 'mindshape_cookie_consent')}</f:else>
+              <f:then>
+                <f:if condition="{cookieOptionObject.replacementLabel}">
+                  <f:then>{cookieOptionObject.replacementLabel}</f:then>
+                  <f:else>{f:translate(key: 'label.accept_consent_show_replacement', arguments: '{0: cookieOptionObject.label}', extensionName: 'mindshape_cookie_consent')}</f:else>
+                </f:if>
+              </f:then>
+            </f:if>
+          </button>
+          <br/>
           <f:link.typolink parameter="{datapolicyPageTypoLink}">{f:translate(key: 'label.datapolicy', extensionName: 'mindshape_cookie_consent')}</f:link.typolink> |
           <f:link.typolink parameter="{imprintPageTypoLink}">{f:translate(key: 'label.imprint', extensionName: 'mindshape_cookie_consent')}</f:link.typolink><br><br>
         </div>
