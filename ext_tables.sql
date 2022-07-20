@@ -56,29 +56,30 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_cookiecategory (
 
 CREATE TABLE tx_mindshapecookieconsent_domain_model_cookieoption (
 
-  `uid`              int(11)                         NOT NULL auto_increment,
-  `pid`              int(11)             DEFAULT '0' NOT NULL,
+    `uid`               int(11)                         NOT NULL auto_increment,
+    `pid`               int(11)             DEFAULT '0' NOT NULL,
 
-  `sorting`          int(11) unsigned    DEFAULT '0' NOT NULL,
+    `sorting`           int(11) unsigned    DEFAULT '0' NOT NULL,
 
-  `cookie_category`  int(11) unsigned    DEFAULT '0' NOT NULL,
-  `label`            varchar(255)        DEFAULT ''  NOT NULL,
-  `identifier`       varchar(255)        DEFAULT ''  NOT NULL,
-  `provider`         varchar(255)        DEFAULT ''  NOT NULL,
-  `purpose`          varchar(255)        DEFAULT ''  NOT NULL,
-  `cookie_name`      varchar(255)        DEFAULT ''  NOT NULL,
-  `cookie_duration`  varchar(255)        DEFAULT ''  NOT NULL,
-  `info`             text,
+    `cookie_category`   int(11) unsigned    DEFAULT '0' NOT NULL,
+    `label`             varchar(255)        DEFAULT ''  NOT NULL,
+    `identifier`        varchar(255)        DEFAULT ''  NOT NULL,
+    `provider`          varchar(255)        DEFAULT ''  NOT NULL,
+    `purpose`           varchar(255)        DEFAULT ''  NOT NULL,
+    `cookie_name`       varchar(255)        DEFAULT ''  NOT NULL,
+    `cookie_duration`   varchar(255)        DEFAULT ''  NOT NULL,
+    `replacement_label` varchar(255)        DEFAULT ''  NOT NULL,
+    `info`              text,
 
-  `hidden`           tinyint(4) unsigned DEFAULT '0' NOT NULL,
-  `sys_language_uid` int(11)             DEFAULT '0' NOT NULL,
-  `l10n_source`      int(11)             DEFAULT '0' NOT NULL,
-  `l10n_parent`      int(11)             DEFAULT '0' NOT NULL,
-  `l10n_diffsource`  mediumblob,
+    `hidden`            tinyint(4) unsigned DEFAULT '0' NOT NULL,
+    `sys_language_uid`  int(11)             DEFAULT '0' NOT NULL,
+    `l10n_source`       int(11)             DEFAULT '0' NOT NULL,
+    `l10n_parent`       int(11)             DEFAULT '0' NOT NULL,
+    `l10n_diffsource`   mediumblob,
 
-  PRIMARY KEY (`uid`),
-  KEY parent(`pid`),
-  KEY language(`l10n_parent`, `sys_language_uid`)
+    PRIMARY KEY (`uid`),
+    KEY parent(`pid`),
+    KEY language(`l10n_parent`, `sys_language_uid`)
 
 );
 

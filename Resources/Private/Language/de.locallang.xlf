@@ -167,6 +167,9 @@
       <trans-unit id="tca.cookieoption.cookie_duration">
         <target>Cookie Laufzeit</target>
       </trans-unit>
+      <trans-unit id="tca.cookieoption.replacement_label">
+        <target>Label für den "Zustimmen"-Button</target>
+      </trans-unit>
       <trans-unit id="tca.cookieoption.info">
         <target>Information</target>
       </trans-unit>

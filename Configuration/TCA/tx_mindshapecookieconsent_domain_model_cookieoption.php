@@ -18,7 +18,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'label, identifier, provider, purpose, cookie_name, cookie_duration, info'],
+        '1' => ['showitem' => 'label, identifier, provider, purpose, cookie_name, cookie_duration, replacement_label, info'],
     ],
     'palettes' => [],
     'columns' => [
@@ -127,6 +127,16 @@ return [
         'cookie_duration' => [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.cookie_duration',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'max' => 255,
+                'eval' => 'trim',
+            ],
+        ],
+        'replacement_label' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.replacement_label',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

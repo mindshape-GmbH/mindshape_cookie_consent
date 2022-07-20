@@ -167,6 +167,9 @@
       <trans-unit id="tca.cookieoption.cookie_duration">
         <source>Cookie duration</source>
       </trans-unit>
+      <trans-unit id="tca.cookieoption.replacement_label">
+        <source>Label for the consent button</source>
+      </trans-unit>
       <trans-unit id="tca.cookieoption.info">
         <source>Information</source>
       </trans-unit>

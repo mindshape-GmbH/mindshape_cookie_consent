@@ -59,6 +59,11 @@ class CookieOption extends AbstractValueObject
     /**
      * @var string
      */
+    protected $replacementLabel = '';
+
+    /**
+     * @var string
+     */
     protected $info = '';
 
     /**
@@ -171,6 +176,22 @@ class CookieOption extends AbstractValueObject
     public function setCookieDuration(string $cookieDuration): void
     {
         $this->cookieDuration = $cookieDuration;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReplacementLabel(): string
+    {
+        return $this->replacementLabel;
+    }
+
+    /**
+     * @param string $replacementLabel
+     */
+    public function setReplacementLabel(string $replacementLabel): void
+    {
+        $this->replacementLabel = $replacementLabel;
     }
 
     /**
