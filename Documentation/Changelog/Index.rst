@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.2.1
+
+  * Add custom replacement button label for cookie option
+
 * 2.2.0
 
   * Fix install event check query for initial default configuration
