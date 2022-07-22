@@ -209,7 +209,12 @@
           textArea.innerHTML = consentReplacement.getAttribute('data-replacement');
           replacement.innerHTML = textArea.innerText;
 
-          consentReplacement.parentNode.replaceChild(replacement, consentReplacement);
+          replacement.querySelectorAll('*').forEach(function (replaceElement) {
+            consentReplacement.parentNode.appendChild(replaceElement);
+            consentReplacement.parentNode.insertBefore(consentReplacement, replaceElement);
+          });
+
+          consentReplacement.parentNode.removeChild(consentReplacement);
 
           that.updateConsentButtons();
         }
