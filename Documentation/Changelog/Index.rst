@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.2.2
+
+  * Optimize consent replacement function to prevent pseudo div wrap
+
 * 2.2.1
 
   * Add custom replacement button label for cookie option
