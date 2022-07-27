@@ -209,7 +209,7 @@
           textArea.innerHTML = consentReplacement.getAttribute('data-replacement');
           replacement.innerHTML = textArea.innerText;
 
-          replacement.querySelectorAll('*').forEach(function (replaceElement) {
+          Array.prototype.slice.call(replacement.children).forEach(function (replaceElement) {
             consentReplacement.parentNode.appendChild(replaceElement);
             consentReplacement.parentNode.insertBefore(consentReplacement, replaceElement);
           });
