@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.2.3
+
+  * Only replace direct children in consent button replacement
+
 * 2.2.2
 
   * Optimize consent replacement function to prevent pseudo div wrap
