@@ -38,6 +38,7 @@ class ConsentViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('identifier', 'string', 'The cookie option identifier to check against', true);
         $this->registerArgument('template', 'string', 'Alternative template', false, 'Default');
+        $this->registerArgument('arguments', 'array', 'Additional arguments for the alternative template', false, []);
         $this->registerArgument('scripts', 'array', 'Scripts to inject on consent', false, []);
     }
 
@@ -55,13 +56,16 @@ class ConsentViewHelper extends AbstractViewHelper
         return $templateRenderingService->render(
             'Replacement',
             $arguments['template'],
-            [
-                'replacement' => htmlentities($renderChildrenClosure()),
-                'scripts' => json_encode($arguments['scripts']),
-                'cookieOption' => $cookieConsentService->getCookieOptionFromIdentifier($arguments['identifier']),
-                'datapolicyPageTypoLink' => $cookieConsentService->getDatapolicyPageTypoLink(),
-                'imprintPageTypoLink' => $cookieConsentService->getImprintPageTypoLink(),
-            ]
+            array_merge(
+                [
+                    'replacement' => htmlentities($renderChildrenClosure()),
+                    'scripts' => json_encode($arguments['scripts']),
+                    'cookieOption' => $cookieConsentService->getCookieOptionFromIdentifier($arguments['identifier']),
+                    'datapolicyPageTypoLink' => $cookieConsentService->getDatapolicyPageTypoLink(),
+                    'imprintPageTypoLink' => $cookieConsentService->getImprintPageTypoLink(),
+                ],
+                $arguments['arguments']
+            )
         );
     }
 }
