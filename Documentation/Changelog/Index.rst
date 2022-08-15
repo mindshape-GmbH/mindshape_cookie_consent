@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 2.2.4
+
+  * Add template arguments option to consent view helper
+
 * 2.2.3
 
   * Only replace direct children in consent button replacement
