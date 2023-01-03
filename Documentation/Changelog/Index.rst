@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 2.2.5
+
+  * Use proper total for deny buttons percentage calculation
+  * Add default value to prevent SQL error with "strict trans tables" activated
+
 * 2.2.4
 
   * Add template arguments option to consent view helper
