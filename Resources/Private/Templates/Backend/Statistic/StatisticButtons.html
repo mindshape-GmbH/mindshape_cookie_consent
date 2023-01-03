@@ -53,7 +53,7 @@
             <td>{statisticButton.total}</td>
             <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction: statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
             <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
-            <td>{statisticButton.deny} ({m:percentage(total: statisticButton.deny, fraction: statisticButton.deny) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
+            <td>{statisticButton.deny} ({m:percentage(total: statisticButton.total, fraction: statisticButton.deny) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
             </td>
           </tr>
         </f:for>
