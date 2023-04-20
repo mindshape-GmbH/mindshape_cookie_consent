@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
 
 /***
@@ -8,18 +9,17 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
 use DateTime;
 use DateTimeZone;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\ParameterType;
 use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -36,7 +36,7 @@ abstract class AbstractStatisticRepository extends Repository
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper
      */
-    protected $dataMapper;
+    protected DataMapper $dataMapper;
 
     /**
      * @var array
@@ -53,11 +53,7 @@ abstract class AbstractStatisticRepository extends Repository
 
         $this->setDefaultQuerySettings($querySettings);
 
-        $typo3Version = GeneralUtility::makeInstance(Typo3Version::class);
-
-        $this->dataMapper = version_compare('10.4', $typo3Version->getBranch(), '==')
-            ? $this->objectManager->get(DataMapper::class)
-            : GeneralUtility::makeInstance(DataMapper::class);
+        $this->dataMapper = GeneralUtility::makeInstance(DataMapper::class);
     }
 
     /**
@@ -72,13 +68,13 @@ abstract class AbstractStatisticRepository extends Repository
 
         try {
             $query->matching(
-                $query->logicalAnd([
+                $query->logicalAnd(
                     $query->equals('configuration', $configuration->getUid()),
                     $query->greaterThan('dateBegin', $date->modify('first day of this month 00:00:00')->format('c')),
                     $query->lessThan('dateEnd', $date->modify('last day of this month 23:59:59')->format('c')),
-                ])
+                )
             );
-        } catch (InvalidQueryException $exception) {
+        } catch (InvalidQueryException) {
             // ignore
         }
 
@@ -105,11 +101,11 @@ abstract class AbstractStatisticRepository extends Repository
             ->groupBy('DATE_FORMAT(date_begin, "%Y-%m")');
 
         try {
-            $dateRecords = DatabaseUtility::databaseConnection()->fetchAll(
+            $dateRecords = DatabaseUtility::databaseConnection()->fetchAllAssociative(
                 preg_replace('/GROUP BY `(.*?)`/i', 'GROUP BY $1', $queryBuilder->getSQL()),
                 $queryBuilder->getParameters()
             );
-        } catch (DBALException $exception) {
+        } catch (DBALException) {
             $dateRecords = [];
         }
 
@@ -122,7 +118,7 @@ abstract class AbstractStatisticRepository extends Repository
                 $date->modify('first day of this month 00:00:00');
 
                 $dates[] = $date;
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 // ignore
             }
         }

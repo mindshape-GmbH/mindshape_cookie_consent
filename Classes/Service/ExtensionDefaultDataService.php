@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Service;
 
 /***
@@ -8,12 +9,11 @@ namespace Mindshape\MindshapeCookieConsent\Service;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\FetchMode;
+use Doctrine\DBAL\Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
@@ -35,17 +35,17 @@ class ExtensionDefaultDataService implements SingletonInterface
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository
      */
-    protected $configurationRepository;
+    protected ConfigurationRepository $configurationRepository;
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager
      */
-    protected $persistenceManager;
+    protected PersistenceManager $persistenceManager;
 
     /**
      * @var \TYPO3\CMS\Core\Site\SiteFinder
      */
-    protected $siteFinder;
+    protected SiteFinder $siteFinder;
 
     public function __construct(
         ConfigurationRepository $configurationRepository,
@@ -66,13 +66,13 @@ class ExtensionDefaultDataService implements SingletonInterface
             $resultCount = $queryBuilder
                 ->count('*')
                 ->from(Configuration::TABLE)
-                ->execute()
-                ->fetchColumn();
+                ->executeQuery()
+                ->fetchOne();
 
             if (0 === $resultCount) {
                 $this->addDefaultConfigurations();
             }
-        } catch (DBALException $exception) {
+        } catch (Exception) {
             // ignore
         }
     }
@@ -128,7 +128,7 @@ class ExtensionDefaultDataService implements SingletonInterface
 
             try {
                 $this->configurationRepository->add($configuration);
-            } catch (IllegalObjectTypeException $exception) {
+            } catch (IllegalObjectTypeException) {
                 // ignore
             }
         }

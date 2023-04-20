@@ -1,5 +1,8 @@
 <?php
 
+use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_option',
@@ -24,7 +27,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration::TABLE,
+                'foreign_table' => Configuration::TABLE,
             ],
         ],
         'date_begin' => [
@@ -57,7 +60,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption::TABLE,
+                'foreign_table' => CookieOption::TABLE,
                 'minitems' => 1,
                 'maxitems' => 1,
             ],

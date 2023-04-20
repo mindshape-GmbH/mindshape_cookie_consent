@@ -15,13 +15,13 @@
     "email": "info@mindshape.de",
     "issues": "https://github.com/mindshape-GmbH/mindshape_cookie_consent/issues",
     "source": "https://github.com/mindshape-GmbH/mindshape_cookie_consent",
-    "docs": "https://docs.typo3.org/p/mindshape/mindshape-cookie-consent/2.1/en-us/"
+    "docs": "https://docs.typo3.org/p/mindshape/mindshape-cookie-consent/3.0/en-us/"
   },
   "require": {
-    "php": "^7.2||~8.0",
+    "php": "~8.0 <=8.2",
     "ext-json": "*",
     "ext-pdo": "*",
-    "typo3/cms-core": "~10.4.2||~11.5.2"
+    "typo3/cms-core": "~11.5.2||~12.3"
   },
   "autoload": {
     "psr-4": {

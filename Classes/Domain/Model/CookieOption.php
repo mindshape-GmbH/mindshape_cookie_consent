@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -22,52 +22,52 @@ class CookieOption extends AbstractValueObject
     public const TABLE = 'tx_mindshapecookieconsent_domain_model_cookieoption';
 
     /**
-     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory
+     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null
      */
-    protected $cookieCategory;
+    protected ?CookieCategory $cookieCategory = null;
 
     /**
      * @var string
      */
-    protected $label = '';
+    protected string $label = '';
 
     /**
      * @var string
      */
-    protected $identifier = '';
+    protected string $identifier = '';
 
     /**
      * @var string
      */
-    protected $provider = '';
+    protected string $provider = '';
 
     /**
      * @var string
      */
-    protected $purpose = '';
+    protected string $purpose = '';
 
     /**
      * @var string
      */
-    protected $cookieName = '';
+    protected string $cookieName = '';
 
     /**
      * @var string
      */
-    protected $cookieDuration = '';
+    protected string $cookieDuration = '';
 
     /**
      * @var string
      */
-    protected $replacementLabel = '';
+    protected string $replacementLabel = '';
 
     /**
      * @var string
      */
-    protected $info = '';
+    protected string $info = '';
 
     /**
-     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory
+     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null
      */
     public function getCookieCategory(): ?CookieCategory
     {
@@ -75,9 +75,9 @@ class CookieOption extends AbstractValueObject
     }
 
     /**
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null $cookieCategory
      */
-    public function setCookieCategory(CookieCategory $cookieCategory): void
+    public function setCookieCategory(?CookieCategory $cookieCategory): void
     {
         $this->cookieCategory = $cookieCategory;
     }

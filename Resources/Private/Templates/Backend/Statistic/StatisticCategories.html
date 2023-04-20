@@ -7,10 +7,10 @@
 
   <f:section name="Content">
 
-    <h2>{f:translate(key: 'module.statistic.categories')}</h2>
+    <h2>{f:translate(key: 'module.statistic.categories', extensionName: 'mindshape_cookie_consent')}</h2>
 
     <f:if condition="0 == {configuration.enableStatistic}">
-      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled')}</strong></p>
+      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
     </f:if>
     <f:if condition="{statisticCategories}">
       <f:if condition="{itemsPerPage} < {statisticCategories -> f:count()}">
@@ -39,8 +39,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>{f:translate(key: 'module.statistic.date')}</th>
-          <th>{f:translate(key: 'module.statistic.visitors_total')}</th>
+          <th>{f:translate(key: 'module.statistic.date', extensionName: 'mindshape_cookie_consent')}</th>
+          <th>{f:translate(key: 'module.statistic.visitors_total', extensionName: 'mindshape_cookie_consent')}</th>
           <f:for each="{configuration.cookieCategories}" as="cookieCategory">
             <th>{cookieCategory.label}</th>
           </f:for>
@@ -56,9 +56,7 @@
                 <f:if condition="{cookieCategory}">
                   <f:if condition="{statisticCategory}">
                     <f:then>
-                      <td>{statisticCategory.counter} ({m:percentage(total: groupedStatisticCategories.0.counter,
-                        fraction: statisticCategory.counter) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)
-                      </td>
+                      <td>{statisticCategory.counter} ({m:percentage(total: groupedStatisticCategories.0.counter, fraction: statisticCategory.counter) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
                     </f:then>
                     <f:else>
                       <td>0 (0,0 %)</td>

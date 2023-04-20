@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -22,22 +22,22 @@ class StatisticCategory extends AbstractStatistic
     public const TABLE = 'tx_mindshapecookieconsent_domain_model_statisticcategory';
 
     /**
-     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory
+     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null
      */
-    protected $cookieCategory;
+    protected ?CookieCategory $cookieCategory;
 
     /**
      * @var int
      */
-    protected $counter = 0;
+    protected int $counter = 0;
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
      * @param \DateTime $dateBegin
      * @param \DateTime $dateEnd
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null $cookieCategory
      */
-    public function __construct(Configuration $configuration, DateTime $dateBegin, DateTime $dateEnd, CookieCategory $cookieCategory = null)
+    public function initialize(Configuration $configuration, DateTime $dateBegin, DateTime $dateEnd, CookieCategory $cookieCategory = null): void
     {
         $this->_languageUid = $configuration->getLanguageUid();
         $this->configuration = $configuration;
@@ -47,7 +47,7 @@ class StatisticCategory extends AbstractStatistic
     }
 
     /**
-     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory
+     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null
      */
     public function getCookieCategory(): ?CookieCategory
     {
@@ -62,7 +62,7 @@ class StatisticCategory extends AbstractStatistic
         return $this->counter;
     }
 
-    public function increaseCounter()
+    public function increaseCounter(): void
     {
         $this->counter++;
     }

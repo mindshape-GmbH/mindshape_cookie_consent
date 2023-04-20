@@ -6,6 +6,11 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
+          <f:if condition="{previewImage}">
+            <div class="preview-image">
+              <f:image image="{previewImage}" width="{width}" height="{height}"/>
+            </div>
+          </f:if>
           <button class="accept btn btn--primary btn-primary" data-identifier="{cookieOption}">
             <f:if condition="{cookieOptionObject}">
               <f:else>{f:translate(key: 'label.accept_media_and_show_iframe', extensionName: 'mindshape_cookie_consent')}</f:else>

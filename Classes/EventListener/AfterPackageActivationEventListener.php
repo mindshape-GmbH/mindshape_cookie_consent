@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\EventListener;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -26,7 +26,7 @@ class AfterPackageActivationEventListener
     /**
      * @param \TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent $afterPackageActivationEvent
      */
-    public function __invoke(AfterPackageActivationEvent $afterPackageActivationEvent)
+    public function __invoke(AfterPackageActivationEvent $afterPackageActivationEvent): void
     {
         if (SettingsUtility::EXTENSION_KEY === $afterPackageActivationEvent->getPackageKey()) {
             $this->extensionDefaultDataService->checkAndAddDefaultConfigurations();

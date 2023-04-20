@@ -1,5 +1,6 @@
 <html data-namespace-typo3-fluid="true" lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:m="http://typo3.org/ns/Mindshape/MindshapeCookieConsent/ViewHelpers"
       xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
 
   <f:form action="consent"
@@ -8,7 +9,7 @@
           extensionName="mindshapecookieconsent"
           object="{consent}"
           objectName="consent"
-          pageType="{settings.ajaxPageType}"
+          pageType="{settings.ajaxPageType -> m:typeCast.integer()}"
           pageUid="{currentRootPageUid}"
           additionalAttributes="{autocomplete: 'off'}">
 

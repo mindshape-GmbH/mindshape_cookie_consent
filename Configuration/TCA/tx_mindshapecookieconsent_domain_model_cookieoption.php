@@ -1,5 +1,8 @@
 <?php
 
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption',
@@ -39,8 +42,8 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption::TABLE,
-                'foreign_table_where' => 'AND ' . \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption::TABLE . '.pid=###CURRENT_PID### AND ' . \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption::TABLE . '.sys_language_uid IN (-1,0)',
+                'foreign_table' => CookieOption::TABLE,
+                'foreign_table_where' => 'AND ' . CookieOption::TABLE . '.pid=###CURRENT_PID### AND ' . CookieOption::TABLE . '.sys_language_uid IN (-1,0)',
                 'default' => 0,
                 'items' => [
                     ['', 0],
@@ -71,7 +74,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory::TABLE,
+                'foreign_table' => CookieCategory::TABLE,
                 'default' => 0,
             ],
         ],

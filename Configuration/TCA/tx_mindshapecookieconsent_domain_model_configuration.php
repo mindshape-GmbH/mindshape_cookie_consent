@@ -1,5 +1,10 @@
 <?php
 
+use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
+use Mindshape\MindshapeCookieConsent\UserFunc\ConfigurationTcaUserFunc;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration',
@@ -43,8 +48,8 @@ return [
                 'items' => [
                     ['', 0],
                 ],
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration::TABLE,
-                'foreign_table_where' => 'AND ' . \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration::TABLE . '.pid=###CURRENT_PID### AND ' . \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration::TABLE . '.sys_language_uid IN (-1,0)',
+                'foreign_table' => Configuration::TABLE,
+                'foreign_table_where' => 'AND ' . Configuration::TABLE . '.pid=###CURRENT_PID### AND ' . Configuration::TABLE . '.sys_language_uid IN (-1,0)',
             ],
         ],
         'l10n_diffsource' => [
@@ -72,11 +77,11 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'minitems' => 1,
-                'itemsProcFunc' => \Mindshape\MindshapeCookieConsent\UserFunc\ConfigurationTcaUserFunc::class . '->sitesItemsProcFunc',
+                'itemsProcFunc' => ConfigurationTcaUserFunc::class . '->sitesItemsProcFunc',
                 'items' => [
                     [
                         'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.site.all',
-                        \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration::SITE_ALL_SITES,
+                        Configuration::SITE_ALL_SITES,
                     ],
                 ],
             ],
@@ -139,7 +144,7 @@ return [
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.necessary_cookie_options',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption::TABLE,
+                'foreign_table' => CookieOption::TABLE,
                 'foreign_label' => 'label',
                 'foreign_sortby' => 'sorting',
                 'minitems' => 0,
@@ -220,7 +225,7 @@ return [
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.cookie_categories',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory::TABLE,
+                'foreign_table' => CookieCategory::TABLE,
                 'foreign_field' => 'configuration',
                 'foreign_label' => 'label',
                 'foreign_sortby' => 'sorting',

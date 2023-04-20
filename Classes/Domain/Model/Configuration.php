@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -26,72 +26,72 @@ class Configuration extends AbstractEntity
     /**
      * @var string
      */
-    protected $site = '';
+    protected string $site = '';
 
     /**
      * @var bool
      */
-    protected $enableStatistic = false;
+    protected bool $enableStatistic = false;
 
     /**
      * @var string
      */
-    protected $header = '';
+    protected string $header = '';
 
     /**
      * @var string
      */
-    protected $imprint = '';
+    protected string $imprint = '';
 
     /**
      * @var string
      */
-    protected $datapolicy = '';
+    protected string $datapolicy = '';
 
     /**
      * @var string
      */
-    protected $hint = '';
+    protected string $hint = '';
 
     /**
      * @var string
      */
-    protected $necessaryCookiesInfo = '';
+    protected string $necessaryCookiesInfo = '';
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption>
      */
-    protected $necessaryCookieOptions;
+    protected ObjectStorage $necessaryCookieOptions;
 
     /**
      * @var string
      */
-    protected $selectAllLabel = '';
+    protected string $selectAllLabel = '';
 
     /**
      * @var string
      */
-    protected $saveLabel = '';
+    protected string $saveLabel = '';
 
     /**
      * @var string
      */
-    protected $denyLabel = '';
+    protected string $denyLabel = '';
 
     /**
      * @var string
      */
-    protected $showDetailsLabel = '';
+    protected string $showDetailsLabel = '';
 
     /**
      * @var string
      */
-    protected $hideDetailsLabel = '';
+    protected string $hideDetailsLabel = '';
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory>
      */
-    protected $cookieCategories;
+    protected ObjectStorage $cookieCategories;
 
     public function __construct()
     {

@@ -7,10 +7,10 @@
 
   <f:section name="Content">
 
-    <h2>{f:translate(key: 'module.statistic.buttons')}</h2>
+    <h2>{f:translate(key: 'module.statistic.buttons', extensionName: 'mindshape_cookie_consent')}</h2>
 
     <f:if condition="0 == {configuration.enableStatistic}">
-      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled')}</strong></p>
+      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
     </f:if>
     <f:if condition="{statisticButtons}">
       <f:if condition="{settings.statisticItemsPerPage} < {statisticButtons -> f:count()}">
@@ -39,11 +39,11 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>{f:translate(key: 'module.statistic.date')}</th>
-          <th>{f:translate(key: 'module.statistic.visitors_total')}</th>
-          <th>{f:translate(key: 'tca.statistic_button.agree_to_all')}</th>
-          <th>{f:translate(key: 'tca.statistic_button.save')}</th>
-          <th>{f:translate(key: 'tca.statistic_button.deny')}</th>
+          <th>{f:translate(key: 'module.statistic.date', extensionName: 'mindshape_cookie_consent')}</th>
+          <th>{f:translate(key: 'module.statistic.visitors_total', extensionName: 'mindshape_cookie_consent')}</th>
+          <th>{f:translate(key: 'tca.statistic_button.agree_to_all', extensionName: 'mindshape_cookie_consent')}</th>
+          <th>{f:translate(key: 'tca.statistic_button.save', extensionName: 'mindshape_cookie_consent')}</th>
+          <th>{f:translate(key: 'tca.statistic_button.deny', extensionName: 'mindshape_cookie_consent')}</th>
         </tr>
       </thead>
       <tbody>

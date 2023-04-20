@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -50,7 +50,7 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
         try {
             $currentTime = new DateTime();
             $currentTime->setTimezone(new DateTimeZone('UTC'));
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $currentTime = null;
         }
 
@@ -66,7 +66,7 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
         foreach ($cookieCategories as $cookieCategory) {
             try {
                 $query->matching(
-                    $query->logicalAnd([
+                    $query->logicalAnd(
                         $query->equals('configuration', $configuration->getUid()),
                         $query->lessThan('dateBegin', $currentTime->format('c')),
                         $query->greaterThan('dateEnd', $currentTime->format('c')),
@@ -76,9 +76,9 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
                                 ? $cookieCategory->getUid()
                                 : 0
                         ),
-                    ])
+                    )
                 );
-            } catch (InvalidQueryException $exception) {
+            } catch (InvalidQueryException) {
                 // ignore
             }
 
@@ -103,7 +103,7 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
             } else {
                 $this->update($statistic);
             }
-        } catch (IllegalObjectTypeException | UnknownObjectException $exception) {
+        } catch (IllegalObjectTypeException | UnknownObjectException) {
             // ignore
         }
     }
@@ -111,7 +111,7 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
     /**
      * @param \TYPO3\CMS\Extbase\Persistence\QueryInterface $query
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory $cookieCategory
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null $cookieCategory
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory
      */
     protected function getOrCreateStatisticCategory(QueryInterface $query, Configuration $configuration, CookieCategory $cookieCategory = null): StatisticCategory
@@ -123,8 +123,9 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
             try {
                 $dateBegin = new DateTime('00:00:00');
                 $dateEnd = new DateTime('23:59:59');
-                $statisticCategory = new StatisticCategory($configuration, $dateBegin, $dateEnd, $cookieCategory);
-            } catch (Exception $exception) {
+                $statisticCategory = new StatisticCategory();
+                $statisticCategory->initialize($configuration, $dateBegin, $dateEnd, $cookieCategory);
+            } catch (Exception) {
                 // ignore
             }
         }

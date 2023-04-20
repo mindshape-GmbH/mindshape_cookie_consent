@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
+namespace Mindshape\MindshapeCookieConsent\ViewHelpers\TypeCast;
 
 /***
  *
@@ -15,7 +15,6 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
  ***/
 
 use Closure;
-use Mindshape\MindshapeCookieConsent\Utility\RenderUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
@@ -23,7 +22,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
-class ConsentModalViewHelper extends AbstractViewHelper
+class IntegerViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
@@ -36,10 +35,10 @@ class ConsentModalViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @return string
+     * @return int
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): int
     {
-        return RenderUtility::renderConsentModal();
+        return (int)$renderChildrenClosure();
     }
 }

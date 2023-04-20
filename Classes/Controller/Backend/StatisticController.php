@@ -9,7 +9,7 @@ namespace Mindshape\MindshapeCookieConsent\Controller\Backend;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -22,7 +22,9 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryReposito
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -30,7 +32,6 @@ use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -41,65 +42,59 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class StatisticController extends ActionController
 {
     /**
-     * @var \TYPO3\CMS\Backend\View\BackendTemplateView
+     * @var \TYPO3\CMS\Backend\Template\ModuleTemplateFactory
      */
-    protected $view;
+    protected ModuleTemplateFactory $moduleTemplateFactory;
 
     /**
-     * @var string
+     * @var \TYPO3\CMS\Backend\Template\ModuleTemplate
      */
-    protected $defaultViewObjectName = BackendTemplateView::class;
+    protected ModuleTemplate $moduleTemplate;
 
     /**
-     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration
+     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration|null
      */
-    protected $currentConfiguration;
+    protected ?Configuration $currentConfiguration;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository
      */
-    protected $statisticCategoryRepository;
+    protected StatisticCategoryRepository $statisticCategoryRepository;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository
      */
-    protected $statisticOptionRepository;
+    protected StatisticOptionRepository $statisticOptionRepository;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
      */
-    protected $statisticButtonRepository;
+    protected StatisticButtonRepository $statisticButtonRepository;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository
      */
-    protected $configurationRepository;
+    protected ConfigurationRepository $configurationRepository;
 
     /**
+     * @param \TYPO3\CMS\Backend\Template\ModuleTemplateFactory $moduleTemplateFactory
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository $statisticCategoryRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository $statisticOptionRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository $statisticButtonRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository $configurationRepository
      */
     public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory,
         StatisticCategoryRepository $statisticCategoryRepository,
         StatisticOptionRepository $statisticOptionRepository,
         StatisticButtonRepository $statisticButtonRepository,
         ConfigurationRepository $configurationRepository
     ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->statisticCategoryRepository = $statisticCategoryRepository;
         $this->statisticOptionRepository = $statisticOptionRepository;
         $this->statisticButtonRepository = $statisticButtonRepository;
         $this->configurationRepository = $configurationRepository;
-    }
-
-    /**
-     * @param \TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view
-     */
-    public function initializeView(ViewInterface $view): void
-    {
-        /** @var \TYPO3\CMS\Backend\View\BackendTemplateView $view */
-        parent::initializeView($view);
 
         $currentConfiguration = null;
         $parameters = GeneralUtility::_GET('tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic');
@@ -114,22 +109,32 @@ class StatisticController extends ActionController
             $currentConfiguration = $this->configurationRepository->findAll()->getFirst();
         }
 
-        if ($currentConfiguration instanceof Configuration) {
-            $this->buildActionMenu($view, $currentConfiguration);
-            $this->buildDateMenu($view, $currentConfiguration);
-        }
-
         $this->currentConfiguration = $currentConfiguration;
+    }
 
-        $view->assign('configuration', $currentConfiguration);
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function initializeAction(): void
+    {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        if ($this->currentConfiguration instanceof Configuration) {
+            $this->buildActionMenu($this->currentConfiguration);
+            $this->buildDateMenu($this->currentConfiguration);
+        }
     }
 
     /**
      * @param \DateTime|null $date
      * @param int $page
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function statisticButtonsAction(DateTime $date = null, int $page = 1): void
+    public function statisticButtonsAction(DateTime $date = null, int $page = 1): ResponseInterface
     {
+        $this->moduleTemplate->setTitle(LocalizationUtility::translate('module.statistic.buttons', 'mindshape_cookie_consent'));
+
         $statisticButtons = null;
 
         if ($this->currentConfiguration instanceof Configuration) {
@@ -138,17 +143,25 @@ class StatisticController extends ActionController
         }
 
         $this->view->assignMultiple([
+            'configuration' => $this->currentConfiguration,
             'date' => $date,
             'statisticButtons' => $statisticButtons,
         ]);
+
+        $this->moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * @param \DateTime|null $date
      * @param int $page
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function statisticCategoriesAction(DateTime $date = null, int $page = 1): void
+    public function statisticCategoriesAction(DateTime $date = null, int $page = 1): ResponseInterface
     {
+        $this->moduleTemplate->setTitle(LocalizationUtility::translate('module.statistic.categories', 'mindshape_cookie_consent'));
+
         $statisticCategories = [];
         $itemsPerPage = (int)($this->settings['statisticItemsPerPage'] ?? 10);
 
@@ -161,17 +174,25 @@ class StatisticController extends ActionController
         }
 
         $this->view->assignMultiple([
+            'configuration' => $this->currentConfiguration,
             'date' => $date,
             'statisticCategories' => $statisticCategories,
         ]);
+
+        $this->moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
      * @param \DateTime|null $date
      * @param int $page
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function statisticOptionsAction(DateTime $date = null, int $page = 1): void
+    public function statisticOptionsAction(DateTime $date = null, int $page = 1): ResponseInterface
     {
+        $this->moduleTemplate->setTitle(LocalizationUtility::translate('module.statistic.options', 'mindshape_cookie_consent'));
+
         $statisticOptions = [];
         $cookieOptions = [];
         $itemsPerPage = (int)($this->settings['statisticItemsPerPage'] ?? 10);
@@ -198,10 +219,15 @@ class StatisticController extends ActionController
         }
 
         $this->view->assignMultiple([
+            'configuration' => $this->currentConfiguration,
             'date' => $date,
             'statisticOptions' => $statisticOptions,
             'cookieOptions' => $cookieOptions,
         ]);
+
+        $this->moduleTemplate->setContent($this->view->render());
+
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     /**
@@ -234,19 +260,20 @@ class StatisticController extends ActionController
             return $this->{$repositoryName}->findAllByConfiguration($configuration);
         }
 
-        $this->view->assign('date', $date);
+        $this->moduleTemplate->assign('date', $date);
 
         return $this->{$repositoryName}->findByMonth($configuration, $date);
     }
 
     /**
-     * @param \TYPO3\CMS\Backend\View\BackendTemplateView $view
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration|null $currentConfiguration
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $currentConfiguration
+     * @throws \Doctrine\DBAL\Exception
      */
-    protected function buildActionMenu(BackendTemplateView $view, Configuration $currentConfiguration = null): void
+    protected function buildActionMenu(Configuration $currentConfiguration): void
     {
-        $actionMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $actionMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $actionMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_action');
+
         /** @var \TYPO3\CMS\Core\Site\SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
 
@@ -258,7 +285,7 @@ class StatisticController extends ActionController
 
             try {
                 $site = $siteFinder->getSiteByIdentifier($siteIdentifier);
-            } catch (SiteNotFoundException $exception) {
+            } catch (SiteNotFoundException) {
                 $site = null;
             }
 
@@ -273,7 +300,7 @@ class StatisticController extends ActionController
                     ['title'],
                     'sys_language',
                     ['uid' => $configuration->getLanguageUid()]
-                )->fetchColumn();
+                )->fetchOne();
             }
 
             if (true === is_string($languageLabel)) {
@@ -314,16 +341,15 @@ class StatisticController extends ActionController
             );
         }
 
-        $view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
 
     /**
-     * @param \TYPO3\CMS\Backend\View\BackendTemplateView $view
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration|null $currentConfiguration
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $currentConfiguration
      */
-    protected function buildDateMenu(BackendTemplateView $view, Configuration $currentConfiguration = null): void
+    protected function buildDateMenu(Configuration $currentConfiguration): void
     {
-        $dateMenu = $this->view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+        $dateMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
         $dateMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_date');
 
         $currentAction = substr($this->actionMethodName, 0, -6);
@@ -344,8 +370,8 @@ class StatisticController extends ActionController
         }
 
         try {
-            $currentDate = $this->arguments->getArgument('date')->getValue();
-        } catch (NoSuchArgumentException $exception) {
+            $currentDate = new DateTime($this->request->getArgument('date'));
+        } catch (NoSuchArgumentException|Exception) {
             $currentDate = null;
         }
 
@@ -375,6 +401,6 @@ class StatisticController extends ActionController
             );
         }
 
-        $view->getModuleTemplate()->getDocHeaderComponent()->getMenuRegistry()->addMenu($dateMenu);
+        $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->addMenu($dateMenu);
     }
 }

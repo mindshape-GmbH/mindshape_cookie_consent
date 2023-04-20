@@ -17,6 +17,6 @@ use Exception;
 /**
  * @package Mindshape\MindshapeCookieConsent\Exception
  */
-class InvalidTableException extends Exception
+class InvalidFileTypeException extends Exception
 {
 }

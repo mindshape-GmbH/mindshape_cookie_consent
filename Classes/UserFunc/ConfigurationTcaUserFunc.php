@@ -10,7 +10,7 @@ namespace Mindshape\MindshapeCookieConsent\UserFunc;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -29,7 +29,7 @@ class ConfigurationTcaUserFunc
     /**
      * @var \TYPO3\CMS\Core\Site\SiteFinder
      */
-    protected $siteFinder;
+    protected SiteFinder $siteFinder;
 
     public function __construct()
     {
@@ -39,6 +39,7 @@ class ConfigurationTcaUserFunc
     /**
      * @param array $parameters
      * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $tcaSelectItems
+     * @throws \Doctrine\DBAL\Exception
      */
     public function sitesItemsProcFunc(array $parameters, TcaSelectItems $tcaSelectItems): void
     {
@@ -56,8 +57,8 @@ class ConfigurationTcaUserFunc
                     $queryBuilder->createNamedParameter($currentLanguageId, PDO::PARAM_INT)
                 )
             )
-            ->execute()
-            ->fetchAll();
+            ->executeQuery()
+            ->fetchAllAssociative();
 
         $existingConfigurations = array_column($existingConfigurations, 'site');
 

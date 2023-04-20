@@ -17,3 +17,6 @@ services:
     tags:
       - name: event.listener
         event: TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent
+
+  Mindshape\MindshapeCookieConsent\Controller\Backend\StatisticController:
+    tags: [ 'backend.controller' ]
