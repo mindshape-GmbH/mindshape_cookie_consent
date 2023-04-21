@@ -85,6 +85,9 @@ There is also an event when the consent buttons are replaced with the real conte
 .. code-block:: javascript
 
     window.addEventListener('cookieConsentButtonsReplaced', function (event) {
+      // you can also get the original click event
+      let originalEvent = event.detail.originalEvent
+
       // do something here
     });
 

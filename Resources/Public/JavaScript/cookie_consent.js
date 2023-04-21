@@ -130,14 +130,14 @@
         });
       });
 
-      this.consentButtons.forEach(function (acceptButton) {
-        acceptButton.addEventListener('click', function () {
+      this.consentButtons.forEach(function(acceptButton) {
+        acceptButton.addEventListener('click', function(event) {
           let cookie = that.getCookie();
           let cookieOpions = null !== cookie ? cookie.getOptions() : [];
 
           cookieOpions.push(this.getAttribute('data-identifier'));
 
-          that.setConsentCookie(cookieOpions);
+          that.setConsentCookie(cookieOpions, event);
           that.replaceConsentButtons(this.getAttribute('data-identifier'));
         });
       });
@@ -521,8 +521,9 @@
 
     /**
      * @param {array} [cookieOptions]
+     * @param {Event|undefined} [originalReplaceButtonClickEvent]
      */
-    setConsentCookie: function (cookieOptions) {
+    setConsentCookie: function(cookieOptions, originalReplaceButtonClickEvent) {
       const that = this;
       const expiryDate = new Date();
 
@@ -580,7 +581,7 @@
         + ';samesite=strict'
         + ';path=/';
 
-      this.consentEventDispatch();
+      this.consentEventDispatch(originalReplaceButtonClickEvent);
     },
 
     /**
@@ -632,7 +633,7 @@
       this.closeModalDetails(container);
     },
 
-    consentEventDispatch: function () {
+    consentEventDispatch: function(originalReplaceButtonClickEvent) {
       const that = this;
 
       if (false === this.hasCookie()) {
@@ -660,7 +661,15 @@
       });
 
       window.dispatchEvent(
-        new CustomEvent('cookieConsentButtonsReplaced', { detail: this.getCookie() })
+        new CustomEvent(
+          'cookieConsentButtonsReplaced',
+          {
+            detail: Object.assign(
+              { originalEvent: originalReplaceButtonClickEvent },
+              this.getCookie(),
+            ),
+          },
+        ),
       );
     },
 
