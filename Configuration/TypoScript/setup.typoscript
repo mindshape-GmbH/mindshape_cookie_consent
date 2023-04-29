@@ -31,6 +31,7 @@ module.tx_mindshapecookieconsent < plugin.tx_mindshapecookieconsent
 module.tx_mindshapecookieconsent {
   settings {
     statisticItemsPerPage = {$module.tx_mindshapecookieconsent.settings.statisticItemsPerPage}
+    maximumPaginationLinks = {$module.tx_mindshapecookieconsent.settings.maximumPaginationLinks}
   }
 }
 

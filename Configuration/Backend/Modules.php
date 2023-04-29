@@ -7,6 +7,7 @@ return [
     SettingsUtility::EXTENSION_NAME => [
         'labels' => 'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/module_locallang.xlf',
         'iconIdentifier' => 'module-' . SettingsUtility::EXTENSION_NAME,
+        'position' => ['after' => 'site'],
     ],
     SettingsUtility::EXTENSION_NAME . '_statistics' => [
         'parent' => SettingsUtility::EXTENSION_NAME,
