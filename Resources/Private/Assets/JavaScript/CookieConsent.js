@@ -214,37 +214,37 @@
             consentReplacement.parentNode.insertBefore(consentReplacement, replaceElement);
           });
 
+          if (true === consentReplacement.hasAttribute('data-scripts')) {
+            const scripts = JSON.parse(consentReplacement.getAttribute('data-scripts'));
+
+            for (let key in scripts) {
+              let async = false;
+              let defer = false;
+              let src = undefined;
+              let eventName = undefined;
+
+              if (typeof key === 'string') {
+                eventName = key;
+              }
+
+              if (typeof scripts[key] === 'string') {
+                src = scripts[key];
+              } else {
+                src = scripts[key]['src'];
+                async = scripts[key]['async'];
+                defer = scripts[key]['defer'];
+              }
+
+              if (-1 === that.consentScripts.indexOf(src)) {
+                that.consentScripts.push(src);
+                that.addScript(src, async, defer, eventName);
+              }
+            }
+          }
+
           consentReplacement.parentNode.removeChild(consentReplacement);
 
           that.updateConsentButtons();
-        }
-
-        if (true === consentReplacement.hasAttribute('data-scripts')) {
-          const scripts = JSON.parse(consentReplacement.getAttribute('data-scripts'));
-
-          for (let key in scripts) {
-            let async = false;
-            let defer = false;
-            let src = undefined;
-            let eventName = undefined;
-
-            if (typeof key === 'string') {
-              eventName = key;
-            }
-
-            if (typeof scripts[key] === 'string') {
-              src = scripts[key];
-            } else {
-              src = scripts[key]['src'];
-              async = scripts[key]['async'];
-              defer = scripts[key]['defer'];
-            }
-
-            if (-1 === that.consentScripts.indexOf(src)) {
-              that.consentScripts.push(src);
-              that.addScript(src, async, defer, eventName);
-            }
-          }
         }
       });
     },
