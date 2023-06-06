@@ -18,20 +18,32 @@
       </f:then>
       <f:else>
         <li class="page-item disabled">
-          <a class="page-link" href="#"><span aria-hidden="true">&laquo;</span></a>
+          <a class="page-link" href="#">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
         </li>
         <li class="page-item disabled">
-          <a class="page-link" href="#"><span aria-hidden="true">&lt;</span></a>
+          <a class="page-link" href="#">
+            <span aria-hidden="true">&lt;</span>
+          </a>
         </li>
       </f:else>
     </f:if>
-
+    <f:if condition="{pagination.hasLessPages}">
+      <li class="page-item disabled">
+        <a class="page-link" href="#">…</a>
+      </li>
+    </f:if>
     <f:for each="{pagination.allPageNumbers}" as="page">
       <li class="page-item {f:if(condition: '{page} == {paginator.currentPageNumber}', then: ' active')}">
         <a class="page-link" href="{f:uri.action(action: action, arguments:{page: page, date: '{date -> f:format.date(format: \'c\')}'})}">{page}</a>
       </li>
     </f:for>
-
+    <f:if condition="{pagination.hasMorePages}">
+      <li class="page-item disabled">
+        <a class="page-link" href="#">…</a>
+      </li>
+    </f:if>
     <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
       <f:then>
         <li class="page-item">
@@ -46,8 +58,16 @@
         </li>
       </f:then>
       <f:else>
-        <li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&gt;</span></a></li>
-        <li class="page-item disabled"><a class="page-link" href="#"><span aria-hidden="true">&raquo;</span></a></li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">
+            <span aria-hidden="true">&gt;</span>
+          </a>
+        </li>
+        <li class="page-item disabled">
+          <a class="page-link" href="#">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
       </f:else>
     </f:if>
   </ul>

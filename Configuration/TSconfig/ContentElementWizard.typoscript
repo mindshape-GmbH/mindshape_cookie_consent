@@ -5,8 +5,7 @@ mod.wizards.newContentElement.wizardItems.plugins {
       title = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.consent.title
       description = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.consent.description
       tt_content_defValues {
-        CType = list
-        list_type = mindshapecookieconsent_consent
+        CType = mindshapecookieconsent_consent
       }
     }
 
@@ -15,8 +14,7 @@ mod.wizards.newContentElement.wizardItems.plugins {
       title = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.cookielist.title
       description = LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:plugin.cookielist.description
       tt_content_defValues {
-        CType = list
-        list_type = mindshapecookieconsent_cookielist
+        CType = mindshapecookieconsent_cookielist
       }
     }
   }

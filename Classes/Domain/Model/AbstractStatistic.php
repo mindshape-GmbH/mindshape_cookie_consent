@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -23,17 +23,17 @@ abstract class AbstractStatistic extends AbstractEntity
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration
      */
-    protected $configuration;
+    protected Configuration $configuration;
 
     /**
      * @var \DateTime
      */
-    protected $dateBegin;
+    protected DateTime $dateBegin;
 
     /**
      * @var \DateTime
      */
-    protected $dateEnd;
+    protected DateTime $dateEnd;
 
     /**
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration

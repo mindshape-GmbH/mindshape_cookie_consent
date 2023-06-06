@@ -68,6 +68,9 @@
       <trans-unit id="constants.settings.statistic_items_per_page">
         <target>Elemente pro Seite im Statistikmodul</target>
       </trans-unit>
+      <trans-unit id="constants.settings.maximum_pagination_links">
+        <target>Anzahl Links in der Seitennummerierung</target>
+      </trans-unit>
 
       <trans-unit id="tca.configuration">
         <target>Cookie-Consent Konfiguration</target>

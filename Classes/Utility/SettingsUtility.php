@@ -10,7 +10,7 @@ namespace Mindshape\MindshapeCookieConsent\Utility;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -39,7 +39,7 @@ class SettingsUtility
 
         try {
             $settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, self::EXTENSION_NAME);
-        } catch (InvalidConfigurationTypeException $exception) {
+        } catch (InvalidConfigurationTypeException) {
             return null;
         }
 
@@ -59,7 +59,6 @@ class SettingsUtility
             $typoscript = GeneralUtility::removeDotsFromTS($typoscript);
 
             if (
-                false === is_array($typoscript) ||
                 false === is_array($typoscript['plugin']) ||
                 false === array_key_exists(self::EXTENSION_TYPOSCRIPT_KEY, $typoscript['plugin'])
             ) {
@@ -67,7 +66,7 @@ class SettingsUtility
             }
 
             $typoscript = $typoscript['plugin'][self::EXTENSION_TYPOSCRIPT_KEY];
-        } catch (InvalidConfigurationTypeException $exception) {
+        } catch (InvalidConfigurationTypeException) {
             $typoscript = [];
         }
 

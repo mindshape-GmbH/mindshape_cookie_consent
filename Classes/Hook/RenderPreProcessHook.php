@@ -10,13 +10,14 @@ namespace Mindshape\MindshapeCookieConsent\Hook;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
+use Mindshape\MindshapeCookieConsent\Utility\RenderUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -32,6 +33,8 @@ class RenderPreProcessHook
     /**
      * @param array $params
      * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidFileException
      */
     public function preProcess(array &$params, PageRenderer $pageRenderer): void
     {
@@ -82,18 +85,18 @@ class RenderPreProcessHook
                 if (true === (bool)$settings['addJavaScript']) {
                     $pageRenderer->addJsFooterLibrary(
                         'cookie_consent',
-                        PathUtility::getAbsoluteWebPath('typo3conf/ext/mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js')
+                        PathUtility::getPublicResourceWebPath('EXT:mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js')
                     );
                 }
 
                 if (true === (bool)$settings['addStylesheet']) {
                     $pageRenderer->addCssFile(
-                        PathUtility::getAbsoluteWebPath('typo3conf/ext/mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css')
+                        PathUtility::getPublicResourceWebPath('EXT:mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css')
                     );
                 }
 
                 if (true === (bool)$settings['addMarkupToFooter']) {
-                    $pageRenderer->addFooterData($cookieConsentService->renderConsentModal());
+                    $pageRenderer->addFooterData(RenderUtility::renderConsentModal());
                 }
             }
         }

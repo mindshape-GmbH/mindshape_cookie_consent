@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -38,19 +38,19 @@ class StatisticButtonRepository extends AbstractStatisticRepository
         try {
             $currentTime = new DateTime();
             $currentTime->setTimezone(new DateTimeZone('UTC'));
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $currentTime = null;
         }
 
         try {
             $query->matching(
-                $query->logicalAnd([
+                $query->logicalAnd(
                     $query->equals('configuration', $configuration),
                     $query->lessThan('dateBegin', $currentTime->format('c')),
                     $query->greaterThan('dateEnd', $currentTime->format('c')),
-                ])
+                )
             );
-        } catch (InvalidQueryException $exception) {
+        } catch (InvalidQueryException) {
             // ignore
         }
 
@@ -58,7 +58,8 @@ class StatisticButtonRepository extends AbstractStatisticRepository
         $statisticButton = $query->execute()->getFirst();
 
         if (!$statisticButton instanceof StatisticButton) {
-            $statisticButton = new StatisticButton($configuration);
+            $statisticButton = new StatisticButton();
+            $statisticButton->initialize($configuration);
 
             try {
                 $dateBegin = new DateTime('00:00:00');
@@ -66,7 +67,7 @@ class StatisticButtonRepository extends AbstractStatisticRepository
 
                 $statisticButton->setDateBegin($dateBegin);
                 $statisticButton->setDateEnd($dateEnd);
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 // ignore
             }
         }
@@ -93,7 +94,7 @@ class StatisticButtonRepository extends AbstractStatisticRepository
             } else {
                 $this->update($statisticButton);
             }
-        } catch (IllegalObjectTypeException | UnknownObjectException $exception) {
+        } catch (IllegalObjectTypeException | UnknownObjectException) {
             // ignore
         }
     }

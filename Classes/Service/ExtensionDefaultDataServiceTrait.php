@@ -8,11 +8,9 @@ namespace Mindshape\MindshapeCookieConsent\Service;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
-
-use Mindshape\MindshapeCookieConsent\Service\ExtensionDefaultDataService;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\EventListener
@@ -22,7 +20,7 @@ trait ExtensionDefaultDataServiceTrait
     /**
      * @var \Mindshape\MindshapeCookieConsent\Service\ExtensionDefaultDataService
      */
-    protected $extensionDefaultDataService;
+    protected ExtensionDefaultDataService $extensionDefaultDataService;
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Service\ExtensionDefaultDataService $extensionDefaultDataService

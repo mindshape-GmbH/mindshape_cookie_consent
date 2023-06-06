@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -23,27 +23,27 @@ class Consent extends AbstractValueObject
     /**
      * @var bool
      */
-    protected $selectAll = false;
+    protected bool $selectAll = false;
 
     /**
      * @var bool
      */
-    protected $deny = false;
+    protected bool $deny = false;
 
     /**
      * @var bool
      */
-    protected $isAjaxRequest = false;
+    protected bool $isAjaxRequest = false;
 
     /**
      * @var string
      */
-    protected $currentUrl = '';
+    protected string $currentUrl = '';
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption>
      */
-    protected $cookieOptions;
+    protected ObjectStorage $cookieOptions;
 
     public function __construct()
     {

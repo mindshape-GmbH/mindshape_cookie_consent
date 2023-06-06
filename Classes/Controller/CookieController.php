@@ -2,6 +2,8 @@
 
 namespace Mindshape\MindshapeCookieConsent\Controller;
 
+use Psr\Http\Message\ResponseInterface;
+
 /***
  *
  * This file is part of the "mindshape Cookie Consent" Extension for TYPO3 CMS.
@@ -9,22 +11,24 @@ namespace Mindshape\MindshapeCookieConsent\Controller;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
-
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Controller
  */
 class CookieController extends AbstractController
 {
-    public function listAction(): void
+    public function listAction(): ResponseInterface
     {
+        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
+
         $this->view->assign(
             'categories',
             $this->cookieConsentService->getCurrentConfigurationCookieCategories()
         );
+
+        return $this->htmlResponse();
     }
 }

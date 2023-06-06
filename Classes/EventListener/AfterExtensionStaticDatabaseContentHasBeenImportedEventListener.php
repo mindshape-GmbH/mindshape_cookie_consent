@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\EventListener;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -26,7 +26,7 @@ class AfterExtensionStaticDatabaseContentHasBeenImportedEventListener
     /**
      * @param \TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent $afterExtensionStaticDatabaseContentHasBeenImportedEvent
      */
-    public function __invoke(AfterExtensionStaticDatabaseContentHasBeenImportedEvent $afterExtensionStaticDatabaseContentHasBeenImportedEvent)
+    public function __invoke(AfterExtensionStaticDatabaseContentHasBeenImportedEvent $afterExtensionStaticDatabaseContentHasBeenImportedEvent): void
     {
         if (SettingsUtility::EXTENSION_KEY === $afterExtensionStaticDatabaseContentHasBeenImportedEvent->getPackageKey()) {
             $this->extensionDefaultDataService->checkAndAddDefaultConfigurations();

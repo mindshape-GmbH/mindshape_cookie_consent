@@ -10,7 +10,7 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers\Iterator;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -19,6 +19,7 @@ use DateTime;
 use Mindshape\MindshapeCookieConsent\Exception\NonIterableObjectException;
 use Mindshape\MindshapeCookieConsent\Exception\NotAnObjectException;
 use Mindshape\MindshapeCookieConsent\Exception\UnknownObjectException;
+use Traversable;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -41,7 +42,7 @@ class GroupViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('objects', 'mixed', 'Objects to group', true);
         $this->registerArgument('field', 'string', 'The field to group by', true);
@@ -61,7 +62,7 @@ class GroupViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         if (
-            !$arguments['objects'] instanceof \Traversable &&
+            !$arguments['objects'] instanceof Traversable &&
             false === is_array($arguments['objects'])
         ) {
             throw new NonIterableObjectException('This viewhelper accepts numbers only');
@@ -99,7 +100,7 @@ class GroupViewHelper extends AbstractViewHelper
         }
 
         if (true === (bool) $arguments['fillSmallerGroups'] && 0 < $chunkSize) {
-            foreach ($groupedObjectsChunks as $key => &$groupedObjects) {
+            foreach ($groupedObjectsChunks as &$groupedObjects) {
                 while ($chunkSize > count($groupedObjects)) {
                     $groupedObjects[] = null;
                 }

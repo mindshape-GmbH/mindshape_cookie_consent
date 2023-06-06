@@ -10,7 +10,7 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -27,7 +27,7 @@ class PercentageViewHelper extends AbstractViewHelper
 {
     use CompileWithRenderStatic;
 
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('total', 'mixed', 'The total amount to calculate the percatentage from', true);
         $this->registerArgument('fraction', 'mixed', 'The fraction to calculate the percatentage from', true);
@@ -37,10 +37,10 @@ class PercentageViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @return float
+     * @return float|int
      * @throws \Mindshape\MindshapeCookieConsent\Exception\NotANumberException
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): float|int
     {
         if (
             false === is_numeric($arguments['total']) ||

@@ -7,10 +7,10 @@
 
   <f:section name="Content">
 
-    <h2>{f:translate(key: 'module.statistic.options')}</h2>
+    <h2>{f:translate(key: 'module.statistic.options', extensionName: 'mindshape_cookie_consent')}</h2>
 
     <f:if condition="0 == {configuration.enableStatistic}">
-      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled')}</strong></p>
+      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
     </f:if>
     <f:if condition="{statisticOptions}">
       <f:if condition="{itemsPerPage} < {statisticOptions -> f:count()}">
@@ -39,8 +39,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>{f:translate(key: 'module.statistic.date')}</th>
-          <th>{f:translate(key: 'module.statistic.visitors_total')}</th>
+          <th>{f:translate(key: 'module.statistic.date', extensionName: 'mindshape_cookie_consent')}</th>
+          <th>{f:translate(key: 'module.statistic.visitors_total', extensionName: 'mindshape_cookie_consent')}</th>
           <f:for each="{cookieOptions}" as="cookieOption">
             <th>{cookieOption.label}</th>
           </f:for>

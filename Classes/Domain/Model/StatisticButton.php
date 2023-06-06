@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Model;
 
 /***
@@ -8,11 +9,9 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
-
-use DateTime;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Domain\Model
@@ -24,22 +23,22 @@ class StatisticButton extends AbstractStatistic
     /**
      * @var int
      */
-    protected $save = 0;
+    protected int $save = 0;
 
     /**
      * @var int
      */
-    protected $agreeToAll = 0;
+    protected int $agreeToAll = 0;
 
     /**
      * @var int
      */
-    protected $deny = 0;
+    protected int $deny = 0;
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
      */
-    public function __construct(Configuration $configuration)
+    public function initialize(Configuration $configuration): void
     {
         $this->_languageUid = $configuration->getLanguageUid();
         $this->configuration = $configuration;

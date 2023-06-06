@@ -8,14 +8,11 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'dorndorf@mindshape.de',
     'author_company' => 'mindshape GmbH',
     'state' => 'stable',
-    'uploadfolder' => 0,
-    'createDirs' => '',
-    'clearCacheOnLoad' => 1,
-    'version' => '2.2.5',
+    'version' => '3.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.2-11.5.99',
-            'php' => '7.2.0-8.0.99',
+            'typo3' => '11.5.2-12.4.99',
+            'php' => '8.0.0-8.2.99',
         ],
         'conflicts' => [],
         'suggests' => [],

@@ -10,7 +10,7 @@ namespace Mindshape\MindshapeCookieConsent\Utility;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -28,14 +28,14 @@ class DatabaseUtility
     /**
      * @var \TYPO3\CMS\Core\Database\Connection
      */
-    private static $databaseConnection;
+    private static Connection $databaseConnection;
 
     /**
      * @return \TYPO3\CMS\Core\Database\Connection
      */
     public static function databaseConnection(): Connection
     {
-        if (static::$databaseConnection instanceof Connection) {
+        if (static::$databaseConnection ?? null instanceof Connection) {
             return static::$databaseConnection;
         }
 
@@ -45,7 +45,7 @@ class DatabaseUtility
 
         try {
             $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        } catch (Exception $exception) {
+        } catch (Exception) {
             // ignore
         }
 

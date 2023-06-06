@@ -1,27 +1,40 @@
 <?php
-defined('TYPO3_MODE') || die();
+
+use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
+
+defined('TYPO3') || die();
 
 call_user_func(
     function () {
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY,
+        ExtensionUtility::registerPlugin(
+            SettingsUtility::EXTENSION_KEY,
             'Consent',
-            'LLL:EXT:' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/locallang.xlf:plugin.consent.title'
+            'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/locallang.xlf:plugin.consent.title',
+            SettingsUtility::EXTENSION_KEY . '-plugin-consent-icon',
+            'special'
         );
 
-        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY,
+        ExtensionUtility::registerPlugin(
+            SettingsUtility::EXTENSION_KEY,
             'Cookielist',
-            'LLL:EXT:' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/locallang.xlf:plugin.cookielist.title'
+            'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/locallang.xlf:plugin.cookielist.title',
+            SettingsUtility::EXTENSION_KEY . '-plugin-cookielist-icon',
+            'special'
         );
 
-        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][\Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_NAME . '_consent'] = 'recursive,select_key,pages';
-        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][\Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_NAME . '_consent'] = 'pi_flexform';
-        $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][\Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_NAME . '_cookielist'] = 'recursive,select_key,pages';
+        ExtensionManagementUtility::addPiFlexFormValue(
+            '*',
+            'FILE:EXT:' . SettingsUtility::EXTENSION_KEY . '/Configuration/FlexForms/Settings.xml',
+            SettingsUtility::EXTENSION_NAME . '_consent'
+        );
 
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue(
-            \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_NAME . '_consent',
-            'FILE:EXT:' . \Mindshape\MindshapeCookieConsent\Utility\SettingsUtility::EXTENSION_KEY . '/Configuration/FlexForms/Settings.xml'
+        ExtensionManagementUtility::addToAllTCAtypes(
+            'tt_content',
+            '--div--;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.plugin,pi_flexform',
+            SettingsUtility::EXTENSION_NAME . '_consent',
+            'after:header'
         );
     }
 );

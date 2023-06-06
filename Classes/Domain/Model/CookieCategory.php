@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -25,22 +25,22 @@ class CookieCategory extends AbstractEntity
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration
      */
-    protected $configuration;
+    protected Configuration $configuration;
 
     /**
      * @var string
      */
-    protected $label = '';
+    protected string $label = '';
 
     /**
      * @var string
      */
-    protected $info = '';
+    protected string $info = '';
 
     /**
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption>
      */
-    protected $cookieOptions;
+    protected ObjectStorage $cookieOptions;
 
     public function __construct()
     {

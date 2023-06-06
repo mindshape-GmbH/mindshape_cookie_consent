@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Service;
 
 /***
@@ -8,7 +9,7 @@ namespace Mindshape\MindshapeCookieConsent\Service;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -26,8 +27,9 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteInterface;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -39,58 +41,52 @@ class CookieConsentService implements SingletonInterface
     public const DEFAULT_CONTAINER_ID = 'cookie-consent';
 
     /**
-     * @var \Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService
-     */
-    protected $templateRenderingService;
-
-    /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository
      */
-    protected $configurationRepository;
+    protected ConfigurationRepository $configurationRepository;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\CookieOptionRepository
      */
-    protected $cookieOptionRepository;
+    protected CookieOptionRepository $cookieOptionRepository;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository
      */
-    protected $statisticCategoryRepository;
+    protected StatisticCategoryRepository $statisticCategoryRepository;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
      */
-    protected $statisticButtonRepository;
+    protected StatisticButtonRepository $statisticButtonRepository;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository
      */
-    protected $statisticOptionRepository;
+    protected StatisticOptionRepository $statisticOptionRepository;
 
     /**
-     * @var \TYPO3\CMS\Core\Site\Entity\Site
+     * @var \TYPO3\CMS\Core\Site\Entity\Site|\TYPO3\CMS\Core\Site\Entity\NullSite
      */
-    protected $currentSite;
+    protected Site|NullSite $currentSite;
 
     /**
      * @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage
      */
-    protected $currentSiteLanguage;
+    protected SiteLanguage $currentSiteLanguage;
 
     /**
-     * @var array
+     * @var array|null
      */
-    protected $settings;
+    protected ?array $settings;
 
     /**
      * @var bool
      */
-    protected static $editCookieButtonIsUsed = false;
+    protected static bool $editCookieButtonIsUsed = false;
 
     /**
      * @param \TYPO3\CMS\Core\Site\SiteFinder $siteFinder
-     * @param \Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService $templateRenderingService
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository $configurationRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\CookieOptionRepository $cookieOptionRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository $statisticCategoryRepository
@@ -99,14 +95,12 @@ class CookieConsentService implements SingletonInterface
      */
     public function __construct(
         SiteFinder $siteFinder,
-        TemplateRenderingService $templateRenderingService,
         ConfigurationRepository $configurationRepository,
         CookieOptionRepository $cookieOptionRepository,
         StatisticCategoryRepository $statisticCategoryRepository,
         StatisticButtonRepository $statisticButtonRepository,
         StatisticOptionRepository $statisticOptionRepository
     ) {
-        $this->templateRenderingService = $templateRenderingService;
         $this->configurationRepository = $configurationRepository;
         $this->cookieOptionRepository = $cookieOptionRepository;
         $this->statisticCategoryRepository = $statisticCategoryRepository;
@@ -120,41 +114,10 @@ class CookieConsentService implements SingletonInterface
             if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
                 $this->currentSiteLanguage = $GLOBALS['TSFE']->getLanguage();
             }
-        } catch (SiteNotFoundException $exception) {
+        } catch (SiteNotFoundException) {
             $this->currentSite = new NullSite();
             $this->currentSiteLanguage = $this->currentSite->getDefaultLanguage();
         }
-    }
-
-    /**
-     * @param string $containerId
-     * @return string
-     */
-    public function renderConsentModal(string $containerId = self::DEFAULT_CONTAINER_ID): string
-    {
-        $consent = $this->getConsentFromCookie();
-
-        $containerId = trim($containerId);
-
-        if ('' === $containerId) {
-            $containerId = self::DEFAULT_CONTAINER_ID;
-        }
-
-        if (!$consent instanceof Consent) {
-            $consent = new Consent();
-        }
-
-        return $this->templateRenderingService->render(
-            'Consent',
-            'Modal',
-            [
-                'id' => $containerId,
-                'consent' => $consent,
-                'configuration' => $this->currentConfiguration(),
-                'currentUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
-                'currentRootPageUid' => $this->currentSite->getRootPageId(),
-            ]
-        );
     }
 
     /**
@@ -288,7 +251,7 @@ class CookieConsentService implements SingletonInterface
     /**
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration|null
      */
-    protected function currentConfiguration(): ?Configuration
+    public function currentConfiguration(): ?Configuration
     {
         $configuration = null;
 
@@ -307,5 +270,13 @@ class CookieConsentService implements SingletonInterface
         }
 
         return $configuration;
+    }
+
+    /**
+     * @return \TYPO3\CMS\Core\Site\Entity\SiteInterface
+     */
+    public function currentSite(): SiteInterface
+    {
+        return $this->currentSite;
     }
 }

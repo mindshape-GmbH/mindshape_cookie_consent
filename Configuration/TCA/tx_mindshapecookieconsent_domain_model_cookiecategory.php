@@ -1,5 +1,9 @@
 <?php
 
+use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
+
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookie_category',
@@ -39,8 +43,8 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory::TABLE,
-                'foreign_table_where' => 'AND ' . \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory::TABLE . '.pid=###CURRENT_PID### AND ' . \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory::TABLE . '.sys_language_uid IN (-1,0)',
+                'foreign_table' => CookieCategory::TABLE,
+                'foreign_table_where' => 'AND ' . CookieCategory::TABLE . '.pid=###CURRENT_PID### AND ' . CookieCategory::TABLE . '.sys_language_uid IN (-1,0)',
                 'default' => 0,
                 'items' => [
                     ['', 0],
@@ -71,7 +75,7 @@ return [
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration::TABLE,
+                'foreign_table' => Configuration::TABLE,
             ],
         ],
         'label' => [
@@ -97,7 +101,7 @@ return [
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookie_category.cookie_options',
             'config' => [
                 'type' => 'inline',
-                'foreign_table' => \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption::TABLE,
+                'foreign_table' => CookieOption::TABLE,
                 'foreign_field' => 'cookie_category',
                 'foreign_label' => 'label',
                 'foreign_sortby' => 'sorting',

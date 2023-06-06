@@ -8,7 +8,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Model;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2021 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
+ *  (c) 2023 Daniel Dorndorf <dorndorf@mindshape.de>, mindshape GmbH
  *
  ***/
 
@@ -22,22 +22,22 @@ class StatisticOption extends AbstractStatistic
     public const TABLE = 'tx_mindshapecookieconsent_domain_model_statisticoption';
 
     /**
-     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption
+     * @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption|null
      */
-    protected $cookieOption;
+    protected ?CookieOption $cookieOption;
 
     /**
      * @var int
      */
-    protected $counter = 0;
+    protected int $counter = 0;
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
      * @param \DateTime $dateBegin
      * @param \DateTime $dateEnd
-     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption $cookieOption
+     * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption|null $cookieOption
      */
-    public function __construct(Configuration $configuration, DateTime $dateBegin, DateTime $dateEnd, CookieOption $cookieOption = null)
+    public function initialize(Configuration $configuration, DateTime $dateBegin, DateTime $dateEnd, CookieOption $cookieOption = null): void
     {
         $this->_languageUid = $configuration->getLanguageUid();
         $this->configuration = $configuration;
@@ -47,7 +47,7 @@ class StatisticOption extends AbstractStatistic
     }
 
     /**
-     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption
+     * @return \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption|null
      */
     public function getCookieOption(): ?CookieOption
     {
@@ -62,7 +62,7 @@ class StatisticOption extends AbstractStatistic
         return $this->counter;
     }
 
-    public function increaseCounter()
+    public function increaseCounter(): void
     {
         $this->counter++;
     }
