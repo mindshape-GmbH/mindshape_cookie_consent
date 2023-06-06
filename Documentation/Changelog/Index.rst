@@ -6,6 +6,14 @@
 Changelog
 =========
 
+* 3.0.0
+
+  * Add compatibility for TYPO3 v12
+  * Drop support for TYPO3 v10
+  * Add original click event to "cookieConsentButtonsReplaced"-event
+  * Add numbered pagination for backend optimization
+  * Only load scripts for accepted consent replacements
+
 * 2.2.5
 
   * Use proper total for deny buttons percentage calculation
