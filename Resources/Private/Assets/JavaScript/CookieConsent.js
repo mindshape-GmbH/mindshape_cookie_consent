@@ -635,6 +635,11 @@
 
     consentEventDispatch: function(originalReplaceButtonClickEvent) {
       const that = this;
+      let parentElement = undefined;
+
+      if (typeof originalReplaceButtonClickEvent !== 'undefined') {
+        parentElement = originalReplaceButtonClickEvent.target.closest('.cookie-consent-replacement').parentNode;
+      }
 
       if (false === this.hasCookie()) {
         throw new Error('Can\'t do event dispatch if the necessary cookie hasn\'t been set');
@@ -665,7 +670,10 @@
           'cookieConsentButtonsReplaced',
           {
             detail: Object.assign(
-              { originalEvent: originalReplaceButtonClickEvent },
+              {
+                originalEvent: originalReplaceButtonClickEvent,
+                parentElement: parentElement
+              },
               this.getCookie(),
             ),
           },
