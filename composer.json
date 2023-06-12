@@ -18,7 +18,7 @@
     "docs": "https://docs.typo3.org/p/mindshape/mindshape-cookie-consent/3.0/en-us/"
   },
   "require": {
-    "php": "~8.0 <=8.2",
+    "php": "~8.0 <8.3",
     "ext-json": "*",
     "ext-pdo": "*",
     "typo3/cms-core": "~11.5.2||~12.4",
