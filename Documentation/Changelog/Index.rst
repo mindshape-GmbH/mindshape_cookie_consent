@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 3.0.1
+
+  * Add consent replacement parent element due to unavailability after removing the original event target
+  * Allow PHP versions for 8.2.x properly in version constraint
+
 * 3.0.0
 
   * Add compatibility for TYPO3 v12
