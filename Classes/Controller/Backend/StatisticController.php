@@ -260,7 +260,7 @@ class StatisticController extends ActionController
             return $this->{$repositoryName}->findAllByConfiguration($configuration);
         }
 
-        $this->moduleTemplate->assign('date', $date);
+        $this->view->assign('date', $date);
 
         return $this->{$repositoryName}->findByMonth($configuration, $date);
     }
