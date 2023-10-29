@@ -24,8 +24,8 @@ call_user_func(
         ExtensionUtility::configurePlugin(
             SettingsUtility::EXTENSION_KEY,
             'Consent',
-            [ConsentController::class => 'settings,consent,renderConsentModal'],
-            [ConsentController::class => 'settings,consent,renderConsentModal'],
+            [ConsentController::class => 'settings,consent'],
+            [ConsentController::class => 'consent'],
             ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
 
@@ -33,7 +33,7 @@ call_user_func(
             SettingsUtility::EXTENSION_KEY,
             'Consentmodal',
             [ConsentController::class => 'modal'],
-            [ConsentController::class => 'modal'],
+            [],
             ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
 
