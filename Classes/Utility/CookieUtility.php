@@ -31,7 +31,13 @@ class CookieUtility
             return null;
         }
 
-        return json_decode($_COOKIE[$name], true);
+        $cookieValue = json_decode($_COOKIE[$name], true);
+
+        if (!is_array($cookieValue) || JSON_ERROR_NONE !== json_last_error()) {
+            return null;
+        }
+
+        return $cookieValue;
     }
 
     /**

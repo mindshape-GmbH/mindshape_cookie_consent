@@ -402,7 +402,13 @@
     getCookie: function () {
       const that = this;
       const cookie = document.cookie.match('(^|[^;]+)\\s*' + this.cookieName + '\\s*=\\s*([^;]+)');
-      const consent = null !== cookie ? JSON.parse(decodeURIComponent(cookie.pop())) : null;
+      let consent = null;
+
+      try {
+        consent = null !== cookie ? JSON.parse(decodeURIComponent(cookie.pop())) : null;
+      } catch (error) {
+        return null;
+      }
 
       if (null !== consent) {
         consent['hasOption'] = function (identifier) {
