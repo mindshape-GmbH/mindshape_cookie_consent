@@ -6,6 +6,13 @@
 Changelog
 =========
 
+* 3.0.2
+
+  * Use proper assignment for variable to view
+  * Allow caching of modal rendering
+  * Prevent exception caused by broken consent cookies
+  * Update and declare numbered_pagination dependency in emconf
+
 * 3.0.1
 
   * Add consent replacement parent element due to unavailability after removing the original event target
