@@ -38,10 +38,9 @@ class ConfigurationTcaUserFunc
 
     /**
      * @param array $parameters
-     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $tcaSelectItems
      * @throws \Doctrine\DBAL\Exception
      */
-    public function sitesItemsProcFunc(array $parameters, TcaSelectItems $tcaSelectItems): void
+    public function sitesItemsProcFunc(array $parameters): void
     {
         $items = &$parameters['items'];
         $currentSite = $parameters['row']['site'];
