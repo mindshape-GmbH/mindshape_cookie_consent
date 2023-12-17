@@ -41,8 +41,11 @@
       <trans-unit id="constants.settings.lazyloading_timeout">
         <target>Nach wie vielen Sekunden soll das Modal beim Lazyloading automatisch erscheinen (0 = deaktiviert)</target>
       </trans-unit>
-      <trans-unit id="constants.settings.hide_cookiecategories_in_overview">
-        <target>Verstecke Cookie-Kategorien in Übersicht Plugin</target>
+      <trans-unit id="constants.settings.hide_cookiecategories_in_list">
+        <target>Verstecke Cookie-Kategorien im Listen-Plugin</target>
+      </trans-unit>
+      <trans-unit id="constants.settings.add_necessary_cookie_category_in_list">
+        <target>Zeige die "Notwendige Cookies"-Kategorie im Listen-Plugin an</target>
       </trans-unit>
       <trans-unit id="constants.settings.add_markup_to_footer">
         <target>Markup automatisch dem Footer anfügen</target>

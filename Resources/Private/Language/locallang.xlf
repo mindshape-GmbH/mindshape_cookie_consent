@@ -41,8 +41,11 @@
       <trans-unit id="constants.settings.lazyloading_timeout">
         <source>After how many seconds the modal should appear automatically when lazyloading (0 = disabled)</source>
       </trans-unit>
-      <trans-unit id="constants.settings.hide_cookiecategories_in_overview">
-        <source>Hide cookie categories in overview plugin</source>
+      <trans-unit id="constants.settings.hide_cookiecategories_in_list">
+        <source>Hide cookie categories in list plugin</source>
+      </trans-unit>
+      <trans-unit id="constants.settings.add_necessary_cookie_category_in_list">
+        <source>Add necessary cookie category in list plugin</source>
       </trans-unit>
       <trans-unit id="constants.settings.add_markup_to_footer">
         <source>append markup automatically after footer</source>

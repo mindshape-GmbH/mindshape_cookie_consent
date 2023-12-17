@@ -2,7 +2,10 @@
 
 namespace Mindshape\MindshapeCookieConsent\Controller;
 
+use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
+use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***
  *
@@ -20,14 +23,42 @@ use Psr\Http\Message\ResponseInterface;
  */
 class CookieController extends AbstractController
 {
+    /**
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function listAction(): ResponseInterface
     {
-        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
+        $currentConfiguration = $this->cookieConsentService->currentConfiguration();
+        $cookieCategories = $this->cookieConsentService->getCurrentConfigurationCookieCategories()->toArray();
 
-        $this->view->assign(
-            'categories',
-            $this->cookieConsentService->getCurrentConfigurationCookieCategories()
-        );
+        if (
+            $currentConfiguration instanceof Configuration &&
+            $this->settings['addNecessaryCookieCategoryInList']
+        ) {
+            $necessaryCookiesCategory = new CookieCategory();
+            $necessaryCookiesCategory->setConfiguration($currentConfiguration);
+            $necessaryCookiesCategory->setCookieOptions(
+                $currentConfiguration->getNecessaryCookieOptions()
+            );
+            $necessaryCookiesCategory->setLabel(
+                LocalizationUtility::translate(
+                    'label.necessary_cookies',
+                    'MindshapeCookieConsent')
+            );
+            $necessaryCookiesCategory->setInfo(
+                LocalizationUtility::translate(
+                    'label.necessary_cookies.info',
+                    'MindshapeCookieConsent'
+                )
+            );
+
+            array_unshift($cookieCategories, $necessaryCookiesCategory);
+        }
+
+        $this->view->assignMultiple([
+            'data' => $this->configurationManager->getContentObject()->data,
+            'categories' => $cookieCategories,
+        ]);
 
         return $this->htmlResponse();
     }

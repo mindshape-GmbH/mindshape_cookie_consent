@@ -17,6 +17,7 @@ plugin.tx_mindshapecookieconsent {
     lazyloading = {$plugin.tx_mindshapecookieconsent.settings.lazyloading}
     lazyloadingTimeout = {$plugin.tx_mindshapecookieconsent.settings.lazyloadingTimeout}
     hideCategoriesInOverview = {$plugin.tx_mindshapecookieconsent.settings.hideCategoriesInOverview}
+    addNecessaryCookieCategoryInList = {$plugin.tx_mindshapecookieconsent.settings.addNecessaryCookieCategoryInList}
     ajaxPageType = {$plugin.tx_mindshapecookieconsent.settings.ajaxPageType}
     addMarkupToFooter = {$plugin.tx_mindshapecookieconsent.settings.addMarkupToFooter}
     addConfiguration = {$plugin.tx_mindshapecookieconsent.settings.addConfiguration}
