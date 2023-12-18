@@ -1,9 +1,9 @@
 {
   "name": "mindshape_cookie_consent",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "engines": {
-    "node": "^20"
+    "node": "^21.4"
   },
   "devDependencies": {
     "@babel/core": "^7.21",

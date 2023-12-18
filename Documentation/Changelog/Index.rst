@@ -6,6 +6,11 @@
 Changelog
 =========
 
+* 3.1.0
+
+  * Remove unnecessary parameter due to a breaking change
+  * Add option to add necessary cookie category to list plugin
+
 * 3.0.2
 
   * Use proper assignment for variable to view
