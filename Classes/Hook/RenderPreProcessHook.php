@@ -20,10 +20,10 @@ use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
 use Mindshape\MindshapeCookieConsent\Utility\RenderUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Hook
@@ -57,6 +57,9 @@ class RenderPreProcessHook
             $settings = SettingsUtility::pluginTypoScriptSettings();
 
             if (true === is_array($settings) && false === (bool)$settings['disableConsent']) {
+                /** @var \TYPO3\CMS\Core\Page\AssetCollector $assetCollector */
+                $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
+
                 if (true === (bool)$settings['addConfiguration']) {
                     $javaScriptConfiguration = [
                         'cookieName' => $settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME,
@@ -79,19 +82,32 @@ class RenderPreProcessHook
                             : $pageRenderer->getLanguage();
                     }
 
-                    $pageRenderer->addHeaderData('<script data-ignore="1">const cookieConsentConfiguration = JSON.parse(\'' . json_encode($javaScriptConfiguration) . '\');</script>');
+                    $assetCollector->addInlineJavaScript(
+                        'mindshape_cookie_consent_settings',
+                        'const cookieConsentConfiguration = JSON.parse(\'' . json_encode($javaScriptConfiguration) . '\');',
+                        ['data-ignore' => '1'],
+                        [
+                            'useNonce' => true,
+                            'priority' => true
+                        ]
+                    );
                 }
 
                 if (true === (bool)$settings['addJavaScript']) {
-                    $pageRenderer->addJsFooterLibrary(
-                        'cookie_consent',
-                        PathUtility::getPublicResourceWebPath('EXT:mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js')
+                    $assetCollector->addJavaScript(
+                        'mindshape_cookie_consent',
+                        'EXT:mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js',
+                        [],
+                        ['useNonce' => true]
                     );
                 }
 
                 if (true === (bool)$settings['addStylesheet']) {
-                    $pageRenderer->addCssFile(
-                        PathUtility::getPublicResourceWebPath('EXT:mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css')
+                    $assetCollector->addStyleSheet(
+                        'mindshape_cookie_consent',
+                        'EXT:mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css',
+                        [],
+                        ['useNonce' => true]
                     );
                 }
 
