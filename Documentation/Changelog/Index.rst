@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 3.1.1
+
+  * Use AssetCollector for consent JavaScript & StyleSheets
+
 * 3.1.0
 
   * Remove unnecessary parameter due to a breaking change
