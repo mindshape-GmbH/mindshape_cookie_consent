@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 3.1.2
+
+  * Increase maximum allowed PHP version
+
 * 3.1.1
 
   * Use AssetCollector for consent JavaScript & StyleSheets
