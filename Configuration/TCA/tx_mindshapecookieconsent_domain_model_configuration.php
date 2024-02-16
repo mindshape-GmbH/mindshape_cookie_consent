@@ -147,8 +147,6 @@ return [
                 'foreign_table' => CookieOption::TABLE,
                 'foreign_label' => 'label',
                 'foreign_sortby' => 'sorting',
-                'minitems' => 0,
-                'maxitems' => 10,
                 'appearance' => [
                     'newRecordLinkTitle' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.necessary_cookie_options.new_record',
                     'useSortable' => true,
@@ -229,8 +227,6 @@ return [
                 'foreign_field' => 'configuration',
                 'foreign_label' => 'label',
                 'foreign_sortby' => 'sorting',
-                'minitems' => 0,
-                'maxitems' => 10,
                 'appearance' => [
                     'newRecordLinkTitle' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.cookie_categories.new_record',
                     'useSortable' => true,

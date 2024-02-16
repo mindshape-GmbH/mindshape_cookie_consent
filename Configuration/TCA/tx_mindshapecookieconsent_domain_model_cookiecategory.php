@@ -105,8 +105,6 @@ return [
                 'foreign_field' => 'cookie_category',
                 'foreign_label' => 'label',
                 'foreign_sortby' => 'sorting',
-                'minitems' => 0,
-                'maxitems' => 10,
                 'appearance' => [
                     'newRecordLinkTitle' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookie_category.cookie_options.new_record',
                     'useSortable' => true,
