@@ -161,6 +161,15 @@
       <trans-unit id="tca.cookieoption.identifier">
         <source>Identificator (name of cookie)</source>
       </trans-unit>
+      <trans-unit id="tca.cookieoption.consent_mode">
+        <source>Google Consent Mode v2 (Basic)</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.consent_mode.analytics">
+        <source>Google Analytics</source>
+      </trans-unit>
+      <trans-unit id="tca.cookieoption.consent_mode.ads">
+        <source>Google Ads</source>
+      </trans-unit>
       <trans-unit id="tca.cookieoption.provider">
         <source>Provider</source>
       </trans-unit>

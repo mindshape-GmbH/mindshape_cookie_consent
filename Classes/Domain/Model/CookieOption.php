@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Model;
 
 /***
@@ -20,6 +21,8 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 class CookieOption extends AbstractValueObject
 {
     public const TABLE = 'tx_mindshapecookieconsent_domain_model_cookieoption';
+    public const CONSENT_MODE_ANALYTICS = 'analytics_storage';
+    public const CONSENT_MODE_ADS = 'ad_storage/ad_user_data/ad_personalization';
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null
@@ -35,6 +38,11 @@ class CookieOption extends AbstractValueObject
      * @var string
      */
     protected string $identifier = '';
+
+    /**
+     * @var string
+     */
+    protected string $consentMode = '';
 
     /**
      * @var string
@@ -112,6 +120,22 @@ class CookieOption extends AbstractValueObject
     public function setIdentifier(string $identifier): void
     {
         $this->identifier = $identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConsentMode(): string
+    {
+        return $this->consentMode;
+    }
+
+    /**
+     * @param string $consentMode
+     */
+    public function setConsentMode(string $consentMode): void
+    {
+        $this->consentMode = $consentMode;
     }
 
     /**

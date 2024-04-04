@@ -377,4 +377,20 @@ class Configuration extends AbstractEntity
 
         return false;
     }
+
+    /**
+     * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption>
+     */
+    public function getAllCookieOptions(): ObjectStorage
+    {
+        $cookieOptions = $this->getNecessaryCookieOptions();
+
+        foreach ($this->getCookieCategories() as $cookieCategory) {
+            foreach ($cookieCategory->getCookieOptions() as $cookieOption) {
+                $cookieOptions->attach($cookieOption);
+            }
+        }
+
+        return $cookieOptions;
+    }
 }

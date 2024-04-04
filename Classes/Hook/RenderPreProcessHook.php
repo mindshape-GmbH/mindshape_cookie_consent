@@ -14,6 +14,7 @@ namespace Mindshape\MindshapeCookieConsent\Hook;
  *
  ***/
 
+use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
@@ -68,10 +69,21 @@ class RenderPreProcessHook
                         'pushConsentToTagManager' => (bool)$settings['pushConsentToTagManager'],
                         'lazyloading' => (bool)$settings['lazyloading'],
                         'lazyloadingTimeout' => (int)$settings['lazyloadingTimeout'],
+                        'consentMode' => [],
                         'containerId' => false === empty($settings['containerId'])
                             ? $settings['containerId']
                             : CookieConsentService::DEFAULT_CONTAINER_ID,
                     ];
+
+                    $configuration = $cookieConsentService->currentConfiguration();
+
+                    if ($configuration instanceof Configuration) {
+                        foreach ($configuration->getAllCookieOptions() as $cookieOption) {
+                            if (!empty($cookieOption->getConsentMode())) {
+                                $javaScriptConfiguration['consentMode'][$cookieOption->getIdentifier()] = GeneralUtility::trimExplode('/', $cookieOption->getConsentMode());
+                            }
+                        }
+                    }
 
                     if (true === (bool)$settings['addLanguageToCookie']) {
                         /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $siteLanguage */

@@ -74,6 +74,7 @@
     lazyloadingEvents: ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'],
     consentButtons: [],
     consentScripts: [],
+    consentMode: {},
 
     /**
      * @param {object} configuration
@@ -88,15 +89,25 @@
       this.pushConsentToTagManager = 'pushConsentToTagManager' in configuration ? Boolean(configuration.pushConsentToTagManager) : false;
       this.lazyloading = 'lazyloading' in configuration ? Boolean(configuration.lazyloading) : this.lazyloading;
       this.lazyloadingTimeout = 'lazyloadingTimeout' in configuration ? parseInt(configuration.lazyloadingTimeout) * 1000 : this.lazyloadingTimeout;
+      this.consentMode = 'consentMode' in configuration ? configuration.consentMode : this.consentMode;
 
-      this.updateConsentButtons();
-
+      window.dataLayer = window.dataLayer || [];
       window[this.consentVariableName] = { consent: false, options: [] };
       window.cookieConsentModalToggle = function () {
         that.modalContainer.style.display = 'none' === that.modalContainer.style.display
           ? that.containerDisplayStyle
           : 'none';
       };
+
+      if (Object.keys(this.consentMode).length > 0) {
+        let consentMode = {};
+
+        Object.values(this.consentMode).forEach(consentModeItems => consentModeItems.forEach(
+          consentModeItem => consentMode[consentModeItem] = 'denied'
+        ));
+
+        window.dataLayer.push(['consent', 'default', consentMode]);
+      }
 
       if ('containerId' in configuration) {
         try {
@@ -130,8 +141,8 @@
         });
       });
 
-      this.consentButtons.forEach(function(acceptButton) {
-        acceptButton.addEventListener('click', function(event) {
+      this.consentButtons.forEach(function (acceptButton) {
+        acceptButton.addEventListener('click', function (event) {
           let cookie = that.getCookie();
           let cookieOpions = null !== cookie ? cookie.getOptions() : [];
 
@@ -174,7 +185,12 @@
       let lazyloadingTimeout = null;
 
       if (0 < this.lazyloadingTimeout) {
-        lazyloadingTimeout = setTimeout(function () {that.openModal(container);}, this.lazyloadingTimeout);
+        lazyloadingTimeout = setTimeout(
+          function () {
+            that.openModal(container);
+          },
+          this.lazyloadingTimeout
+        );
       }
 
       const interactionEventListener = function () {
@@ -392,7 +408,7 @@
     /**
      * @returns {boolean}
      */
-    hasConsent: function() {
+    hasConsent: function () {
       return true === this.hasCookie() && true === this.getCookie().getConsent();
     },
 
@@ -529,9 +545,10 @@
      * @param {array} [cookieOptions]
      * @param {Event|undefined} [originalReplaceButtonClickEvent]
      */
-    setConsentCookie: function(cookieOptions, originalReplaceButtonClickEvent) {
+    setConsentCookie: function (cookieOptions, originalReplaceButtonClickEvent) {
       const that = this;
       const expiryDate = new Date();
+      let consentModes = {}
 
       expiryDate.setDate(expiryDate.getDate() + this.expiryDays);
 
@@ -539,17 +556,29 @@
         cookieOptions = [];
 
         this.modalForm.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
-          if (true === checkbox.checked && null !== checkbox.getAttribute('data-identifier')) {
-            cookieOptions.push(checkbox.getAttribute('data-identifier'));
+          if (null !== checkbox.getAttribute('data-identifier')) {
+            if (true === checkbox.checked) {
+              cookieOptions.push(checkbox.getAttribute('data-identifier'));
+            } else if (checkbox.getAttribute('data-identifier') in that.consentMode) {
+              that.consentMode[checkbox.getAttribute('data-identifier')].forEach(
+                consentMode => consentModes[consentMode] = 'denied'
+              );
+            }
           }
         });
       }
 
-      if (
-        true === this.pushConsentToTagManager &&
-        window.dataLayer instanceof Object &&
-        window.dataLayer.push instanceof Function
-      ) {
+      cookieOptions.forEach(cookieOption => {
+        if (cookieOption in this.consentMode) {
+          this.consentMode[cookieOption].forEach(consentMode => consentModes[consentMode] = 'granted')
+        }
+      });
+
+      if (Object.keys(consentModes).length > 0) {
+        window.dataLayer.push(['consent', 'update', consentModes]);
+      }
+
+      if (true === this.pushConsentToTagManager) {
         window.dataLayer.push({
           'event': 'cookieConsent',
           'options': cookieOptions
@@ -639,7 +668,7 @@
       this.closeModalDetails(container);
     },
 
-    consentEventDispatch: function(originalReplaceButtonClickEvent) {
+    consentEventDispatch: function (originalReplaceButtonClickEvent) {
       const that = this;
       let parentElement = undefined;
 

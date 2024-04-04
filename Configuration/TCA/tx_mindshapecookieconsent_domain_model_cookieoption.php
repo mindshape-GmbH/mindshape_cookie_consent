@@ -13,7 +13,7 @@ return [
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
         'sortby' => 'sorting',
-        'searchFields' => 'label,identifier,provider,purpose,cookie_name,cookie_duration,info',
+        'searchFields' => 'label,identifier,consent_mode,provider,purpose,cookie_name,cookie_duration,info',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_cookieoption.png',
         'hideTable' => true,
         'enablecolumns' => [
@@ -21,7 +21,7 @@ return [
         ],
     ],
     'types' => [
-        '1' => ['showitem' => 'label, identifier, provider, purpose, cookie_name, cookie_duration, replacement_label, info'],
+        '1' => ['showitem' => 'label, identifier, consent_mode, provider, purpose, cookie_name, cookie_duration, replacement_label, info'],
     ],
     'palettes' => [],
     'columns' => [
@@ -96,6 +96,25 @@ return [
                 'size' => 30,
                 'max' => 255,
                 'eval' => 'trim,required',
+            ],
+        ],
+        'consent_mode' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.consent_mode',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['', ''],
+                    [
+                        'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.consent_mode.analytics',
+                        CookieOption::CONSENT_MODE_ANALYTICS,
+                    ],
+                    [
+                        'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.consent_mode.ads',
+                        CookieOption::CONSENT_MODE_ADS,
+                    ],
+                ],
             ],
         ],
         'provider' => [

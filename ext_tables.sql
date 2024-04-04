@@ -64,6 +64,7 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_cookieoption (
     `cookie_category`   int(11) unsigned    DEFAULT '0' NOT NULL,
     `label`             varchar(255)        DEFAULT ''  NOT NULL,
     `identifier`        varchar(255)        DEFAULT ''  NOT NULL,
+    `consent_mode`      varchar(255)        DEFAULT ''  NOT NULL,
     `provider`          varchar(255)        DEFAULT ''  NOT NULL,
     `purpose`           varchar(255)        DEFAULT ''  NOT NULL,
     `cookie_name`       varchar(255)        DEFAULT ''  NOT NULL,
