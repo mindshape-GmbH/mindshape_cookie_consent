@@ -72,7 +72,6 @@
     lazyloading: false,
     lazyloadingTimeout: 120000,
     lazyloadingEvents: ['mousedown', 'mousemove', 'keydown', 'scroll', 'touchstart'],
-    consentButtons: [],
     consentScripts: [],
     consentMode: {},
 
@@ -98,6 +97,9 @@
           ? that.containerDisplayStyle
           : 'none';
       };
+      window.cookieConsentReplaceConsentButtons = function () {
+        that.replaceConsentButtonsForAcceptedCookies();
+      }
 
       if (Object.keys(this.consentMode).length > 0) {
         let consentMode = {};
@@ -141,16 +143,20 @@
         });
       });
 
-      this.consentButtons.forEach(function (acceptButton) {
-        acceptButton.addEventListener('click', function (event) {
-          let cookie = that.getCookie();
-          let cookieOpions = null !== cookie ? cookie.getOptions() : [];
+      document.addEventListener('click', event => {
+        if (event.target.closest('.cookie-consent-replacement') instanceof HTMLElement) {
+          const acceptButton = event.target.classList.contains('.accept') ? event.target : event.target.closest('.accept');
 
-          cookieOpions.push(this.getAttribute('data-identifier'));
+          if (acceptButton instanceof HTMLElement) {
+            let cookie = this.getCookie();
+            let cookieOpions = null !== cookie ? cookie.getOptions() : [];
 
-          that.setConsentCookie(cookieOpions, event);
-          that.replaceConsentButtons(this.getAttribute('data-identifier'));
-        });
+            cookieOpions.push(acceptButton.getAttribute('data-identifier'));
+
+            that.setConsentCookie(cookieOpions, event);
+            that.replaceConsentButtons(acceptButton.getAttribute('data-identifier'));
+          }
+        }
       });
 
       this.modalForm.querySelectorAll('.option').forEach(function (optionCheckbox) {
@@ -206,8 +212,8 @@
       });
     },
 
-    updateConsentButtons: function () {
-      this.consentButtons = document.querySelectorAll('.cookie-consent-replacement .accept');
+    replaceConsentButtonsForAcceptedCookies: function () {
+      this.getCookie().getOptions().forEach(cookieOption => this.replaceConsentButtons(cookieOption));
     },
 
     /**
@@ -216,7 +222,7 @@
     replaceConsentButtons: function (cookieOption) {
       const that = this;
 
-      this.consentButtons.forEach(function (acceptButton) {
+      document.querySelectorAll('.cookie-consent-replacement .accept').forEach(function (acceptButton) {
         const consentReplacement = acceptButton.closest('.cookie-consent-replacement');
         const textArea = document.createElement('textarea');
         const replacement = document.createElement('div');
@@ -259,8 +265,6 @@
           }
 
           consentReplacement.parentNode.removeChild(consentReplacement);
-
-          that.updateConsentButtons();
         }
       });
     },
