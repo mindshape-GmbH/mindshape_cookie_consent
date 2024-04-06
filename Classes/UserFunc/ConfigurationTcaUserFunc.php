@@ -17,7 +17,6 @@ namespace Mindshape\MindshapeCookieConsent\UserFunc;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
 use PDO;
-use TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -43,8 +42,16 @@ class ConfigurationTcaUserFunc
     public function sitesItemsProcFunc(array $parameters): void
     {
         $items = &$parameters['items'];
-        $currentSite = $parameters['row']['site'];
-        $currentLanguageId = (int) (is_array($parameters['row']['sys_language_uid']) ? $parameters['row']['sys_language_uid'][0] : $parameters['row']['sys_language_uid']);
+        $currentSite = null;
+        $currentLanguageId = 0;
+
+        if (is_int($parameters['row']['uid'] ?? null)) {
+            [$currentSite, $currentLanguageId] = DatabaseUtility::databaseConnection()->select([
+                'site',
+                'sys_language_uid',
+            ], Configuration::TABLE, ['uid' => $parameters['row']['uid']])->fetchNumeric();
+        }
+
         $queryBuilder = DatabaseUtility::queryBuilder();
 
         $existingConfigurations = $queryBuilder
