@@ -66,6 +66,20 @@ The user can accept the whole option (e.g. all of "external media") or select a 
 
 **Important information:** Beware, that the cookie options shown in the cookie consent modal have no effect yet. To properly block and allow cookies, a developer needs to work with the event listeners (s. developer section).
 
+Google Consent Mode
+===================
+
+| If you want to use Google Consent mode for cookies you can use the select option in the cookie options.
+| For now only Google Ads & Analytics is supported, the selected options will be pushed to your TagManager with "denied" or "granted", depending on the users choice.
+| See `Googles documentation <https://developers.google.com/tag-platform/security/guides/consent?hl=en&consentmode=advanced#implementation_example>`__ about this topic.
+|
+
+.. figure:: ../Images/ConsentMode.jpg
+   :class: with-shadow
+   :alt: Google Consent Mode select for cookies
+
+   Google Consent Mode select for cookies
+
 The Cookie Consent Frontend Plugin
 ==================================
 
