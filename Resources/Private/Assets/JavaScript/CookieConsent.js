@@ -50,6 +50,10 @@
 })();
 
 (function (cookieConsentConfiguration) {
+  function gtag() {
+    window.dataLayer.push(arguments);
+  }
+
   const _cookieConsent = {
 
     cookieName: 'cookie_consent',
@@ -108,7 +112,7 @@
           consentModeItem => consentMode[consentModeItem] = 'denied'
         ));
 
-        window.dataLayer.push(['consent', 'default', consentMode]);
+        gtag('consent', 'default', consentMode);
       }
 
       if ('containerId' in configuration) {
@@ -552,7 +556,6 @@
     setConsentCookie: function (cookieOptions, originalReplaceButtonClickEvent) {
       const that = this;
       const expiryDate = new Date();
-      let consentModes = {}
 
       expiryDate.setDate(expiryDate.getDate() + this.expiryDays);
 
@@ -560,32 +563,9 @@
         cookieOptions = [];
 
         this.modalForm.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
-          if (null !== checkbox.getAttribute('data-identifier')) {
-            if (true === checkbox.checked) {
-              cookieOptions.push(checkbox.getAttribute('data-identifier'));
-            } else if (checkbox.getAttribute('data-identifier') in that.consentMode) {
-              that.consentMode[checkbox.getAttribute('data-identifier')].forEach(
-                consentMode => consentModes[consentMode] = 'denied'
-              );
-            }
+          if (null !== checkbox.getAttribute('data-identifier') && true === checkbox.checked) {
+            cookieOptions.push(checkbox.getAttribute('data-identifier'));
           }
-        });
-      }
-
-      cookieOptions.forEach(cookieOption => {
-        if (cookieOption in this.consentMode) {
-          this.consentMode[cookieOption].forEach(consentMode => consentModes[consentMode] = 'granted')
-        }
-      });
-
-      if (Object.keys(consentModes).length > 0) {
-        window.dataLayer.push(['consent', 'update', consentModes]);
-      }
-
-      if (true === this.pushConsentToTagManager) {
-        window.dataLayer.push({
-          'event': 'cookieConsent',
-          'options': cookieOptions
         });
       }
 
@@ -619,6 +599,13 @@
         + expiryDate.toUTCString()
         + ';samesite=strict'
         + ';path=/';
+
+      if (true === this.pushConsentToTagManager) {
+        gtag({
+          'event': 'cookieConsent',
+          'options': cookieOptions
+        });
+      }
 
       this.consentEventDispatch(originalReplaceButtonClickEvent);
     },
@@ -675,6 +662,11 @@
     consentEventDispatch: function (originalReplaceButtonClickEvent) {
       const that = this;
       let parentElement = undefined;
+      let consentModes = {}
+
+      Object.values(this.consentMode).forEach(consentModeItems => consentModeItems.forEach(
+        consentModeItem => consentModes[consentModeItem] = 'denied'
+      ));
 
       if (typeof originalReplaceButtonClickEvent !== 'undefined') {
         parentElement = originalReplaceButtonClickEvent.target.closest('.cookie-consent-replacement').parentNode;
@@ -702,7 +694,15 @@
 
       this.getCookie().getOptions().forEach(function (cookieOption) {
         that.replaceConsentButtons(cookieOption);
+
+        if (cookieOption in that.consentMode) {
+          that.consentMode[cookieOption].forEach(consentMode => consentModes[consentMode] = 'granted')
+        }
       });
+
+      if (Object.keys(consentModes).length > 0) {
+        gtag('consent', 'update', consentModes);
+      }
 
       window.dispatchEvent(
         new CustomEvent(
