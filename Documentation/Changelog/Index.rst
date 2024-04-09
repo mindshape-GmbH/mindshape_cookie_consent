@@ -6,6 +6,13 @@
 Changelog
 =========
 
+* 3.2.0
+
+  * Add Google Consent Mode for cookie options
+  * Remove max items validation for categories and cookie options
+  * Use event delegation for consent button replacements
+  * Add workaround for a `Core bug <https://forge.typo3.org/issues/102847>`__ creating errors in the backend
+
 * 3.1.2
 
   * Increase maximum allowed PHP version
