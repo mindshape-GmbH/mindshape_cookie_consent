@@ -294,6 +294,9 @@
       <trans-unit id="module.statistic.date_select_all">
         <source>Total period</source>
       </trans-unit>
+      <trans-unit id="module.statistic.language_id">
+        <source>Language ID: %d</source>
+      </trans-unit>
 
       <trans-unit id="label.imprint">
         <source>Imprint</source>

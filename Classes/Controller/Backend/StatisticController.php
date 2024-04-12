@@ -27,6 +27,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -296,11 +297,19 @@ class StatisticController extends ActionController
             if ($site instanceof Site) {
                 $languageLabel = $site->getLanguageById($configuration->getLanguageUid())->getTitle();
             } elseif (0 < $configuration->getLanguageUid()) {
-                $languageLabel = DatabaseUtility::databaseConnection()->select(
-                    ['title'],
-                    'sys_language',
-                    ['uid' => $configuration->getLanguageUid()]
-                )->fetchOne();
+                if ((new Typo3Version())->getMajorVersion() < 12) {
+                    $languageLabel = DatabaseUtility::databaseConnection()->select(
+                        ['title'],
+                        'sys_language',
+                        ['uid' => $configuration->getLanguageUid()]
+                    )->fetchOne();
+                } else {
+                    $languageLabel = LocalizationUtility::translate(
+                        'module.statistic.language_id',
+                        'mindshape_cookie_consent',
+                        [$configuration->getLanguageUid()]
+                    );
+                }
             }
 
             if (true === is_string($languageLabel)) {

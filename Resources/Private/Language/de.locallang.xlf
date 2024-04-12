@@ -294,6 +294,9 @@
       <trans-unit id="module.statistic.date_select_all">
         <target>Gesamter Zeitraum</target>
       </trans-unit>
+      <trans-unit id="module.statistic.language_id">
+        <target>Sprach ID: %d</target>
+      </trans-unit>
 
       <trans-unit id="label.imprint">
         <target>Impressum</target>
