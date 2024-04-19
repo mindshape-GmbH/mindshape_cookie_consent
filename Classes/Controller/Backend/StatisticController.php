@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
@@ -96,21 +97,6 @@ class StatisticController extends ActionController
         $this->statisticOptionRepository = $statisticOptionRepository;
         $this->statisticButtonRepository = $statisticButtonRepository;
         $this->configurationRepository = $configurationRepository;
-
-        $currentConfiguration = null;
-        $parameters = GeneralUtility::_GET('tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic');
-
-        if (true === is_array($parameters)) {
-            if (true === array_key_exists('configuration', $parameters)) {
-                $currentConfiguration = $this->configurationRepository->findByUidIgnoreLanguage((int)$parameters['configuration']);
-            }
-        }
-
-        if (!$currentConfiguration instanceof Configuration) {
-            $currentConfiguration = $this->configurationRepository->findAll()->getFirst();
-        }
-
-        $this->currentConfiguration = $currentConfiguration;
     }
 
     /**
@@ -121,9 +107,29 @@ class StatisticController extends ActionController
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
 
-        if ($this->currentConfiguration instanceof Configuration) {
-            $this->buildActionMenu($this->currentConfiguration);
-            $this->buildDateMenu($this->currentConfiguration);
+        $currentConfiguration = null;
+        $currentConfigurationId = null;
+        $parameters = $this->request->getQueryParams();
+
+        if ((new Typo3Version())->getMajorVersion() < 12 && ArrayUtility::isValidPath($parameters, 'tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic/configuration')) {
+            $currentConfigurationId = (int)ArrayUtility::getValueByPath($parameters, 'tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic/configuration');
+        } elseif (array_key_exists('configuration', $parameters)) {
+            $currentConfigurationId = (int)$parameters['configuration'];
+        }
+
+        if (is_int($currentConfigurationId) && $currentConfigurationId > 0) {
+            $currentConfiguration = $this->configurationRepository->findByUidIgnoreLanguage($currentConfigurationId);
+        }
+
+        if (!$currentConfiguration instanceof Configuration) {
+            $currentConfiguration = $this->configurationRepository->findAll()->getFirst();
+        }
+
+        $this->currentConfiguration = $currentConfiguration;
+
+        if ($currentConfiguration instanceof Configuration) {
+            $this->buildActionMenu($currentConfiguration);
+            $this->buildDateMenu($currentConfiguration);
         }
     }
 
@@ -316,14 +322,17 @@ class StatisticController extends ActionController
                 $siteLabel .= ' (' . $languageLabel . ')';
             }
 
+            $configurationId = $configuration->_getProperty('_localizedUid') ?? $configuration->getUid();
+            $currentConfigurationId = $currentConfiguration->_getProperty('_localizedUid') ?? $currentConfiguration->getUid();
+
             $actionMenu->addMenuItem(
                 $actionMenu
                     ->makeMenuItem()
                     ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.buttons', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
-                    ->setHref($this->uriBuilder->reset()->uriFor('statisticButtons', ['configuration' => $configuration]))
+                    ->setHref($this->uriBuilder->reset()->uriFor('statisticButtons', ['configuration' => $configurationId]))
                     ->setActive(
                         'statisticButtonsAction' === $this->actionMethodName &&
-                        $configuration->getUid() === $currentConfiguration->getUid()
+                        $configurationId === $currentConfigurationId
                     )
             );
 
@@ -331,10 +340,10 @@ class StatisticController extends ActionController
                 $actionMenu
                     ->makeMenuItem()
                     ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.categories', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
-                    ->setHref($this->uriBuilder->reset()->uriFor('statisticCategories', ['configuration' => $configuration]))
+                    ->setHref($this->uriBuilder->reset()->uriFor('statisticCategories', ['configuration' => $configurationId]))
                     ->setActive(
                         'statisticCategoriesAction' === $this->actionMethodName &&
-                        $configuration->getUid() === $currentConfiguration->getUid()
+                        $configurationId === $currentConfigurationId
                     )
             );
 
@@ -342,10 +351,10 @@ class StatisticController extends ActionController
                 $actionMenu
                     ->makeMenuItem()
                     ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.options', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
-                    ->setHref($this->uriBuilder->reset()->uriFor('statisticOptions', ['configuration' => $configuration]))
+                    ->setHref($this->uriBuilder->reset()->uriFor('statisticOptions', ['configuration' => $configurationId]))
                     ->setActive(
                         'statisticOptionsAction' === $this->actionMethodName &&
-                        $configuration->getUid() === $currentConfiguration->getUid()
+                        $configurationId === $currentConfigurationId
                     )
             );
         }
