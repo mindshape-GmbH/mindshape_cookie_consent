@@ -14,6 +14,7 @@ plugin.tx_mindshapecookieconsent {
     containerId = {$plugin.tx_mindshapecookieconsent.settings.containerId}
     hideIfJavaScriptDisabled = {$plugin.tx_mindshapecookieconsent.settings.hideIfJavaScriptDisabled}
     pushConsentToTagManager = {$plugin.tx_mindshapecookieconsent.settings.pushConsentToTagManager}
+    reloadOnReeditDeny = {$plugin.tx_mindshapecookieconsent.settings.reloadOnReeditDeny}
     lazyloading = {$plugin.tx_mindshapecookieconsent.settings.lazyloading}
     lazyloadingTimeout = {$plugin.tx_mindshapecookieconsent.settings.lazyloadingTimeout}
     hideCategoriesInOverview = {$plugin.tx_mindshapecookieconsent.settings.hideCategoriesInOverview}

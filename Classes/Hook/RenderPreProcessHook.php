@@ -66,6 +66,7 @@ class RenderPreProcessHook
                         'cookieName' => $settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME,
                         'expiryDays' => (int)$settings['expiryDays'],
                         'hideOnInit' => $isInitialHidePage,
+                        'reloadOnReeditDeny' => (bool)$settings['reloadOnReeditDeny'],
                         'pushConsentToTagManager' => (bool)$settings['pushConsentToTagManager'],
                         'lazyloading' => (bool)$settings['lazyloading'],
                         'lazyloadingTimeout' => (int)$settings['lazyloadingTimeout'],

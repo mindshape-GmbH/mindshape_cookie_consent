@@ -35,6 +35,9 @@
       <trans-unit id="constants.settings.push_consent_to_tag_manager">
         <source>Send approved options as an event to Google TagManager</source>
       </trans-unit>
+      <trans-unit id="constants.settings.reload_on_reedit_deny">
+        <source>Reload the page if consent is subsequently declined</source>
+      </trans-unit>
       <trans-unit id="constants.settings.lazyloading">
         <source>Show the modal only after an interaction of the user</source>
       </trans-unit>

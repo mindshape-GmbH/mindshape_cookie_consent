@@ -71,6 +71,8 @@
     selectAllButton: null,
     isSelectAll: false,
     isDeny: false,
+    isReediting: false,
+    reloadOnReeditDeny: false,
     hideOnInit: false,
     pushConsentToTagManager: false,
     lazyloading: false,
@@ -89,6 +91,7 @@
       this.currentLanguageCode = 'currentLanguageCode' in configuration ? configuration.currentLanguageCode : this.currentLanguageCode;
       this.expiryDays = 'expiryDays' in configuration ? parseInt(configuration.expiryDays) : this.expiryDays;
       this.hideOnInit = 'hideOnInit' in configuration ? Boolean(configuration.hideOnInit) : this.hideOnInit;
+      this.reloadOnReeditDeny = 'reloadOnReeditDeny' in configuration ? Boolean(configuration.reloadOnReeditDeny) : this.reloadOnReeditDeny;
       this.pushConsentToTagManager = 'pushConsentToTagManager' in configuration ? Boolean(configuration.pushConsentToTagManager) : false;
       this.lazyloading = 'lazyloading' in configuration ? Boolean(configuration.lazyloading) : this.lazyloading;
       this.lazyloadingTimeout = 'lazyloadingTimeout' in configuration ? parseInt(configuration.lazyloadingTimeout) * 1000 : this.lazyloadingTimeout;
@@ -144,6 +147,7 @@
         openButton.addEventListener('click', function (event) {
           event.preventDefault();
           that.modalContainer.style.display = that.containerDisplayStyle;
+          that.isReediting = true;
         });
       });
 
@@ -368,6 +372,10 @@
 
           that.toggleFormDisabledState(true);
           that.submitForm();
+
+          if (that.reloadOnReeditDeny && that.isReediting) {
+            window.location.reload();
+          }
         });
       }
 
