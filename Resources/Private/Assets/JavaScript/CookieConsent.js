@@ -237,7 +237,7 @@
 
           Array.prototype.slice.call(replacement.children).forEach(function (replaceElement) {
             consentReplacement.parentNode.appendChild(replaceElement);
-            consentReplacement.parentNode.insertBefore(consentReplacement, replaceElement);
+            consentReplacement.parentNode.insertBefore(replaceElement, consentReplacement);
           });
 
           if (true === consentReplacement.hasAttribute('data-scripts')) {
