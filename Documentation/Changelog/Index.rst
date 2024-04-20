@@ -6,6 +6,13 @@
 Changelog
 =========
 
+* 3.2.1
+
+  * Add optional page reload if consent is denied on re-editing
+  * Insert replacement element at the proper position in DOM
+  * Properly determine configuration parameter & language in statistic module
+  * Add version dependent language label handling for statistic module
+
 * 3.2.0
 
   * Add Google Consent Mode for cookie options
