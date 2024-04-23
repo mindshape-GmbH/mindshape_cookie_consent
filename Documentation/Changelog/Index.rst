@@ -6,6 +6,10 @@
 Changelog
 =========
 
+* 3.2.2
+
+  * Clone object storage to prevent mixing of cookie options
+
 * 3.2.1
 
   * Add optional page reload if consent is denied on re-editing
