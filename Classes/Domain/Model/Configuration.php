@@ -383,7 +383,7 @@ class Configuration extends AbstractEntity
      */
     public function getAllCookieOptions(): ObjectStorage
     {
-        $cookieOptions = $this->getNecessaryCookieOptions();
+        $cookieOptions = clone $this->getNecessaryCookieOptions();
 
         foreach ($this->getCookieCategories() as $cookieCategory) {
             foreach ($cookieCategory->getCookieOptions() as $cookieOption) {
