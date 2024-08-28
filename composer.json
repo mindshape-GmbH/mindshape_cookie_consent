@@ -21,7 +21,7 @@
     "php": ">=8.0 <8.4",
     "ext-json": "*",
     "ext-pdo": "*",
-    "typo3/cms-core": "~11.5.2||~12.4",
+    "typo3/cms-core": "~11.5.39||~12.4",
     "georgringer/numbered-pagination": "~2.0"
   },
   "autoload": {
