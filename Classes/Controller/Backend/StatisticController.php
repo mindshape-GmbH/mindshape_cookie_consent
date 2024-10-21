@@ -22,7 +22,6 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -279,7 +278,7 @@ class StatisticController extends ActionController
     protected function buildActionMenu(Configuration $currentConfiguration): void
     {
         $actionMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $actionMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_action');
+        $actionMenu->setIdentifier('mindshape_cookie_consent_action');
 
         /** @var \TYPO3\CMS\Core\Site\SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
@@ -297,7 +296,7 @@ class StatisticController extends ActionController
             }
 
             if (Configuration::SITE_ALL_SITES === $siteIdentifier) {
-                $siteLabel = LocalizationUtility::translate('tca.configuration.site.all', SettingsUtility::EXTENSION_KEY);
+                $siteLabel = LocalizationUtility::translate('tca.configuration.site.all', 'mindshape_cookie_consent');
             }
 
             if ($site instanceof Site) {
@@ -328,8 +327,8 @@ class StatisticController extends ActionController
             $actionMenu->addMenuItem(
                 $actionMenu
                     ->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.buttons', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
                     ->setHref($this->uriBuilder->reset()->uriFor('statisticButtons', ['configuration' => $configurationId]))
+                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.buttons', 'mindshape_cookie_consent') . ' - ' . $siteLabel)
                     ->setActive(
                         'statisticButtonsAction' === $this->actionMethodName &&
                         $configurationId === $currentConfigurationId
@@ -339,8 +338,8 @@ class StatisticController extends ActionController
             $actionMenu->addMenuItem(
                 $actionMenu
                     ->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.categories', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
                     ->setHref($this->uriBuilder->reset()->uriFor('statisticCategories', ['configuration' => $configurationId]))
+                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.categories', 'mindshape_cookie_consent') . ' - ' . $siteLabel)
                     ->setActive(
                         'statisticCategoriesAction' === $this->actionMethodName &&
                         $configurationId === $currentConfigurationId
@@ -350,8 +349,8 @@ class StatisticController extends ActionController
             $actionMenu->addMenuItem(
                 $actionMenu
                     ->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.options', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
                     ->setHref($this->uriBuilder->reset()->uriFor('statisticOptions', ['configuration' => $configurationId]))
+                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.options', 'mindshape_cookie_consent') . ' - ' . $siteLabel)
                     ->setActive(
                         'statisticOptionsAction' === $this->actionMethodName &&
                         $configurationId === $currentConfigurationId
@@ -368,7 +367,7 @@ class StatisticController extends ActionController
     protected function buildDateMenu(Configuration $currentConfiguration): void
     {
         $dateMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $dateMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_date');
+        $dateMenu->setIdentifier('mindshape_cookie_consent_date');
 
         $currentAction = substr($this->actionMethodName, 0, -6);
 
@@ -396,7 +395,7 @@ class StatisticController extends ActionController
         $dateMenu->addMenuItem(
             $dateMenu
                 ->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('module.statistic.date_select_all', SettingsUtility::EXTENSION_KEY))
+                ->setTitle(LocalizationUtility::translate('module.statistic.date_select_all', 'mindshape_cookie_consent'))
                 ->setActive(!$currentDate instanceof DateTime)
                 ->setHref($this->uriBuilder->reset()->uriFor($currentAction, [
                     'configuration' => $currentConfiguration,

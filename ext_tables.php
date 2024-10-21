@@ -14,7 +14,7 @@ defined('TYPO3') or die();
 
 call_user_func(
     function () {
-        ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:' . SettingsUtility::EXTENSION_KEY . '/Configuration/TSconfig/ContentElementWizard.typoscript">');
+        ExtensionManagementUtility::addPageTSConfig('<INCLUDE_TYPOSCRIPT: source="FILE:EXT:mindshape_cookie_consent/Configuration/TSconfig/ContentElementWizard.typoscript">');
 
         ExtensionManagementUtility::allowTableOnStandardPages('tx_mindshapecookieconsent_domain_model_configuration');
         ExtensionManagementUtility::allowTableOnStandardPages('tx_mindshapecookieconsent_domain_model_cookiecategory');
@@ -24,27 +24,27 @@ call_user_func(
         $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
 
         $iconRegistry->registerIcon(
-            SettingsUtility::EXTENSION_KEY . '-plugin-consent-icon',
+            'mindshape_cookie_consent-plugin-consent-icon',
             SvgIconProvider::class,
-            ['source' => 'EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Public/Icons/plugin-consent.svg']
+            ['source' => 'EXT:' . 'mindshape_cookie_consent/Resources/Public/Icons/plugin-consent.svg']
         );
 
         $iconRegistry->registerIcon(
-            SettingsUtility::EXTENSION_KEY . '-plugin-cookielist-icon',
+            'mindshape_cookie_consent-plugin-cookielist-icon',
             SvgIconProvider::class,
-            ['source' => 'EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Public/Icons/plugin-cookielist.svg']
+            ['source' => 'EXT:' . 'mindshape_cookie_consent/Resources/Public/Icons/plugin-cookielist.svg']
         );
 
         $iconRegistry->registerIcon(
-            'module-' . SettingsUtility::EXTENSION_NAME,
+            'module-mindshapecookieconsent',
             SvgIconProvider::class,
-            ['source' => 'EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Public/Icons/Extension.svg']
+            ['source' => 'EXT:' . 'mindshape_cookie_consent/Resources/Public/Icons/Extension.svg']
         );
 
         $iconRegistry->registerIcon(
-            'module-' . SettingsUtility::EXTENSION_NAME . '-statistic',
+            'module-mindshapecookieconsent' . '-statistic',
             BitmapIconProvider::class,
-            ['source' => 'EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Public/Icons/module_statistic.png']
+            ['source' => 'EXT:' . 'mindshape_cookie_consent/Resources/Public/Icons/module_statistic.png']
         );
 
         if ((new Typo3Version())->getMajorVersion() < 12) {
@@ -54,19 +54,19 @@ call_user_func(
             $modulesEnd = array_slice($GLOBALS['TBE_MODULES'], $webModuleIndex, null, true);
 
             $GLOBALS['TBE_MODULES'] = $modulesStart;
-            $GLOBALS['TBE_MODULES'] += [SettingsUtility::EXTENSION_NAME => ''];
+            $GLOBALS['TBE_MODULES'] += ['mindshapecookieconsent' => ''];
             $GLOBALS['TBE_MODULES'] += $modulesEnd;
 
-            $GLOBALS['TBE_MODULES']['_configuration'][SettingsUtility::EXTENSION_NAME] = [
-                'labels' => 'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/module_locallang.xlf',
-                'name' => SettingsUtility::EXTENSION_NAME,
+            $GLOBALS['TBE_MODULES']['_configuration']['mindshapecookieconsent'] = [
+                'labels' => 'LLL:EXT:' . 'mindshape_cookie_consent/Resources/Private/Language/module_locallang.xlf',
+                'name' => 'mindshapecookieconsent',
                 'workspaces' => 'online',
-                'iconIdentifier' => 'module-' . SettingsUtility::EXTENSION_NAME,
+                'iconIdentifier' => 'module-mindshapecookieconsent',
             ];
 
             ExtensionUtility::registerModule(
                 'MindshapeCookieConsent',
-                SettingsUtility::EXTENSION_NAME,
+                'mindshapecookieconsent',
                 'statistic',
                 '',
                 [
@@ -74,8 +74,8 @@ call_user_func(
                 ],
                 [
                     'access' => 'user,group',
-                    'iconIdentifier' => 'module-' . SettingsUtility::EXTENSION_NAME . '-statistic',
-                    'labels' => 'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/module_statistic_locallang.xlf',
+                    'iconIdentifier' => 'module-mindshapecookieconsent-statistic',
+                    'labels' => 'LLL:EXT:' . 'mindshape_cookie_consent/Resources/Private/Language/module_statistic_locallang.xlf',
                 ]
             );
         }

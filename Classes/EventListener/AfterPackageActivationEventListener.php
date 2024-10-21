@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\EventListener;
 
 /***
@@ -13,7 +14,6 @@ namespace Mindshape\MindshapeCookieConsent\EventListener;
  ***/
 
 use Mindshape\MindshapeCookieConsent\Service\ExtensionDefaultDataServiceTrait;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
 
 /**
@@ -28,7 +28,7 @@ class AfterPackageActivationEventListener
      */
     public function __invoke(AfterPackageActivationEvent $afterPackageActivationEvent): void
     {
-        if (SettingsUtility::EXTENSION_KEY === $afterPackageActivationEvent->getPackageKey()) {
+        if ($afterPackageActivationEvent->getPackageKey() === 'mindshape_cookie_consent') {
             $this->extensionDefaultDataService->checkAndAddDefaultConfigurations();
         }
     }

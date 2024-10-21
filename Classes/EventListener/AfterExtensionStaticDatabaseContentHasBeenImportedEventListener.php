@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\EventListener;
 
 /***
@@ -13,7 +14,6 @@ namespace Mindshape\MindshapeCookieConsent\EventListener;
  ***/
 
 use Mindshape\MindshapeCookieConsent\Service\ExtensionDefaultDataServiceTrait;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent;
 
 /**
@@ -26,9 +26,10 @@ class AfterExtensionStaticDatabaseContentHasBeenImportedEventListener
     /**
      * @param \TYPO3\CMS\Extensionmanager\Event\AfterExtensionStaticDatabaseContentHasBeenImportedEvent $afterExtensionStaticDatabaseContentHasBeenImportedEvent
      */
-    public function __invoke(AfterExtensionStaticDatabaseContentHasBeenImportedEvent $afterExtensionStaticDatabaseContentHasBeenImportedEvent): void
-    {
-        if (SettingsUtility::EXTENSION_KEY === $afterExtensionStaticDatabaseContentHasBeenImportedEvent->getPackageKey()) {
+    public function __invoke(
+        AfterExtensionStaticDatabaseContentHasBeenImportedEvent $afterExtensionStaticDatabaseContentHasBeenImportedEvent
+    ): void {
+        if ($afterExtensionStaticDatabaseContentHasBeenImportedEvent->getPackageKey() === 'mindshape_cookie_consent') {
             $this->extensionDefaultDataService->checkAndAddDefaultConfigurations();
         }
     }

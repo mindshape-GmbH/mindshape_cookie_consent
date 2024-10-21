@@ -19,7 +19,6 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -146,7 +145,7 @@ class ExtensionDefaultDataService implements SingletonInterface
     {
         return LocalizationUtility::translate(
             $key,
-            SettingsUtility::EXTENSION_KEY,
+            'mindshape_cookie_consent',
             $arguments,
             $siteLanguage->getTypo3Language()
         );
