@@ -13,9 +13,6 @@ return [
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_statistic.png',
         'hideTable' => true,
     ],
-    'interface' => [
-        'showRecordFieldList' => 'date_begin, date_end, cookie_category, counter',
-    ],
     'types' => [
         '1' => ['showitem' => 'date_begin, date_end, cookie_category, counter'],
     ],
@@ -34,11 +31,10 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_category.date_start',
             'config' => [
+                'type' => 'datetime',
                 'dbType' => 'datetime',
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
                 'size' => 12,
-                'eval' => 'datetime,required',
+                'required' => true,
                 'default' => null,
             ],
         ],
@@ -46,11 +42,10 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_category.date_end',
             'config' => [
+                'type' => 'datetime',
                 'dbType' => 'datetime',
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
                 'size' => 12,
-                'eval' => 'datetime,required',
+                'required' => true,
                 'default' => null,
             ],
         ],
@@ -69,8 +64,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_category.counter',
             'config' => [
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
                 'range' => [
                     'lower' => 0,
                 ],

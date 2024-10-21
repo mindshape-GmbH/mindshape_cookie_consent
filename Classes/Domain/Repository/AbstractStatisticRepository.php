@@ -13,6 +13,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  *
  ***/
 
+use DateMalformedStringException;
 use DateTime;
 use DateTimeZone;
 use Doctrine\DBAL\Exception as DBALException;
@@ -20,6 +21,7 @@ use Doctrine\DBAL\ParameterType;
 use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
@@ -64,7 +66,17 @@ abstract class AbstractStatisticRepository extends Repository
     public function findByMonth(Configuration $configuration, DateTime $date): QueryResultInterface
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setLanguageUid($configuration->getLanguageUid());
+        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
+
+        $query->getQuerySettings()
+            ->setLanguageAspect(
+                new LanguageAspect(
+                    $configuration->getLanguageUid(),
+                    $languageAspect->getContentId(),
+                    $languageAspect->getOverlayType(),
+                    $languageAspect->getFallbackChain()
+                )
+            );
 
         try {
             $query->matching(
@@ -74,7 +86,7 @@ abstract class AbstractStatisticRepository extends Repository
                     $query->lessThan('dateEnd', $date->modify('last day of this month 23:59:59')->format('c')),
                 )
             );
-        } catch (InvalidQueryException) {
+        } catch (InvalidQueryException|DateMalformedStringException) {
             // ignore
         }
 
@@ -95,7 +107,10 @@ abstract class AbstractStatisticRepository extends Repository
             ->select('date_begin')
             ->from($tableName)
             ->where(
-                $queryBuilder->expr()->eq($languageField, $queryBuilder->createNamedParameter($languageUid, ParameterType::INTEGER))
+                $queryBuilder->expr()->eq(
+                    $languageField,
+                    $queryBuilder->createNamedParameter($languageUid, ParameterType::INTEGER)
+                )
             )
             ->orderBy('date_begin', 'DESC')
             ->groupBy('DATE_FORMAT(date_begin, "%Y-%m")');
@@ -133,7 +148,17 @@ abstract class AbstractStatisticRepository extends Repository
     public function findAllByConfiguration(Configuration $configuration): QueryResultInterface
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setLanguageUid($configuration->getLanguageUid());
+        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
+
+        $query->getQuerySettings()
+            ->setLanguageAspect(
+                new LanguageAspect(
+                    $configuration->getLanguageUid(),
+                    $languageAspect->getContentId(),
+                    $languageAspect->getOverlayType(),
+                    $languageAspect->getFallbackChain()
+                )
+            );
 
         $query->matching(
             $query->equals('configuration', $configuration->getUid())

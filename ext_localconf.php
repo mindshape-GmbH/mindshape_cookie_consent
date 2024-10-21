@@ -4,7 +4,6 @@ use Mindshape\MindshapeCookieConsent\Controller\ConsentController;
 use Mindshape\MindshapeCookieConsent\Controller\CookieController;
 use Mindshape\MindshapeCookieConsent\Hook\RenderPreProcessHook;
 use Mindshape\MindshapeCookieConsent\Hook\TCEMainHook;
-use Mindshape\MindshapeCookieConsent\Updates\PluginCTypeMigrationUpdateWizard;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
@@ -43,9 +42,6 @@ call_user_func(
             [CookieController::class => ''],
             ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
-
-
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'][PluginCTypeMigrationUpdateWizard::class] = PluginCTypeMigrationUpdateWizard::class;
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_pagerenderer.php']['render-preProcess'][] = RenderPreProcessHook::class . '->preProcess';
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = TCEMainHook::class;
