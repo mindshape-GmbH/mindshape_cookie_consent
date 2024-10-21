@@ -19,6 +19,9 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'types' => [
         '1' => ['showitem' => 'label, identifier, consent_mode, provider, purpose, cookie_name, cookie_duration, replacement_label, info'],
@@ -29,11 +32,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'special' => 'languages',
-                'items' => [],
-                'default' => 0,
+                'type' => 'language',
             ],
         ],
         'l10n_parent' => [
@@ -46,7 +45,10 @@ return [
                 'foreign_table_where' => 'AND ' . CookieOption::TABLE . '.pid=###CURRENT_PID### AND ' . CookieOption::TABLE . '.sys_language_uid IN (-1,0)',
                 'default' => 0,
                 'items' => [
-                    ['', 0],
+                    [
+                        'label' => '',
+                        'value' => 0,
+                    ],
                 ],
             ],
         ],
@@ -61,8 +63,8 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled',
+                    [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled',
                     ],
                 ],
             ],
@@ -85,7 +87,8 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'identifier' => [
@@ -95,7 +98,8 @@ return [
                 'type' => 'input',
                 'size' => 30,
                 'max' => 255,
-                'eval' => 'trim,required',
+                'eval' => 'trim',
+                'required' => true,
             ],
         ],
         'consent_mode' => [
@@ -105,14 +109,17 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['', ''],
                     [
-                        'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.consent_mode.analytics',
-                        CookieOption::CONSENT_MODE_ANALYTICS,
+                        'label' => '',
+                        'value' => ''
                     ],
                     [
-                        'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.consent_mode.ads',
-                        CookieOption::CONSENT_MODE_ADS,
+                        'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.consent_mode.analytics',
+                        'value' => CookieOption::CONSENT_MODE_ANALYTICS,
+                    ],
+                    [
+                        'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.cookieoption.consent_mode.ads',
+                        'value' => CookieOption::CONSENT_MODE_ADS,
                     ],
                 ],
             ],

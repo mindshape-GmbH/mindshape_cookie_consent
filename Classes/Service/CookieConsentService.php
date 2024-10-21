@@ -23,6 +23,8 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryReposito
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
@@ -30,6 +32,7 @@ use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -71,9 +74,9 @@ class CookieConsentService implements SingletonInterface
     protected Site|NullSite $currentSite;
 
     /**
-     * @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage
+     * @var int
      */
-    protected SiteLanguage $currentSiteLanguage;
+    protected int $currentSiteLanguageId;
 
     /**
      * @var array|null
@@ -87,6 +90,7 @@ class CookieConsentService implements SingletonInterface
 
     /**
      * @param \TYPO3\CMS\Core\Site\SiteFinder $siteFinder
+     * @param \TYPO3\CMS\Core\Context\Context $context
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository $configurationRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\CookieOptionRepository $cookieOptionRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository $statisticCategoryRepository
@@ -95,6 +99,7 @@ class CookieConsentService implements SingletonInterface
      */
     public function __construct(
         SiteFinder $siteFinder,
+        Context $context,
         ConfigurationRepository $configurationRepository,
         CookieOptionRepository $cookieOptionRepository,
         StatisticCategoryRepository $statisticCategoryRepository,
@@ -110,13 +115,10 @@ class CookieConsentService implements SingletonInterface
 
         try {
             $this->currentSite = $siteFinder->getSiteByPageId($GLOBALS['TSFE']->id);
-
-            if ($GLOBALS['TSFE'] instanceof TypoScriptFrontendController) {
-                $this->currentSiteLanguage = $GLOBALS['TSFE']->getLanguage();
-            }
-        } catch (SiteNotFoundException) {
+            $this->currentSiteLanguageId = $context->getPropertyFromAspect('language', 'id', 0);
+        } catch (AspectNotFoundException|SiteNotFoundException) {
             $this->currentSite = new NullSite();
-            $this->currentSiteLanguage = $this->currentSite->getDefaultLanguage();
+            $this->currentSiteLanguageId = 0;
         }
     }
 
@@ -258,14 +260,14 @@ class CookieConsentService implements SingletonInterface
         if ($this->currentSite instanceof Site) {
             $configuration = $this->configurationRepository->findBySiteIdentifier(
                 $this->currentSite->getIdentifier(),
-                $this->currentSiteLanguage->getLanguageId()
+                $this->currentSiteLanguageId
             );
         }
 
         if (null === $configuration) {
             $configuration = $this->configurationRepository->findBySiteIdentifier(
                 Configuration::SITE_ALL_SITES,
-                $this->currentSiteLanguage->getLanguageId()
+                $this->currentSiteLanguageId
             );
         }
 

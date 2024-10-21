@@ -6,6 +6,7 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /***
  *
@@ -55,10 +56,13 @@ class CookieController extends AbstractController
             array_unshift($cookieCategories, $necessaryCookiesCategory);
         }
 
-        $this->view->assignMultiple([
-            'data' => $this->configurationManager->getContentObject()->data,
-            'categories' => $cookieCategories,
-        ]);
+        $contentObject = $this->request->getAttribute('currentContentObject');
+
+        if ($contentObject instanceof ContentObjectRenderer) {
+            $this->view->assign('data', $contentObject->data ?? []);
+        }
+
+        $this->view->assign('categories', $cookieCategories);
 
         return $this->htmlResponse();
     }

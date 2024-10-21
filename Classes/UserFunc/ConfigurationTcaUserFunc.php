@@ -14,6 +14,7 @@ namespace Mindshape\MindshapeCookieConsent\UserFunc;
  *
  ***/
 
+use Doctrine\DBAL\ParameterType;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
 use PDO;
@@ -60,7 +61,7 @@ class ConfigurationTcaUserFunc
             ->where(
                 $queryBuilder->expr()->eq(
                     'sys_language_uid',
-                    $queryBuilder->createNamedParameter($currentLanguageId, PDO::PARAM_INT)
+                    $queryBuilder->createNamedParameter($currentLanguageId, ParameterType::INTEGER)
                 )
             )
             ->executeQuery()

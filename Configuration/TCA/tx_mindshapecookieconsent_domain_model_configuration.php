@@ -19,6 +19,9 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
+        'security' => [
+            'ignorePageTypeRestriction' => true,
+        ],
     ],
     'types' => [
         '1' => ['showitem' => 'hidden, sys_language_uid, site, enable_statistic, header, imprint, datapolicy, hint, necessary_cookies_info, necessary_cookie_options, cookie_categories, --palette--;LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.palettes.labels;labels'],
@@ -31,11 +34,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.language',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'special' => 'languages',
-                'items' => [],
-                'default' => 0,
+                'type' => 'language',
             ],
         ],
         'l10n_parent' => [
@@ -46,7 +45,10 @@ return [
                 'renderType' => 'selectSingle',
                 'default' => 0,
                 'items' => [
-                    ['', 0],
+                    [
+                        'label' => '',
+                        'value' => 0,
+                    ],
                 ],
                 'foreign_table' => Configuration::TABLE,
                 'foreign_table_where' => 'AND ' . Configuration::TABLE . '.pid=###CURRENT_PID### AND ' . Configuration::TABLE . '.sys_language_uid IN (-1,0)',
@@ -63,8 +65,8 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    '1' => [
-                        '0' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled',
+                    [
+                        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled',
                     ],
                 ],
             ],
@@ -80,8 +82,8 @@ return [
                 'itemsProcFunc' => ConfigurationTcaUserFunc::class . '->sitesItemsProcFunc',
                 'items' => [
                     [
-                        'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.site.all',
-                        Configuration::SITE_ALL_SITES,
+                        'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.site.all',
+                        'value' => Configuration::SITE_ALL_SITES,
                     ],
                 ],
             ],
@@ -107,20 +109,14 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.imprint',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
-                'size' => 30,
-                'max' => 255,
+                'type' => 'link',
             ],
         ],
         'datapolicy' => [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.configuration.datapolicy',
             'config' => [
-                'type' => 'input',
-                'renderType' => 'inputLink',
-                'size' => 30,
-                'max' => 255,
+                'type' => 'link',
             ],
         ],
         'hint' => [

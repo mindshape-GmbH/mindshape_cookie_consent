@@ -53,6 +53,6 @@ module.tx_mindshapecookieconsent {
     # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.statistic_items_per_page
     statisticItemsPerPage = 10
     # cat=mindshape_cookie_consent/settings; type=int+; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:constants.settings.maximum_pagination_links
-    maximumPaginationLinks = 10
+    maximumPaginationLinks = 3
   }
 }

@@ -14,10 +14,12 @@ namespace Mindshape\MindshapeCookieConsent\Updates;
  *
  ***/
 
+use Doctrine\DBAL\ParameterType;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use PDO;
+use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
+#[UpgradeWizard('mindshapeCookieConsentPluginCTypeMigrationUpdateWizard')]
 class PluginCTypeMigrationUpdateWizard implements UpgradeWizardInterface
 {
     /**
@@ -88,7 +90,7 @@ class PluginCTypeMigrationUpdateWizard implements UpgradeWizardInterface
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($pluginRecord['uid'], PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($pluginRecord['uid'], ParameterType::INTEGER)
                     )
                 )
                 ->executeStatement();

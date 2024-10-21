@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Controller
@@ -72,7 +73,11 @@ class ConsentController extends AbstractController
 
     public function settingsAction(): ResponseInterface
     {
-        $this->view->assign('data', $this->configurationManager->getContentObject()->data);
+        $contentObject = $this->request->getAttribute('currentContentObject');
+
+        if ($contentObject instanceof ContentObjectRenderer) {
+            $this->view->assign('data', $contentObject->data ?? []);
+        }
 
         CookieConsentService::setCookieButtonIsUsed();
 
