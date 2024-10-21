@@ -6,12 +6,12 @@
     <f:if condition="{pagination.previousPageNumber} && {pagination.previousPageNumber} >= {pagination.firstPageNumber}">
       <f:then>
         <li class="page-item">
-          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: 1, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.first')}">
+          <a class="page-link" href="{f:be.uri(route: route, parameters: '{page: 1, date: \'{date -> f:format.date(format: \\\'Y-m\\\')}\'}')}" title="{f:translate(key: 'label.pagination.first', extensionName: 'mindshapeCookieConsent')}">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: pagination.previousPageNumber, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.previous')}">
+          <a class="page-link" href="{f:be.uri(route: route, parameters: '{page: pagination.previousPageNumber, date: \'{date -> f:format.date(format: \\\'Y-m\\\')}\'}')}" title="{f:translate(key: 'label.pagination.previous', extensionName: 'mindshapeCookieConsent')}">
             <span aria-hidden="true">&lt;</span>
           </a>
         </li>
@@ -36,7 +36,7 @@
     </f:if>
     <f:for each="{pagination.allPageNumbers}" as="page">
       <li class="page-item {f:if(condition: '{page} == {paginator.currentPageNumber}', then: ' active')}">
-        <a class="page-link" href="{f:uri.action(action: action, arguments:{page: page, date: '{date -> f:format.date(format: \'c\')}'})}">{page}</a>
+        <a class="page-link" href="{f:be.uri(route: route, parameters: '{page: page, date: \'{date -> f:format.date(format: \\\'Y-m\\\')}\'}')}">{page}</a>
       </li>
     </f:for>
     <f:if condition="{pagination.hasMorePages}">
@@ -47,12 +47,12 @@
     <f:if condition="{pagination.nextPageNumber} && {pagination.nextPageNumber} <= {pagination.lastPageNumber}">
       <f:then>
         <li class="page-item">
-          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: pagination.nextPageNumber, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.next')}">
+          <a class="page-link" href="{f:be.uri(route: route, parameters: '{page: pagination.nextPageNumber, date: \'{date -> f:format.date(format: \\\'Y-m\\\')}\'}')}" title="{f:translate(key: 'label.pagination.next', extensionName: 'mindshapeCookieConsent')}">
             <span aria-hidden="true">&gt;</span>
           </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="{f:uri.action(action: action, arguments: '{page: pagination.lastPageNumber, date: \'{date -> f:format.date(format: \\\'c\\\')}\'}')}" title="{f:translate(key: 'label.pagination.last')}">
+          <a class="page-link" href="{f:be.uri(route: route, parameters: '{page: pagination.lastPageNumber, date: \'{date -> f:format.date(format: \\\'Y-m\\\')}\'}')}" title="{f:translate(key: 'label.pagination.last', extensionName: 'mindshapeCookieConsent')}">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>

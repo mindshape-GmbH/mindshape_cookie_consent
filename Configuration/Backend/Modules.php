@@ -8,15 +8,40 @@ return [
         'iconIdentifier' => 'module-mindshapecookieconsent',
         'position' => ['after' => 'site'],
     ],
-    'mindshapecookieconsent' . '_statistics' => [
+    'mindshapecookieconsent_statisticindex' => [
         'parent' => 'mindshapecookieconsent',
         'access' => 'user',
+        'path' => '/module/mindshapecookieconsent/statistic',
         'iconIdentifier' => 'module-mindshapecookieconsent-statistic',
         'labels' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/module_statistic_locallang.xlf',
-        'extensionName' => 'mindshapecookieconsent',
-        'controllerActions' => [
-            StatisticController::class => [
-                'statisticButtons', 'statisticCategories', 'statisticOptions',
+    ],
+    'mindshapecookieconsent_statisticbuttons' => [
+        'parent' => 'mindshapecookieconsent_statisticindex',
+        'access' => 'user',
+        'path' => '/module/mindshapecookieconsent/statistic/buttons',
+        'routes' => [
+            '_default' => [
+                'target' => StatisticController::class . '::handleRequest'
+            ],
+        ],
+    ],
+    'mindshapecookieconsent_statisticcategories' => [
+        'parent' => 'mindshapecookieconsent_statisticindex',
+        'access' => 'user',
+        'path' => '/module/mindshapecookieconsent/statistic/categories',
+        'routes' => [
+            '_default' => [
+                'target' => StatisticController::class . '::handleRequest'
+            ],
+        ],
+    ],
+    'mindshapecookieconsent_statisticoptions' => [
+        'parent' => 'mindshapecookieconsent_statisticindex',
+        'access' => 'user',
+        'path' => '/module/mindshapecookieconsent/statistic/options',
+        'routes' => [
+            '_default' => [
+                'target' => StatisticController::class . '::handleRequest'
             ],
         ],
     ],
