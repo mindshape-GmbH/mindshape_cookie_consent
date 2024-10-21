@@ -1,20 +1,19 @@
 <?php
 
 use Mindshape\MindshapeCookieConsent\Controller\Backend\StatisticController;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 
 return [
-    SettingsUtility::EXTENSION_NAME => [
-        'labels' => 'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/module_locallang.xlf',
-        'iconIdentifier' => 'module-' . SettingsUtility::EXTENSION_NAME,
+    'mindshapecookieconsent' => [
+        'labels' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/module_locallang.xlf',
+        'iconIdentifier' => 'module-mindshapecookieconsent',
         'position' => ['after' => 'site'],
     ],
-    SettingsUtility::EXTENSION_NAME . '_statistics' => [
-        'parent' => SettingsUtility::EXTENSION_NAME,
+    'mindshapecookieconsent' . '_statistics' => [
+        'parent' => 'mindshapecookieconsent',
         'access' => 'user',
-        'iconIdentifier' => 'module-' . SettingsUtility::EXTENSION_NAME . '-statistic',
-        'labels' => 'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/module_statistic_locallang.xlf',
-        'extensionName' => SettingsUtility::EXTENSION_NAME,
+        'iconIdentifier' => 'module-mindshapecookieconsent-statistic',
+        'labels' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/module_statistic_locallang.xlf',
+        'extensionName' => 'mindshapecookieconsent',
         'controllerActions' => [
             StatisticController::class => [
                 'statisticButtons', 'statisticCategories', 'statisticOptions',

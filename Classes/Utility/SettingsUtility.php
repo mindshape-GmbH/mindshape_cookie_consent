@@ -25,10 +25,6 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
  */
 class SettingsUtility
 {
-    public const EXTENSION_NAME = 'mindshapecookieconsent';
-    public const EXTENSION_KEY = 'mindshape_cookie_consent';
-    public const EXTENSION_TYPOSCRIPT_KEY = 'tx_' . self::EXTENSION_NAME;
-
     /**
      * @return array|null
      */
@@ -38,7 +34,10 @@ class SettingsUtility
         $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
 
         try {
-            $settings = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, self::EXTENSION_NAME);
+            $settings = $configurationManager->getConfiguration(
+                ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+                'mindshapecookieconsent'
+            );
         } catch (InvalidConfigurationTypeException) {
             return null;
         }
@@ -60,12 +59,12 @@ class SettingsUtility
 
             if (
                 false === is_array($typoscript['plugin']) ||
-                false === array_key_exists(self::EXTENSION_TYPOSCRIPT_KEY, $typoscript['plugin'])
+                false === array_key_exists('tx_mindshapecookieconsent', $typoscript['plugin'])
             ) {
                 return null;
             }
 
-            $typoscript = $typoscript['plugin'][self::EXTENSION_TYPOSCRIPT_KEY];
+            $typoscript = $typoscript['plugin']['tx_mindshapecookieconsent'];
         } catch (InvalidConfigurationTypeException) {
             $typoscript = [];
         }
