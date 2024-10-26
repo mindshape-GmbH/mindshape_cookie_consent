@@ -44,7 +44,7 @@ abstract class AbstractStatisticRepository extends Repository
      * @var array
      */
     protected $defaultOrderings = [
-        'dateBegin' => QueryInterface::ORDER_DESCENDING,
+        'date' => QueryInterface::ORDER_DESCENDING,
     ];
 
     public function initializeObject(): void
@@ -66,15 +66,11 @@ abstract class AbstractStatisticRepository extends Repository
     public function findByMonth(Configuration $configuration, DateTime $date): QueryResultInterface
     {
         $query = $this->createQuery();
-        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
-
         $query->getQuerySettings()
             ->setLanguageAspect(
                 new LanguageAspect(
-                    $configuration->getLanguageUid(),
-                    $languageAspect->getContentId(),
-                    $languageAspect->getOverlayType(),
-                    $languageAspect->getFallbackChain()
+                    id: $configuration->getLanguageUid(),
+                    overlayType: LanguageAspect::OVERLAYS_OFF
                 )
             );
 
@@ -82,8 +78,8 @@ abstract class AbstractStatisticRepository extends Repository
             $query->matching(
                 $query->logicalAnd(
                     $query->equals('configuration', $configuration->getUid()),
-                    $query->greaterThan('dateBegin', $date->modify('first day of this month 00:00:00')->format('c')),
-                    $query->lessThan('dateEnd', $date->modify('last day of this month 23:59:59')->format('c')),
+                    $query->greaterThan('date', $date->modify('first day of this month 00:00:00')->format('c')),
+                    $query->lessThan('date', $date->modify('last day of this month 23:59:59')->format('c')),
                 )
             );
         } catch (InvalidQueryException|DateMalformedStringException) {
@@ -104,7 +100,7 @@ abstract class AbstractStatisticRepository extends Repository
 
         $queryBuilder = DatabaseUtility::queryBuilder();
         $queryBuilder
-            ->select('date_begin')
+            ->select('date')
             ->from($tableName)
             ->where(
                 $queryBuilder->expr()->eq(
@@ -112,8 +108,8 @@ abstract class AbstractStatisticRepository extends Repository
                     $queryBuilder->createNamedParameter($languageUid, ParameterType::INTEGER)
                 )
             )
-            ->orderBy('date_begin', 'DESC')
-            ->groupBy('DATE_FORMAT(date_begin, "%Y-%m")');
+            ->orderBy('date', 'DESC')
+            ->groupBy('DATE_FORMAT(date, "%Y-%m")');
 
         try {
             $dateRecords = DatabaseUtility::databaseConnection()->fetchAllAssociative(
@@ -128,7 +124,7 @@ abstract class AbstractStatisticRepository extends Repository
 
         foreach ($dateRecords as $dateRecord) {
             try {
-                $date = new DateTime($dateRecord['date_begin'], new DateTimeZone('UTC'));
+                $date = new DateTime($dateRecord['date'], new DateTimeZone('UTC'));
                 $date->setTimezone(new DateTimeZone(date_default_timezone_get()));
                 $date->modify('first day of this month 00:00:00');
 
@@ -148,15 +144,12 @@ abstract class AbstractStatisticRepository extends Repository
     public function findAllByConfiguration(Configuration $configuration): QueryResultInterface
     {
         $query = $this->createQuery();
-        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
-
-        $query->getQuerySettings()
+        $query
+            ->getQuerySettings()
             ->setLanguageAspect(
                 new LanguageAspect(
-                    $configuration->getLanguageUid(),
-                    $languageAspect->getContentId(),
-                    $languageAspect->getOverlayType(),
-                    $languageAspect->getFallbackChain()
+                    id: $configuration->getLanguageUid(),
+                    overlayType: LanguageAspect::OVERLAYS_OFF
                 )
             );
 

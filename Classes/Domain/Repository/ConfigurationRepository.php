@@ -40,17 +40,10 @@ class ConfigurationRepository extends Repository
     public function findAllLanguages(): QueryResultInterface
     {
         $query = $this->createQuery();
-        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
-
         $query
             ->getQuerySettings()
             ->setLanguageAspect(
-                new LanguageAspect(
-                    $languageAspect->getId(),
-                    $languageAspect->getContentId(),
-                    LanguageAspect::OVERLAYS_OFF,
-                    $languageAspect->getFallbackChain()
-                )
+                new LanguageAspect(overlayType: LanguageAspect::OVERLAYS_OFF)
             )
             ->setRespectSysLanguage(false);
 
@@ -81,16 +74,12 @@ class ConfigurationRepository extends Repository
     public function findBySiteIdentifier(string $siteIdentifier, int $languageId): ?Configuration
     {
         $query = $this->createQuery();
-        $languageAspect = $query->getQuerySettings()->getLanguageAspect();
-
         $query
             ->getQuerySettings()
             ->setLanguageAspect(
                 new LanguageAspect(
-                    $languageId,
-                    $languageAspect->getContentId(),
-                    LanguageAspect::OVERLAYS_OFF,
-                    $languageAspect->getFallbackChain()
+                    id: $languageId,
+                    overlayType: LanguageAspect::OVERLAYS_OFF
                 )
             );
 

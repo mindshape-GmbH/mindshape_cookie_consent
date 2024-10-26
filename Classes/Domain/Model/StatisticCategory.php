@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Model;
 
 /***
@@ -33,17 +34,15 @@ class StatisticCategory extends AbstractStatistic
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
-     * @param \DateTime $dateBegin
-     * @param \DateTime $dateEnd
+     * @param \DateTime $date
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null $cookieCategory
      */
-    public function initialize(Configuration $configuration, DateTime $dateBegin, DateTime $dateEnd, CookieCategory $cookieCategory = null): void
+    public function initialize(Configuration $configuration, DateTime $date, CookieCategory $cookieCategory = null): void
     {
         $this->_languageUid = $configuration->getLanguageUid();
         $this->configuration = $configuration;
         $this->cookieCategory = $cookieCategory;
-        $this->dateBegin = $dateBegin;
-        $this->dateEnd = $dateEnd;
+        $this->date = $date;
     }
 
     /**

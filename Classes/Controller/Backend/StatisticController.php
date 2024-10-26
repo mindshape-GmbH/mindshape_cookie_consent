@@ -439,7 +439,7 @@ class StatisticController
                 ->setTitle(LocalizationUtility::translate('module.statistic.date_select_all', 'mindshape_cookie_consent'))
                 ->setActive(!$currentDate instanceof DateTime)
                 ->setHref($uriBuilder->buildUriFromRoute($this->currentRoute, [
-                    'configuration' => $currentConfiguration->getUid(),
+                    'configuration' => $currentConfiguration->getLocalizedUid(),
                 ]))
         );
 
@@ -454,7 +454,7 @@ class StatisticController
                     )
                     ->setHref($uriBuilder->buildUriFromRoute($this->currentRoute, [
                         'date' => $availableMonth->format('Y-m'),
-                        'configuration' => $currentConfiguration->getUid(),
+                        'configuration' => $currentConfiguration->getLocalizedUid(),
                     ]))
             );
         }

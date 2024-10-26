@@ -33,17 +33,15 @@ class StatisticOption extends AbstractStatistic
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $configuration
-     * @param \DateTime $dateBegin
-     * @param \DateTime $dateEnd
+     * @param \DateTime $date
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption|null $cookieOption
      */
-    public function initialize(Configuration $configuration, DateTime $dateBegin, DateTime $dateEnd, CookieOption $cookieOption = null): void
+    public function initialize(Configuration $configuration, DateTime $date, CookieOption $cookieOption = null): void
     {
         $this->_languageUid = $configuration->getLanguageUid();
         $this->configuration = $configuration;
         $this->cookieOption = $cookieOption;
-        $this->dateBegin = $dateBegin;
-        $this->dateEnd = $dateEnd;
+        $this->date = $date;
     }
 
     /**

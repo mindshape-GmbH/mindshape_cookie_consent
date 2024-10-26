@@ -6,15 +6,15 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_option',
-        'label' => 'date_begin',
+        'label' => 'date',
         'versioningWS' => false,
         'languageField' => 'sys_language_uid',
-        'searchFields' => 'date_begin,date_end,cookieoption,counter',
+        'searchFields' => 'date,cookieoption,counter',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_statistic.png',
         'hideTable' => true,
     ],
     'types' => [
-        '1' => ['showitem' => 'date_begin, date_end, cookie_option, counter'],
+        '1' => ['showitem' => 'date, cookie_option, counter'],
     ],
     'palettes' => [],
     'columns' => [
@@ -27,23 +27,12 @@ return [
                 'foreign_table' => Configuration::TABLE,
             ],
         ],
-        'date_begin' => [
+        'date' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_option.date_start',
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_option.date',
             'config' => [
                 'type' => 'datetime',
-                'dbType' => 'datetime',
-                'size' => 12,
-                'required' => true,
-                'default' => null,
-            ],
-        ],
-        'date_end' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_option.date_end',
-            'config' => [
-                'type' => 'datetime',
-                'dbType' => 'datetime',
+                'dbType' => 'date',
                 'size' => 12,
                 'required' => true,
                 'default' => null,

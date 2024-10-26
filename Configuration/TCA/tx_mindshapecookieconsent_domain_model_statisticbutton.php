@@ -5,15 +5,15 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button',
-        'label' => 'date_begin',
+        'label' => 'date',
         'versioningWS' => false,
         'languageField' => 'sys_language_uid',
-        'searchFields' => 'date_begin,date_end,decline,agree,agree_to_all,deny',
+        'searchFields' => 'date,decline,agree,agree_to_all,deny',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_statistic.png',
         'hideTable' => true,
     ],
     'types' => [
-        '1' => ['showitem' => 'date_begin, date_end, save, agree_to_all, deny'],
+        '1' => ['showitem' => 'date, save, agree_to_all, deny'],
     ],
     'palettes' => [],
     'columns' => [
@@ -26,20 +26,9 @@ return [
                 'foreign_table' => Configuration::TABLE,
             ],
         ],
-        'date_begin' => [
+        'date' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.date_start',
-            'config' => [
-                'type' => 'datetime',
-                'dbType' => 'datetime',
-                'size' => 12,
-                'required' => true,
-                'default' => null,
-            ],
-        ],
-        'date_end' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.date_end',
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.date',
             'config' => [
                 'type' => 'datetime',
                 'dbType' => 'datetime',

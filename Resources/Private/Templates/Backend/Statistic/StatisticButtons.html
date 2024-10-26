@@ -15,9 +15,10 @@
           <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
         </f:if>
         <f:if condition="{statisticButtons}">
-          <f:if condition="{settings.statisticItemsPerPage} < {statisticButtons -> f:count()}">
+          <f:if condition="{paginator.numberOfPages} > 1">
             <f:then>
               <f:render section="Pagination" arguments="{
+                configuration: configuration,
                 statisticButtons: statisticButtons,
                 date: date,
                 pagination: pagination,
@@ -44,7 +45,7 @@
   <f:section name="Pagination">
 
     <f:render section="Table" arguments="{statisticButtons: paginator.paginatedItems}"/>
-    <f:render partial="Utility/Pagination" arguments="{pagination: pagination, paginator: paginator, route: currentRoute, date: date}"/>
+    <f:render partial="Utility/Pagination" arguments="{configuration: configuration, pagination: pagination, paginator: paginator, route: currentRoute, date: date}"/>
 
   </f:section>
 
@@ -64,7 +65,7 @@
       <tbody>
         <f:for each="{statisticButtons}" as="statisticButton">
           <tr>
-            <td>{statisticButton.dateBegin -> f:format.date(format: 'Y-m-d')}</td>
+            <td>{statisticButton.date -> f:format.date(format: 'Y-m-d')}</td>
             <td>{statisticButton.total}</td>
             <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction: statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
             <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)

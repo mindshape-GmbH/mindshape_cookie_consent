@@ -15,7 +15,7 @@
           <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName:'mindshape_cookie_consent')}</strong></p>
         </f:if>
         <f:if condition="{statisticOptions}">
-          <f:if condition="{itemsPerPage} < {statisticOptions -> f:count()}">
+          <f:if condition="{paginator.numberOfPages} > 1">
             <f:then>
               <f:render section="Pagination" arguments="{
                 configuration: configuration,
@@ -53,6 +53,7 @@
       statisticOptions: paginator.paginatedItems
     }"/>
     <f:render partial="Utility/Pagination" arguments="{
+      configuration: configuration,
       pagination: pagination,
       paginator: paginator,
       route: currentRoute,
@@ -76,7 +77,7 @@
       </thead>
       <tbody>
         <m:iterator.group
-          field="dateBegin"
+          field="date"
           fillSmallerGroups="1"
           objects="{statisticOptions}"
           as="statisticOptionsByDate"

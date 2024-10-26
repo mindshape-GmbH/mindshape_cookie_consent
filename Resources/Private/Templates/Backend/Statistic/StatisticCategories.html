@@ -15,7 +15,7 @@
           <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
         </f:if>
         <f:if condition="{statisticCategories}">
-          <f:if condition="{itemsPerPage} < {statisticCategories -> f:count()}">
+          <f:if condition="{paginator.numberOfPages} > 1">
             <f:then>
               <f:render section="Pagination" arguments="{
                 configuration: configuration,
@@ -46,7 +46,7 @@
   <f:section name="Pagination">
 
     <f:render section="Table" arguments="{configuration: configuration, statisticCategories: paginator.paginatedItems}"/>
-    <f:render partial="Utility/Pagination" arguments="{pagination: pagination, paginator: paginator, route: currentRoute, date: date}"/>
+    <f:render partial="Utility/Pagination" arguments="{configuration: configuration, pagination: pagination, paginator: paginator, route: currentRoute, date: date}"/>
 
   </f:section>
 
@@ -64,7 +64,7 @@
         </tr>
       </thead>
       <tbody>
-        <m:iterator.group field="dateBegin" fillSmallerGroups="1" objects="{statisticCategories}" as="statisticCategoriesByDate">
+        <m:iterator.group field="date" fillSmallerGroups="1" objects="{statisticCategories}" as="statisticCategoriesByDate">
           <f:for each="{statisticCategoriesByDate}" as="groupedStatisticCategories" key="date">
             <tr>
               <td>{date -> f:format.date(format: 'Y-m-d')}</td>

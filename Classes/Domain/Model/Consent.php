@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Model;
 
 /***
@@ -145,5 +146,10 @@ class Consent extends AbstractValueObject
     public function setCookieOptions(ObjectStorage $cookieOptions): void
     {
         $this->cookieOptions = $cookieOptions;
+    }
+
+    public function removeCookieOptions(): void
+    {
+        $this->cookieOptions = new ObjectStorage();
     }
 }

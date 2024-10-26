@@ -38,7 +38,7 @@ class ConsentController extends AbstractController
     public function consentAction(Consent $consent): ResponseInterface
     {
         if (true === $consent->isDeny()) {
-            $consent->setCookieOptions(new ObjectStorage());
+            $consent->removeCookieOptions();
         } elseif (true === $consent->isSelectAll()) {
             $consent->setCookieOptions(
                 $this->cookieConsentService->getCurrentConfigurationCookieOptions()
