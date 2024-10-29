@@ -6,6 +6,12 @@
 Changelog
 =========
 
+* 4.0.0
+
+  * Add compatibility for TYPO3 v13
+  * Drop support for TYPO3 v11
+  * Statistic record date refactoring
+
 * 3.2.2
 
   * Clone object storage to prevent mixing of cookie options
