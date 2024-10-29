@@ -3,24 +3,41 @@
       xmlns:m="http://typo3.org/ns/Mindshape/MindshapeCookieConsent/ViewHelpers"
       xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
 
-  <f:layout name="Backend/Statistic"/>
+  <f:layout name="Module" />
 
   <f:section name="Content">
 
-    <h2>{f:translate(key: 'module.statistic.categories', extensionName: 'mindshape_cookie_consent')}</h2>
+    <f:if condition="{configuration}">
+      <f:then>
+        <h2>{f:translate(key: 'module.statistic.categories', extensionName: 'mindshape_cookie_consent')}</h2>
 
-    <f:if condition="0 == {configuration.enableStatistic}">
-      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
-    </f:if>
-    <f:if condition="{statisticCategories}">
-      <f:if condition="{itemsPerPage} < {statisticCategories -> f:count()}">
-        <f:then>
-          <f:render section="Pagination" arguments="{configuration: configuration, statisticCategories: statisticCategories, date: date, pagination: pagination, paginator: paginator}"/>
-        </f:then>
-        <f:else>
-          <f:render section="Table" arguments="{configuration: configuration, statisticCategories: statisticCategories}"/>
-        </f:else>
-      </f:if>
+        <f:if condition="0 == {configuration.enableStatistic}">
+          <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
+        </f:if>
+        <f:if condition="{statisticCategories}">
+          <f:if condition="{paginator.numberOfPages} > 1">
+            <f:then>
+              <f:render section="Pagination" arguments="{
+                configuration: configuration,
+                statisticCategories: statisticCategories,
+                date: date,
+                pagination: pagination,
+                paginator: paginator,
+                currentRoute: currentRoute
+              }"/>
+            </f:then>
+            <f:else>
+              <f:render section="Table" arguments="{
+                configuration: configuration,
+                statisticCategories: statisticCategories
+              }"/>
+            </f:else>
+          </f:if>
+        </f:if>
+      </f:then>
+      <f:else>
+        <span style="color: red;">{f:translate(key: 'module.statistic.no_configuration_available', extensionName: 'mindshapeCookieConsent')}</span>
+      </f:else>
     </f:if>
 
   </f:section>
@@ -29,7 +46,7 @@
   <f:section name="Pagination">
 
     <f:render section="Table" arguments="{configuration: configuration, statisticCategories: paginator.paginatedItems}"/>
-    <f:render partial="Utility/Pagination" arguments="{pagination: pagination, paginator: paginator, action: 'statisticCategories', date: date}"/>
+    <f:render partial="Utility/Pagination" arguments="{configuration: configuration, pagination: pagination, paginator: paginator, route: currentRoute, date: date}"/>
 
   </f:section>
 
@@ -47,7 +64,7 @@
         </tr>
       </thead>
       <tbody>
-        <m:iterator.group field="dateBegin" fillSmallerGroups="1" objects="{statisticCategories}" as="statisticCategoriesByDate">
+        <m:iterator.group field="date" fillSmallerGroups="1" objects="{statisticCategories}" as="statisticCategoriesByDate">
           <f:for each="{statisticCategoriesByDate}" as="groupedStatisticCategories" key="date">
             <tr>
               <td>{date -> f:format.date(format: 'Y-m-d')}</td>

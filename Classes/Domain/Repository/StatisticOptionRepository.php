@@ -20,6 +20,7 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Consent;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
 use Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnknownObjectException;
@@ -34,7 +35,7 @@ class StatisticOptionRepository extends AbstractStatisticRepository
      * @var array
      */
     protected $defaultOrderings = [
-        'dateBegin' => QueryInterface::ORDER_DESCENDING,
+        'date' => QueryInterface::ORDER_DESCENDING,
         'cookieOption' => QueryInterface::ORDER_ASCENDING,
     ];
 
@@ -45,7 +46,15 @@ class StatisticOptionRepository extends AbstractStatisticRepository
     public function updateStatistic(Configuration $configuration, Consent $consent): void
     {
         $query = $this->createQuery();
-        $query->getQuerySettings()->setLanguageUid($configuration->getLanguageUid());
+        $query
+            ->getQuerySettings()
+            ->setLanguageAspect(
+                new LanguageAspect(
+                    id: $configuration->getLanguageUid(),
+                    overlayType: LanguageAspect::OVERLAYS_OFF
+                )
+            );
+
         $statisticOptions = [];
 
         try {
@@ -69,8 +78,7 @@ class StatisticOptionRepository extends AbstractStatisticRepository
                 $query->matching(
                     $query->logicalAnd(
                         $query->equals('configuration', $configuration->getUid()),
-                        $query->lessThan('dateBegin', $currentTime->format('c')),
-                        $query->greaterThan('dateEnd', $currentTime->format('c')),
+                        $query->equals('date', $currentTime->format('Y-m-d')),
                         $query->equals(
                             'cookieOption',
                             $cookieOption instanceof CookieOption
@@ -122,10 +130,8 @@ class StatisticOptionRepository extends AbstractStatisticRepository
 
         if (!$statisticOption instanceof StatisticOption) {
             try {
-                $dateBegin = new DateTime('00:00:00');
-                $dateEnd = new DateTime('23:59:59');
                 $statisticOption = new StatisticOption();
-                $statisticOption->initialize($configuration, $dateBegin, $dateEnd, $cookieOption);
+                $statisticOption->initialize($configuration, new DateTime(), $cookieOption);
             } catch (Exception) {
                 // ignore
             }

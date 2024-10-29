@@ -34,7 +34,6 @@ class RenderPreProcessHook
     /**
      * @param array $params
      * @param \TYPO3\CMS\Core\Page\PageRenderer $pageRenderer
-     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidFileException
      */
     public function preProcess(array &$params, PageRenderer $pageRenderer): void
@@ -91,7 +90,7 @@ class RenderPreProcessHook
                         $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
 
                         $javaScriptConfiguration['currentLanguageCode'] = $siteLanguage instanceof SiteLanguage
-                            ? $siteLanguage->getTwoLetterIsoCode()
+                            ? $siteLanguage->getLocale()->getLanguageCode()
                             : $pageRenderer->getLanguage();
                     }
 

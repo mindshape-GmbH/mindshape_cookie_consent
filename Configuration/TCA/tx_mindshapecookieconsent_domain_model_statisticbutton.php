@@ -5,18 +5,15 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 return [
     'ctrl' => [
         'title' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button',
-        'label' => 'date_begin',
+        'label' => 'date',
         'versioningWS' => false,
         'languageField' => 'sys_language_uid',
-        'searchFields' => 'date_begin,date_end,decline,agree,agree_to_all,deny',
+        'searchFields' => 'date,decline,agree,agree_to_all,deny',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_statistic.png',
         'hideTable' => true,
     ],
-    'interface' => [
-        'showRecordFieldList' => 'date_begin, date_end, save, agree_to_all, deny',
-    ],
     'types' => [
-        '1' => ['showitem' => 'date_begin, date_end, save, agree_to_all, deny'],
+        '1' => ['showitem' => 'date, save, agree_to_all, deny'],
     ],
     'palettes' => [],
     'columns' => [
@@ -29,27 +26,14 @@ return [
                 'foreign_table' => Configuration::TABLE,
             ],
         ],
-        'date_begin' => [
+        'date' => [
             'exclude' => true,
-            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.date_start',
+            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.date',
             'config' => [
+                'type' => 'datetime',
                 'dbType' => 'datetime',
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
                 'size' => 12,
-                'eval' => 'datetime,required',
-                'default' => null,
-            ],
-        ],
-        'date_end' => [
-            'exclude' => true,
-            'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.date_end',
-            'config' => [
-                'dbType' => 'datetime',
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
-                'size' => 12,
-                'eval' => 'datetime,required',
+                'required' => true,
                 'default' => null,
             ],
         ],
@@ -57,8 +41,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.save',
             'config' => [
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
                 'range' => [
                     'lower' => 0,
                 ],
@@ -68,8 +51,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.agree_to_all',
             'config' => [
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
                 'range' => [
                     'lower' => 0,
                 ],
@@ -79,8 +61,7 @@ return [
             'exclude' => true,
             'label' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:tca.statistic_button.deny',
             'config' => [
-                'type' => 'input',
-                'eval' => 'int',
+                'type' => 'number',
                 'range' => [
                     'lower' => 0,
                 ],

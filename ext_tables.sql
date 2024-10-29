@@ -90,8 +90,7 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_statisticcategory (
   `pid`              int(11)          DEFAULT '0' NOT NULL,
 
   `configuration`    int(11) unsigned DEFAULT '0' NOT NULL,
-  `date_begin`       datetime         DEFAULT NULL,
-  `date_end`         datetime         DEFAULT NULL,
+  `date`             date             DEFAULT NULL,
   `cookie_category`  int(11) unsigned DEFAULT '0' NOT NULL,
   `counter`          int(11) unsigned DEFAULT '0' NOT NULL,
 
@@ -108,8 +107,7 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_statisticoption (
   `pid`              int(11)          DEFAULT '0' NOT NULL,
 
   `configuration`    int(11) unsigned DEFAULT '0' NOT NULL,
-  `date_begin`       datetime         DEFAULT NULL,
-  `date_end`         datetime         DEFAULT NULL,
+  `date`             date             DEFAULT NULL,
   `cookie_option`    int(11) unsigned DEFAULT '0' NOT NULL,
   `counter`          int(11) unsigned DEFAULT '0' NOT NULL,
 
@@ -126,8 +124,7 @@ CREATE TABLE tx_mindshapecookieconsent_domain_model_statisticbutton (
   `pid`              int(11)          DEFAULT '0' NOT NULL,
 
   `configuration`    int(11) unsigned DEFAULT '0' NOT NULL,
-  `date_begin`       datetime         DEFAULT NULL,
-  `date_end`         datetime         DEFAULT NULL,
+  `date`             date             DEFAULT NULL,
   `save`             int(11) unsigned DEFAULT '0' NOT NULL,
   `deny`             int(11) unsigned DEFAULT '0' NOT NULL,
   `agree_to_all`     int(11) unsigned DEFAULT '0' NOT NULL,

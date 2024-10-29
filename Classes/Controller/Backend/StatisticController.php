@@ -22,18 +22,19 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -41,7 +42,7 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * @package Mindshape\MindshapeCookieConsent\Controller
  */
-class StatisticController extends ActionController
+class StatisticController
 {
     /**
      * @var \TYPO3\CMS\Backend\Template\ModuleTemplateFactory
@@ -56,7 +57,7 @@ class StatisticController extends ActionController
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration|null
      */
-    protected ?Configuration $currentConfiguration;
+    protected ?Configuration $currentConfiguration = null;
 
     /**
      * @var \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository
@@ -79,41 +80,61 @@ class StatisticController extends ActionController
     protected ConfigurationRepository $configurationRepository;
 
     /**
+     * @var array
+     */
+    protected array $settings;
+
+    /**
+     * @var string
+     */
+    protected string $currentRoute;
+
+    /**
      * @param \TYPO3\CMS\Backend\Template\ModuleTemplateFactory $moduleTemplateFactory
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository $statisticCategoryRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository $statisticOptionRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository $statisticButtonRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository $configurationRepository
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager
      */
     public function __construct(
-        ModuleTemplateFactory $moduleTemplateFactory,
+        ModuleTemplateFactory       $moduleTemplateFactory,
         StatisticCategoryRepository $statisticCategoryRepository,
-        StatisticOptionRepository $statisticOptionRepository,
-        StatisticButtonRepository $statisticButtonRepository,
-        ConfigurationRepository $configurationRepository
-    ) {
+        StatisticOptionRepository   $statisticOptionRepository,
+        StatisticButtonRepository   $statisticButtonRepository,
+        ConfigurationRepository     $configurationRepository,
+        ConfigurationManager        $configurationManager,
+    )
+    {
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->statisticCategoryRepository = $statisticCategoryRepository;
         $this->statisticOptionRepository = $statisticOptionRepository;
         $this->statisticButtonRepository = $statisticButtonRepository;
         $this->configurationRepository = $configurationRepository;
+
+        $this->settings = $configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            'mindshapeCookieConsent'
+        );
     }
 
     /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return \Psr\Http\Message\ResponseInterface
      * @throws \Doctrine\DBAL\Exception
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    public function initializeAction(): void
+    public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($request);
+        $this->currentRoute = $request->getAttribute('moduleData')->getModuleIdentifier();
+        $this->moduleTemplate->assign('currentRoute', $this->currentRoute);
 
         $currentConfiguration = null;
         $currentConfigurationId = null;
-        $parameters = $this->request->getQueryParams();
+        $parameters = $request->getQueryParams();
 
-        if ((new Typo3Version())->getMajorVersion() < 12 && ArrayUtility::isValidPath($parameters, 'tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic/configuration')) {
-            $currentConfigurationId = (int)ArrayUtility::getValueByPath($parameters, 'tx_mindshapecookieconsent_mindshapecookieconsent_mindshapecookieconsentstatistic/configuration');
-        } elseif (array_key_exists('configuration', $parameters)) {
+        if (array_key_exists('configuration', $parameters)) {
             $currentConfigurationId = (int)$parameters['configuration'];
         }
 
@@ -127,10 +148,31 @@ class StatisticController extends ActionController
 
         $this->currentConfiguration = $currentConfiguration;
 
-        if ($currentConfiguration instanceof Configuration) {
-            $this->buildActionMenu($currentConfiguration);
-            $this->buildDateMenu($currentConfiguration);
+        $page = 1;
+        $currentDate = null;
+
+        if (array_key_exists('page', $parameters)) {
+            $page = (int)$parameters['page'];
         }
+
+        if (array_key_exists('date', $parameters) && !empty($parameters['date'])) {
+            try {
+                $currentDate = new DateTime($parameters['date']);
+            } catch (Exception) {
+                // just ignore invalid date parameters
+            }
+        }
+
+        if ($currentConfiguration instanceof Configuration) {
+            $this->buildRouteMenu($currentConfiguration);
+            $this->buildDateMenu($currentConfiguration, $currentDate);
+        }
+
+        return match ($this->currentRoute) {
+            'mindshapecookieconsent_statisticcategories' => $this->statisticCategoriesAction($currentDate, $page),
+            'mindshapecookieconsent_statisticoptions' => $this->statisticOptionsAction($currentDate, $page),
+            default => $this->statisticButtonsAction($currentDate, $page),
+        };
     }
 
     /**
@@ -149,15 +191,13 @@ class StatisticController extends ActionController
             $this->addPaginationToView($statisticButtons, $page, (int)($this->settings['statisticItemsPerPage'] ?? 10));
         }
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'configuration' => $this->currentConfiguration,
             'date' => $date,
             'statisticButtons' => $statisticButtons,
         ]);
 
-        $this->moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Statistic/StatisticButtons');
     }
 
     /**
@@ -180,15 +220,13 @@ class StatisticController extends ActionController
             $this->addPaginationToView($statisticCategories, $page, $itemsPerPage);
         }
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'configuration' => $this->currentConfiguration,
             'date' => $date,
             'statisticCategories' => $statisticCategories,
         ]);
 
-        $this->moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Statistic/StatisticCategories');
     }
 
     /**
@@ -225,16 +263,14 @@ class StatisticController extends ActionController
             $this->addPaginationToView($statisticOptions, $page, $itemsPerPage);
         }
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'configuration' => $this->currentConfiguration,
             'date' => $date,
             'statisticOptions' => $statisticOptions,
             'cookieOptions' => $cookieOptions,
         ]);
 
-        $this->moduleTemplate->setContent($this->view->render());
-
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Backend/Statistic/StatisticOptions');
     }
 
     /**
@@ -247,7 +283,7 @@ class StatisticController extends ActionController
         $paginator = new QueryResultPaginator($queryResult, $currentPage, $itemsPerPage);
         $pagination = new NumberedPagination($paginator, (int)($this->settings['maximumPaginationLinks'] ?? 0));
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'paginator' => $paginator,
             'pagination' => $pagination,
         ]);
@@ -267,7 +303,7 @@ class StatisticController extends ActionController
             return $this->{$repositoryName}->findAllByConfiguration($configuration);
         }
 
-        $this->view->assign('date', $date);
+        $this->moduleTemplate->assign('date', $date);
 
         return $this->{$repositoryName}->findByMonth($configuration, $date);
     }
@@ -275,11 +311,14 @@ class StatisticController extends ActionController
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $currentConfiguration
      * @throws \Doctrine\DBAL\Exception
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function buildActionMenu(Configuration $currentConfiguration): void
+    protected function buildRouteMenu(Configuration $currentConfiguration): void
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $actionMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $actionMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_action');
+        $actionMenu->setIdentifier('mindshape_cookie_consent_action');
 
         /** @var \TYPO3\CMS\Core\Site\SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
@@ -297,7 +336,7 @@ class StatisticController extends ActionController
             }
 
             if (Configuration::SITE_ALL_SITES === $siteIdentifier) {
-                $siteLabel = LocalizationUtility::translate('tca.configuration.site.all', SettingsUtility::EXTENSION_KEY);
+                $siteLabel = LocalizationUtility::translate('tca.configuration.site.all', 'mindshape_cookie_consent');
             }
 
             if ($site instanceof Site) {
@@ -328,10 +367,10 @@ class StatisticController extends ActionController
             $actionMenu->addMenuItem(
                 $actionMenu
                     ->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.buttons', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
-                    ->setHref($this->uriBuilder->reset()->uriFor('statisticButtons', ['configuration' => $configurationId]))
+                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.buttons', 'mindshape_cookie_consent') . ' - ' . $siteLabel)
+                    ->setHref($uriBuilder->buildUriFromRoute('mindshapecookieconsent_statisticbuttons', ['configuration' => $configurationId]))
                     ->setActive(
-                        'statisticButtonsAction' === $this->actionMethodName &&
+                        'mindshapecookieconsent_statisticbuttons' === $this->currentRoute &&
                         $configurationId === $currentConfigurationId
                     )
             );
@@ -339,10 +378,10 @@ class StatisticController extends ActionController
             $actionMenu->addMenuItem(
                 $actionMenu
                     ->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.categories', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
-                    ->setHref($this->uriBuilder->reset()->uriFor('statisticCategories', ['configuration' => $configurationId]))
+                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.categories', 'mindshape_cookie_consent') . ' - ' . $siteLabel)
+                    ->setHref($uriBuilder->buildUriFromRoute('mindshapecookieconsent_statisticcategories', ['configuration' => $configurationId]))
                     ->setActive(
-                        'statisticCategoriesAction' === $this->actionMethodName &&
+                        'mindshapecookieconsent_statisticcategories' === $this->currentRoute &&
                         $configurationId === $currentConfigurationId
                     )
             );
@@ -350,10 +389,10 @@ class StatisticController extends ActionController
             $actionMenu->addMenuItem(
                 $actionMenu
                     ->makeMenuItem()
-                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.options', SettingsUtility::EXTENSION_KEY) . ' - ' . $siteLabel)
-                    ->setHref($this->uriBuilder->reset()->uriFor('statisticOptions', ['configuration' => $configurationId]))
+                    ->setTitle(LocalizationUtility::translate('module.statistic.menu.action.options', 'mindshape_cookie_consent') . ' - ' . $siteLabel)
+                    ->setHref($uriBuilder->buildUriFromRoute('mindshapecookieconsent_statisticoptions', ['configuration' => $configurationId]))
                     ->setActive(
-                        'statisticOptionsAction' === $this->actionMethodName &&
+                        'mindshapecookieconsent_statisticoptions' === $this->currentRoute &&
                         $configurationId === $currentConfigurationId
                     )
             );
@@ -364,22 +403,29 @@ class StatisticController extends ActionController
 
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration $currentConfiguration
+     * @param \DateTime|null $currentDate
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
-    protected function buildDateMenu(Configuration $currentConfiguration): void
+    protected function buildDateMenu(Configuration $currentConfiguration, ?DateTime $currentDate): void
     {
+        /** @var \TYPO3\CMS\Backend\Routing\UriBuilder $uriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $dateMenu = $this->moduleTemplate->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-        $dateMenu->setIdentifier(SettingsUtility::EXTENSION_KEY . '_date');
+        $dateMenu->setIdentifier('mindshape_cookie_consent_date');
 
-        $currentAction = substr($this->actionMethodName, 0, -6);
-
-        switch ($currentAction) {
-            case 'statisticButtons':
+        switch ($this->currentRoute) {
+            case 'mindshapecookieconsent_statisticbuttons':
                 $availableMonths = $this->statisticButtonRepository->findAvailableMonths(
                     $currentConfiguration->getLanguageUid()
                 );
                 break;
-            case 'statisticCategories':
+            case 'mindshapecookieconsent_statisticcategories':
                 $availableMonths = $this->statisticCategoryRepository->findAvailableMonths(
+                    $currentConfiguration->getLanguageUid()
+                );
+                break;
+            case 'mindshapecookieconsent_statisticoptions':
+                $availableMonths = $this->statisticOptionRepository->findAvailableMonths(
                     $currentConfiguration->getLanguageUid()
                 );
                 break;
@@ -387,19 +433,13 @@ class StatisticController extends ActionController
                 return;
         }
 
-        try {
-            $currentDate = new DateTime($this->request->getArgument('date'));
-        } catch (NoSuchArgumentException|Exception) {
-            $currentDate = null;
-        }
-
         $dateMenu->addMenuItem(
             $dateMenu
                 ->makeMenuItem()
-                ->setTitle(LocalizationUtility::translate('module.statistic.date_select_all', SettingsUtility::EXTENSION_KEY))
+                ->setTitle(LocalizationUtility::translate('module.statistic.date_select_all', 'mindshape_cookie_consent'))
                 ->setActive(!$currentDate instanceof DateTime)
-                ->setHref($this->uriBuilder->reset()->uriFor($currentAction, [
-                    'configuration' => $currentConfiguration,
+                ->setHref($uriBuilder->buildUriFromRoute($this->currentRoute, [
+                    'configuration' => $currentConfiguration->getLocalizedUid(),
                 ]))
         );
 
@@ -412,9 +452,9 @@ class StatisticController extends ActionController
                         $currentDate instanceof DateTime &&
                         $currentDate->format('Y-m') === $availableMonth->format('Y-m')
                     )
-                    ->setHref($this->uriBuilder->reset()->uriFor($currentAction, [
-                        'date' => $availableMonth->format('c'),
-                        'configuration' => $currentConfiguration,
+                    ->setHref($uriBuilder->buildUriFromRoute($this->currentRoute, [
+                        'date' => $availableMonth->format('Y-m'),
+                        'configuration' => $currentConfiguration->getLocalizedUid(),
                     ]))
             );
         }

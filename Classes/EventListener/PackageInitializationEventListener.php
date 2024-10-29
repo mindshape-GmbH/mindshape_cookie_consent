@@ -14,21 +14,21 @@ namespace Mindshape\MindshapeCookieConsent\EventListener;
  ***/
 
 use Mindshape\MindshapeCookieConsent\Service\ExtensionDefaultDataServiceTrait;
-use TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent;
+use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\EventListener
  */
-class AfterPackageActivationEventListener
+class PackageInitializationEventListener
 {
     use ExtensionDefaultDataServiceTrait;
 
     /**
-     * @param \TYPO3\CMS\Core\Package\Event\AfterPackageActivationEvent $afterPackageActivationEvent
+     * @param \TYPO3\CMS\Core\Package\Event\PackageInitializationEvent $packageInitializationEvent
      */
-    public function __invoke(AfterPackageActivationEvent $afterPackageActivationEvent): void
+    public function __invoke(PackageInitializationEvent $packageInitializationEvent): void
     {
-        if ($afterPackageActivationEvent->getPackageKey() === 'mindshape_cookie_consent') {
+        if ($packageInitializationEvent->getExtensionKey() === 'mindshape_cookie_consent') {
             $this->extensionDefaultDataService->checkAndAddDefaultConfigurations();
         }
     }

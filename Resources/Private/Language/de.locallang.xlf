@@ -195,11 +195,8 @@
       <trans-unit id="tca.statistic_category">
         <target>Statistik Eintrag (Cookie-Kategorien)</target>
       </trans-unit>
-      <trans-unit id="tca.statistic_category.date_start">
-        <target>Startzeitpunk</target>
-      </trans-unit>
-      <trans-unit id="tca.statistic_category.date_end">
-        <target>Endzeitpunkt</target>
+      <trans-unit id="tca.statistic_category.date">
+        <target>Zeitpunk</target>
       </trans-unit>
       <trans-unit id="tca.statistic_category.cookie_category">
         <target>Ausgewählte Cookie-Kategorie</target>
@@ -211,11 +208,8 @@
       <trans-unit id="tca.statistic_option">
         <target>Statistik Eintrag (Cookie)</target>
       </trans-unit>
-      <trans-unit id="tca.statistic_option.date_start">
-        <target>Startzeitpunk</target>
-      </trans-unit>
-      <trans-unit id="tca.statistic_option.date_end">
-        <target>Endzeitpunkt</target>
+      <trans-unit id="tca.statistic_option.date">
+        <target>Zeitpunk</target>
       </trans-unit>
       <trans-unit id="tca.statistic_option.cookie_category">
         <target>Ausgewählter Cookie</target>
@@ -227,11 +221,8 @@
       <trans-unit id="tca.statistic_button">
         <target>Statistik Eintrag (Buttons)</target>
       </trans-unit>
-      <trans-unit id="tca.statistic_button.date_start">
-        <target>Startzeitpunk</target>
-      </trans-unit>
-      <trans-unit id="tca.statistic_button.date_end">
-        <target>Endzeitpunkt</target>
+      <trans-unit id="tca.statistic_button.date">
+        <target>Zeitpunk</target>
       </trans-unit>
       <trans-unit id="tca.statistic_button.save">
         <target>Speichern</target>

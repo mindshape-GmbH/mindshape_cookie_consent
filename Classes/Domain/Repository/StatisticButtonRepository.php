@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
 
 /***
@@ -13,7 +14,6 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  ***/
 
 use DateTime;
-use DateTimeZone;
 use Exception;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Consent;
@@ -37,7 +37,6 @@ class StatisticButtonRepository extends AbstractStatisticRepository
 
         try {
             $currentTime = new DateTime();
-            $currentTime->setTimezone(new DateTimeZone('UTC'));
         } catch (Exception) {
             $currentTime = null;
         }
@@ -45,9 +44,8 @@ class StatisticButtonRepository extends AbstractStatisticRepository
         try {
             $query->matching(
                 $query->logicalAnd(
-                    $query->equals('configuration', $configuration),
-                    $query->lessThan('dateBegin', $currentTime->format('c')),
-                    $query->greaterThan('dateEnd', $currentTime->format('c')),
+                    $query->equals('configuration', $configuration->getUid()),
+                    $query->equals('date', $currentTime->format('Y-m-d')),
                 )
             );
         } catch (InvalidQueryException) {
@@ -62,11 +60,7 @@ class StatisticButtonRepository extends AbstractStatisticRepository
             $statisticButton->initialize($configuration);
 
             try {
-                $dateBegin = new DateTime('00:00:00');
-                $dateEnd = new DateTime('23:59:59');
-
-                $statisticButton->setDateBegin($dateBegin);
-                $statisticButton->setDateEnd($dateEnd);
+                $statisticButton->setDate(new DateTime());
             } catch (Exception) {
                 // ignore
             }
@@ -94,7 +88,7 @@ class StatisticButtonRepository extends AbstractStatisticRepository
             } else {
                 $this->update($statisticButton);
             }
-        } catch (IllegalObjectTypeException | UnknownObjectException) {
+        } catch (IllegalObjectTypeException|UnknownObjectException) {
             // ignore
         }
     }

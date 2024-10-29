@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
 
 /***
@@ -13,6 +14,7 @@ namespace Mindshape\MindshapeCookieConsent\Domain\Repository;
  ***/
 
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -38,9 +40,11 @@ class ConfigurationRepository extends Repository
     public function findAllLanguages(): QueryResultInterface
     {
         $query = $this->createQuery();
-
-        $query->getQuerySettings()
-            ->setLanguageOverlayMode(false)
+        $query
+            ->getQuerySettings()
+            ->setLanguageAspect(
+                new LanguageAspect(overlayType: LanguageAspect::OVERLAYS_OFF)
+            )
             ->setRespectSysLanguage(false);
 
         return $query->execute();
@@ -72,8 +76,12 @@ class ConfigurationRepository extends Repository
         $query = $this->createQuery();
         $query
             ->getQuerySettings()
-            ->setLanguageOverlayMode(false)
-            ->setLanguageUid($languageId);
+            ->setLanguageAspect(
+                new LanguageAspect(
+                    id: $languageId,
+                    overlayType: LanguageAspect::OVERLAYS_OFF
+                )
+            );
 
         $query->matching(
             $query->equals('site', $siteIdentifier)

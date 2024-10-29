@@ -19,7 +19,9 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory;
 use Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -133,6 +135,10 @@ class ExtensionDefaultDataService implements SingletonInterface
             }
         }
 
+        // This is a workaround for v13, because otherwise persistAll() would throw an exception
+        // due to the configurationmanager not being initialized properly
+        $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+
         $this->persistenceManager->persistAll();
     }
 
@@ -146,7 +152,7 @@ class ExtensionDefaultDataService implements SingletonInterface
     {
         return LocalizationUtility::translate(
             $key,
-            SettingsUtility::EXTENSION_KEY,
+            'mindshape_cookie_consent',
             $arguments,
             $siteLanguage->getTypo3Language()
         );

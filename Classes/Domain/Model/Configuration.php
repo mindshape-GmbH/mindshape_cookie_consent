@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Model;
 
 /***
@@ -361,6 +362,14 @@ class Configuration extends AbstractEntity
     public function getLanguageUid(): int
     {
         return $this->_languageUid;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLocalizedUid(): int
+    {
+        return $this->_localizedUid ?? $this->uid;
     }
 
     /**

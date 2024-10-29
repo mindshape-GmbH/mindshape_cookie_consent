@@ -195,11 +195,8 @@
       <trans-unit id="tca.statistic_category">
         <source>Statistics entry (cookie categories)</source>
       </trans-unit>
-      <trans-unit id="tca.statistic_category.date_start">
-        <source>Start date</source>
-      </trans-unit>
-      <trans-unit id="tca.statistic_category.date_end">
-        <source>End date</source>
+      <trans-unit id="tca.statistic_category.date">
+        <source>Date</source>
       </trans-unit>
       <trans-unit id="tca.statistic_category.cookiecategory">
         <source>Chosen cookie category</source>
@@ -211,11 +208,8 @@
       <trans-unit id="tca.statistic_option">
         <source>Statistics entry (cookie)</source>
       </trans-unit>
-      <trans-unit id="tca.statistic_option.date_start">
-        <source>Start date</source>
-      </trans-unit>
-      <trans-unit id="tca.statistic_option.date_end">
-        <source>End date</source>
+      <trans-unit id="tca.statistic_option.date">
+        <source>Date</source>
       </trans-unit>
       <trans-unit id="tca.statistic_option.cookiecategory">
         <source>Chosen cookie</source>
@@ -227,11 +221,8 @@
       <trans-unit id="tca.statistic_button">
         <source>Statistics entry (buttons)</source>
       </trans-unit>
-      <trans-unit id="tca.statistic_button.date_start">
-        <source>Start date</source>
-      </trans-unit>
-      <trans-unit id="tca.statistic_button.date_end">
-        <source>End date</source>
+      <trans-unit id="tca.statistic_button.date">
+        <source>Date</source>
       </trans-unit>
       <trans-unit id="tca.statistic_button.save">
         <source>Save</source>

@@ -3,24 +3,40 @@
       xmlns:m="http://typo3.org/ns/Mindshape/MindshapeCookieConsent/ViewHelpers"
       xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
 
-  <f:layout name="Backend/Statistic"/>
+  <f:layout name="Module" />
 
   <f:section name="Content">
 
-    <h2>{f:translate(key: 'module.statistic.buttons', extensionName: 'mindshape_cookie_consent')}</h2>
+    <f:if condition="{configuration}">
+      <f:then>
+        <h2>{f:translate(key: 'module.statistic.buttons', extensionName: 'mindshape_cookie_consent')}</h2>
 
-    <f:if condition="0 == {configuration.enableStatistic}">
-      <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
-    </f:if>
-    <f:if condition="{statisticButtons}">
-      <f:if condition="{settings.statisticItemsPerPage} < {statisticButtons -> f:count()}">
-        <f:then>
-          <f:render section="Pagination" arguments="{statisticButtons: statisticButtons, date: date, pagination: pagination, paginator: paginator}"/>
-        </f:then>
-        <f:else>
-          <f:render section="Table" arguments="{statisticButtons: statisticButtons}"/>
-        </f:else>
-      </f:if>
+        <f:if condition="0 == {configuration.enableStatistic}">
+          <p><strong style="color: red;">{f:translate(key: 'module.statistic.statistic_disabled', extensionName: 'mindshape_cookie_consent')}</strong></p>
+        </f:if>
+        <f:if condition="{statisticButtons}">
+          <f:if condition="{paginator.numberOfPages} > 1">
+            <f:then>
+              <f:render section="Pagination" arguments="{
+                configuration: configuration,
+                statisticButtons: statisticButtons,
+                date: date,
+                pagination: pagination,
+                paginator: paginator,
+                currentRoute: currentRoute
+              }"/>
+            </f:then>
+            <f:else>
+              <f:render section="Table" arguments="{
+                statisticButtons: statisticButtons
+              }"/>
+            </f:else>
+          </f:if>
+        </f:if>
+      </f:then>
+      <f:else>
+        <span style="color: red;">{f:translate(key: 'module.statistic.no_configuration_available', extensionName: 'mindshapeCookieConsent')}</span>
+      </f:else>
     </f:if>
 
   </f:section>
@@ -29,7 +45,7 @@
   <f:section name="Pagination">
 
     <f:render section="Table" arguments="{statisticButtons: paginator.paginatedItems}"/>
-    <f:render partial="Utility/Pagination" arguments="{pagination: pagination, paginator: paginator, action: 'statisticButtons', date: date}"/>
+    <f:render partial="Utility/Pagination" arguments="{configuration: configuration, pagination: pagination, paginator: paginator, route: currentRoute, date: date}"/>
 
   </f:section>
 
@@ -49,7 +65,7 @@
       <tbody>
         <f:for each="{statisticButtons}" as="statisticButton">
           <tr>
-            <td>{statisticButton.dateBegin -> f:format.date(format: 'Y-m-d')}</td>
+            <td>{statisticButton.date -> f:format.date(format: 'Y-m-d')}</td>
             <td>{statisticButton.total}</td>
             <td>{statisticButton.agreeToAll} ({m:percentage(total: statisticButton.total, fraction: statisticButton.agreeToAll) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)</td>
             <td>{statisticButton.save} ({m:percentage(total: statisticButton.total, fraction: statisticButton.save) -> f:format.number(decimals: 1, decimalSeparator: ',')} %)

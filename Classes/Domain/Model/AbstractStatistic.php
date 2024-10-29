@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Domain\Model;
 
 /***
@@ -28,12 +29,7 @@ abstract class AbstractStatistic extends AbstractEntity
     /**
      * @var \DateTime
      */
-    protected DateTime $dateBegin;
-
-    /**
-     * @var \DateTime
-     */
-    protected DateTime $dateEnd;
+    protected DateTime $date;
 
     /**
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\Configuration
@@ -54,32 +50,16 @@ abstract class AbstractStatistic extends AbstractEntity
     /**
      * @return \DateTime
      */
-    public function getDateBegin(): DateTime
+    public function getDate(): DateTime
     {
-        return $this->dateBegin;
+        return $this->date;
     }
 
     /**
-     * @param \DateTime $dateBegin
+     * @param \DateTime $date
      */
-    public function setDateBegin(DateTime $dateBegin): void
+    public function setDate(DateTime $date): void
     {
-        $this->dateBegin = $dateBegin;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDateEnd(): DateTime
-    {
-        return $this->dateEnd;
-    }
-
-    /**
-     * @param \DateTime $dateEnd
-     */
-    public function setDateEnd(DateTime $dateEnd): void
-    {
-        $this->dateEnd = $dateEnd;
+        $this->date = $date;
     }
 }

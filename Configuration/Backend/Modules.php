@@ -1,23 +1,47 @@
 <?php
 
 use Mindshape\MindshapeCookieConsent\Controller\Backend\StatisticController;
-use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 
 return [
-    SettingsUtility::EXTENSION_NAME => [
-        'labels' => 'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/module_locallang.xlf',
-        'iconIdentifier' => 'module-' . SettingsUtility::EXTENSION_NAME,
+    'mindshapecookieconsent' => [
+        'labels' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/module_locallang.xlf',
+        'iconIdentifier' => 'module-mindshapecookieconsent',
         'position' => ['after' => 'site'],
     ],
-    SettingsUtility::EXTENSION_NAME . '_statistics' => [
-        'parent' => SettingsUtility::EXTENSION_NAME,
+    'mindshapecookieconsent_statisticindex' => [
+        'parent' => 'mindshapecookieconsent',
         'access' => 'user',
-        'iconIdentifier' => 'module-' . SettingsUtility::EXTENSION_NAME . '-statistic',
-        'labels' => 'LLL:EXT:' . SettingsUtility::EXTENSION_KEY . '/Resources/Private/Language/module_statistic_locallang.xlf',
-        'extensionName' => SettingsUtility::EXTENSION_NAME,
-        'controllerActions' => [
-            StatisticController::class => [
-                'statisticButtons', 'statisticCategories', 'statisticOptions',
+        'path' => '/module/mindshapecookieconsent/statistic',
+        'iconIdentifier' => 'module-mindshapecookieconsent-statistic',
+        'labels' => 'LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/module_statistic_locallang.xlf',
+    ],
+    'mindshapecookieconsent_statisticbuttons' => [
+        'parent' => 'mindshapecookieconsent_statisticindex',
+        'access' => 'user',
+        'path' => '/module/mindshapecookieconsent/statistic/buttons',
+        'routes' => [
+            '_default' => [
+                'target' => StatisticController::class . '::handleRequest'
+            ],
+        ],
+    ],
+    'mindshapecookieconsent_statisticcategories' => [
+        'parent' => 'mindshapecookieconsent_statisticindex',
+        'access' => 'user',
+        'path' => '/module/mindshapecookieconsent/statistic/categories',
+        'routes' => [
+            '_default' => [
+                'target' => StatisticController::class . '::handleRequest'
+            ],
+        ],
+    ],
+    'mindshapecookieconsent_statisticoptions' => [
+        'parent' => 'mindshapecookieconsent_statisticindex',
+        'access' => 'user',
+        'path' => '/module/mindshapecookieconsent/statistic/options',
+        'routes' => [
+            '_default' => [
+                'target' => StatisticController::class . '::handleRequest'
             ],
         ],
     ],
