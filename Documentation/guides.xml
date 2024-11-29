@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guides xmlns="https://www.phpdoc.org/guides"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
+        links-are-relative="true">
+
+    <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
+               project-home="https://www.mindshape.de/"
+               project-contact="info@mindshape.de"
+               project-repository="https://github.com/mindshape-GmbH/mindshape_cookie_consent"
+               project-issues="https://github.com/mindshape-GmbH/mindshape_cookie_consent/issues"
+               edit-on-github-branch="master"
+               edit-on-github="mindshape-GmbH/mindshape_cookie_consent"
+               typo3-core-preferred="stable"
+    />
+
+    <project title="mindshape Cookie Consent"
+             release="4.0"
+             copyright="by mindshape GmbH"
+    />
+
+    <inventory id="h2document" url="https://docs.typo3.org/m/typo3/docs-how-to-document/master/en-us/"/>
+    <inventory id="t3install" url="https://docs.typo3.org/m/typo3/guide-installation/master/en-us/"/>
+    <inventory id="t3tsref" url="https://docs.typo3.org/m/typo3/reference-typoscript/master/en-us/"/>
+</guides>
