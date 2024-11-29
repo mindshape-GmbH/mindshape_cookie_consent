@@ -81,7 +81,10 @@ class ConfigurationTcaUserFunc
                 false === in_array($site->getIdentifier(), $existingConfigurations) ||
                 $currentSite === $site->getIdentifier()
             ) {
-                $items[] = [$site->getIdentifier(), $site->getIdentifier()];
+                $items[] = [
+                    'value' => $site->getIdentifier(),
+                    'label' => $site->getIdentifier(),
+                ];
             }
         }
     }
