@@ -3,144 +3,140 @@
       xmlns:m="http://typo3.org/ns/Mindshape/MindshapeCookieConsent/ViewHelpers"
       xmlns:f="http://typo3.org/ns/TYPO3Fluid/Fluid/ViewHelpers">
 
-  <f:form action="consent"
-          controller="Consent"
-          pluginName="Consent"
-          extensionName="mindshapecookieconsent"
-          object="{consent}"
-          objectName="consent"
-          pageType="{settings.ajaxPageType -> m:typeCast.integer()}"
-          pageUid="{currentRootPageUid}"
-          additionalAttributes="{autocomplete: 'off'}">
+<f:form action="consent"
+        controller="Consent"
+        pluginName="Consent"
+        extensionName="mindshapecookieconsent"
+        object="{consent}"
+        objectName="consent"
+        pageType="{settings.ajaxPageType -> m:typeCast.integer()}"
+        pageUid="{currentRootPageUid}"
+        additionalAttributes="{autocomplete: 'off'}">
 
-    <f:form.hidden class="is-ajax" property="isAjaxRequest" value="0"/>
-    <f:form.hidden property="currentUrl" value="{currentUrl}"/>
+  <f:form.hidden class="is-ajax" property="isAjaxRequest" value="0"/>
+  <f:form.hidden property="currentUrl" value="{currentUrl}"/>
 
-    <f:render section="Categories" arguments="{id: id, configuration: configuration, idPrefix: idPrefix}"/>
+  <f:render section="Categories" arguments="{id: id, configuration: configuration, idPrefix: idPrefix}"/>
 
-    <div class="buttons text-center">
-      <f:if condition="{configuration.noneNecessaryCookies}">
-        <f:form.button class="select-all btn btn--primary" type="submit" property="selectAll" value="1">
-          {f:if(condition: configuration.selectAllLabel, then: configuration.selectAllLabel, else: '{f:translate(key: \'label.select_all\', extensionName: \'mindshape_cookie_consent\')}')}
-        </f:form.button>
-      </f:if>
-
-      <f:form.button class="deny btn btn--secondary" type="submit" property="deny" value="1">
-        {f:if(condition: configuration.denyLabel, then: configuration.denyLabel, else: '{f:translate(key: \'label.deny\', extensionName: \'mindshape_cookie_consent\')}')}
+  <div class="buttons text-center">
+    <f:if condition="{configuration.noneNecessaryCookies}">
+      <f:form.button class="select-all btn btn--primary" type="submit" property="selectAll" value="1">
+        {f:if(condition: configuration.selectAllLabel, then: configuration.selectAllLabel, else: '{f:translate(key: \'label.select_all\', extensionName: \'mindshape_cookie_consent\')}')}
       </f:form.button>
+    </f:if>
 
-      <f:form.button class="save btn btn--secondary" type="submit" property="selectAll" value="0">
-        {f:if(condition: configuration.saveLabel, then: configuration.saveLabel, else: '{f:translate(key: \'label.save\', extensionName: \'mindshape_cookie_consent\')}')}
-      </f:form.button>
-    </div>
+    <f:form.button class="deny btn btn--secondary" type="submit" property="deny" value="1">
+      {f:if(condition: configuration.denyLabel, then: configuration.denyLabel, else: '{f:translate(key: \'label.deny\', extensionName: \'mindshape_cookie_consent\')}')}
+    </f:form.button>
 
-    <a href="#" class="show-details text-center">
-      <span class="more">{f:if(condition: configuration.showDetailsLabel, then: configuration.showDetailsLabel, else: '{f:translate(key: \'label.show_details\', extensionName: \'mindshape_cookie_consent\')}')}</span>
-      <span class="less">{f:if(condition: configuration.hideDetailsLabel, then: configuration.hideDetailsLabel, else: '{f:translate(key: \'label.hide_details\', extensionName: \'mindshape_cookie_consent\')}')}</span>
-    </a>
+    <f:form.button class="save btn btn--secondary" type="submit" property="selectAll" value="0">
+      {f:if(condition: configuration.saveLabel, then: configuration.saveLabel, else: '{f:translate(key: \'label.save\', extensionName: \'mindshape_cookie_consent\')}')}
+    </f:form.button>
+  </div>
 
-    <div class="details">
-      <div class="detail">
-        <div class="option-wrapper">
-          <strong class="option-headline">{f:translate(key: 'label.necessary_cookies', extensionName:'mindshape_cookie_consent')}</strong>
-          {configuration.necessaryCookiesInfo -> f:format.html()}
+  <button class="show-details text-center" type="button">
+    <span class="more">{f:if(condition: configuration.showDetailsLabel, then: configuration.showDetailsLabel, else: '{f:translate(key: \'label.show_details\', extensionName: \'mindshape_cookie_consent\')}')}</span>
+    <span class="less">{f:if(condition: configuration.hideDetailsLabel, then: configuration.hideDetailsLabel, else: '{f:translate(key: \'label.hide_details\', extensionName: \'mindshape_cookie_consent\')}')}</span>
+  </button>
 
-          <div class="necessary-cookieoptions">
-            <f:for each="{configuration.necessaryCookieOptions}" as="necessaryCookieOption">
-              <div class="option-detail-wrapper">
-                <div class="option-detail cookie-option">
-                  <label for="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" class="label">
-                    <input id="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" class="option-necessary" type="checkbox" checked disabled>
-                    {necessaryCookieOption.label}
-                    <span class="checkmark"></span>
-                  </label>
-                </div>
-                <f:render section="CookieDetails" arguments="{cookieOption: necessaryCookieOption}"/>
+  <div class="details">
+    <div class="detail">
+      <div class="option-wrapper">
+        <strong class="option-headline">{f:translate(key: 'label.necessary_cookies', extensionName:'mindshape_cookie_consent')}</strong>
+        {configuration.necessaryCookiesInfo -> f:format.html()}
+
+        <div class="necessary-cookieoptions">
+          <f:for each="{configuration.necessaryCookieOptions}" as="necessaryCookieOption">
+            <div class="option-detail-wrapper">
+              <div class="option-detail cookie-option">
+                <label for="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" class="label">
+                  <input id="{idPrefix}-cookieoption-{necessaryCookieOption.uid}" class="option-necessary" type="checkbox" checked disabled>
+                  <span>{necessaryCookieOption.label}</span>
+                  <span class="checkmark"></span>
+                </label>
               </div>
-            </f:for>
-          </div>
-        </div>
-        <f:for each="{configuration.cookieCategories}" as="cookieCategory">
-          <f:if condition="{cookieCategory.cookieOptions}">
-            <div class="option-wrapper">
-              <strong class="option-headline">{cookieCategory.label}</strong>
-              {cookieCategory.info -> f:format.html()}
 
-              <div class="cookieoptions" data-parent="#{idPrefix}-option-{cookieCategory.uid}">
-                <f:for each="{cookieCategory.cookieOptions}" as="cookieOption">
-                  <div class="option-detail-wrapper">
-                    <div class="option-detail cookie-option">
-                      <label for="{idPrefix}-cookieoption-{cookieOption.identifier}" class="label">
-                        <f:form.checkbox id="{idPrefix}-cookieoption-{cookieOption.identifier}" name="consent[cookieOptions][]" value="{cookieOption.uid}" additionalAttributes="{data-identifier: cookieOption.identifier}" checked="0"/>
-                        {cookieOption.label}
-                        <span class="checkmark"></span>
-                      </label>
-                    </div>
-                    <f:render section="CookieDetails" arguments="{cookieOption: cookieOption}"/>
-                  </div>
-                </f:for>
-              </div>
+              <f:render section="CookieDetails" arguments="{cookieOption: necessaryCookieOption}"/>
             </div>
-          </f:if>
-        </f:for>
-
+          </f:for>
+        </div>
       </div>
-    </div>
 
-  </f:form>
+      <f:for each="{configuration.cookieCategories}" as="cookieCategory">
+        <f:if condition="{cookieCategory.cookieOptions}">
+          <div class="option-wrapper">
+            <strong class="option-headline">{cookieCategory.label}</strong>
+            {cookieCategory.info -> f:format.html()}
 
-  <f:section name="Categories">
-
-    <ul class="options">
-      <li>
-        <label for="{idPrefix}-option-necessary" class="label">
-          <input id="{idPrefix}-option-necessary" class="option-necessary" type="checkbox" checked disabled>
-          {f:translate(key: 'label.necessary_cookies', extensionName: 'mindshape_cookie_consent')}
-          <span class="checkmark"></span>
-        </label>
-      </li>
-      <f:for each="{configuration.cookiecategories}" as="cookiecategory">
-        <f:if condition="{cookiecategory.cookieOptions}">
-          <li>
-            <label for="{idPrefix}-option-{cookiecategory.uid}" class="label">
-              <input id="{idPrefix}-option-{cookiecategory.uid}" class="option" type="checkbox" value="{cookiecategory.uid}">
-              {cookiecategory.label}
-              <span class="checkmark"></span>
-            </label>
-          </li>
+            <div class="cookieoptions" data-parent="#{idPrefix}-option-{cookieCategory.uid}">
+              <f:for each="{cookieCategory.cookieOptions}" as="cookieOption">
+                <div class="option-detail-wrapper">
+                  <div class="option-detail cookie-option">
+                    <label for="{idPrefix}-cookieoption-{cookieOption.identifier}" class="label">
+                      <f:form.checkbox id="{idPrefix}-cookieoption-{cookieOption.identifier}" name="consent[cookieOptions][]" value="{cookieOption.uid}" additionalAttributes="{data-identifier: cookieOption.identifier}" checked="0"/>
+                      <span>{cookieOption.label}</span>
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                  <f:render section="CookieDetails" arguments="{cookieOption: cookieOption}"/>
+                </div>
+              </f:for>
+            </div>
+          </div>
         </f:if>
       </f:for>
-    </ul>
+    </div>
+  </div>
+</f:form>
 
-  </f:section>
+<f:section name="Categories">
+  <ul class="options">
+    <li>
+      <label for="{idPrefix}-option-necessary" class="label">
+        <input id="{idPrefix}-option-necessary" class="option-necessary" type="checkbox" checked disabled>
+        <span class="checkmark"></span>
+        <span>{f:translate(key: 'label.necessary_cookies', extensionName: 'mindshape_cookie_consent')}</span>
+      </label>
+    </li>
+    <f:for each="{configuration.cookiecategories}" as="cookiecategory">
+      <f:if condition="{cookiecategory.cookieOptions}">
+        <li>
+          <label for="{idPrefix}-option-{cookiecategory.uid}" class="label">
+            <input id="{idPrefix}-option-{cookiecategory.uid}" class="option" type="checkbox" value="{cookiecategory.uid}">
+            <span class="checkmark"></span>
+            <span>{cookiecategory.label}</span>
+          </label>
+        </li>
+      </f:if>
+    </f:for>
+  </ul>
+</f:section>
 
-  <f:section name="CookieDetails">
-
-    <f:if condition="{cookieOption.cookieName}">
-      <div class="option-detail option-name">
-        <strong class="option-title">{f:translate(key: 'label.option.name', extensionName: 'mindshape_cookie_consent')}:</strong>
-        <span class="option-value">{cookieOption.cookieName}</span>
-      </div>
-    </f:if>
-    <f:if condition="{cookieOption.provider}">
-      <div class="option-detail option-provider">
-        <strong class="option-title">{f:translate(key: 'label.option.provider', extensionName: 'mindshape_cookie_consent')}:</strong>
-        <span class="option-value">{cookieOption.provider}</span>
-      </div>
-    </f:if>
-    <f:if condition="{cookieOption.purpose}">
-      <div class="option-detail option-purpose">
-        <strong class="option-title">{f:translate(key: 'label.option.purpose', extensionName: 'mindshape_cookie_consent')}:</strong>
-        <span class="option-value">{cookieOption.purpose}</span>
-      </div>
-    </f:if>
-    <f:if condition="{cookieOption.cookieDuration}">
-      <div class="option-detail option-duration">
-        <strong class="option-title">{f:translate(key: 'label.option.duration', extensionName: 'mindshape_cookie_consent')}:</strong>
-        <span class="option-value">{cookieOption.cookieDuration}</span>
-      </div>
-    </f:if>
-
-  </f:section>
+<f:section name="CookieDetails">
+  <f:if condition="{cookieOption.cookieName}">
+    <div class="option-detail option-name">
+      <strong class="option-title">{f:translate(key: 'label.option.name', extensionName: 'mindshape_cookie_consent')}:</strong>
+      <span class="option-value">{cookieOption.cookieName}</span>
+    </div>
+  </f:if>
+  <f:if condition="{cookieOption.provider}">
+    <div class="option-detail option-provider">
+      <strong class="option-title">{f:translate(key: 'label.option.provider', extensionName: 'mindshape_cookie_consent')}:</strong>
+      <span class="option-value">{cookieOption.provider}</span>
+    </div>
+  </f:if>
+  <f:if condition="{cookieOption.purpose}">
+    <div class="option-detail option-purpose">
+      <strong class="option-title">{f:translate(key: 'label.option.purpose', extensionName: 'mindshape_cookie_consent')}:</strong>
+      <span class="option-value">{cookieOption.purpose}</span>
+    </div>
+  </f:if>
+  <f:if condition="{cookieOption.cookieDuration}">
+    <div class="option-detail option-duration">
+      <strong class="option-title">{f:translate(key: 'label.option.duration', extensionName: 'mindshape_cookie_consent')}:</strong>
+      <span class="option-value">{cookieOption.cookieDuration}</span>
+    </div>
+  </f:if>
+</f:section>
 
 </html>

@@ -55,13 +55,11 @@
   }
 
   const _cookieConsent = {
-
     cookieName: 'cookie_consent',
     settingsClass: '',
     openButtonClass: 'cookie-consent-open',
     detailsOpenContainerSelector: '.detail, .show-details, .consent-modal',
     consentVariableName: 'cookieConsent',
-    containerDisplayStyle: 'block',
     currentLanguageCode: null,
     expiryDays: 365,
     modalContainer: null,
@@ -100,9 +98,7 @@
       window.dataLayer = window.dataLayer || [];
       window[this.consentVariableName] = { consent: false, options: [] };
       window.cookieConsentModalToggle = function () {
-        that.modalContainer.style.display = 'none' === that.modalContainer.style.display
-          ? that.containerDisplayStyle
-          : 'none';
+        that.modalContainer.close();
       };
       window.cookieConsentReplaceConsentButtons = function () {
         that.replaceConsentButtonsForAcceptedCookies();
@@ -146,7 +142,7 @@
       document.querySelectorAll('.' + this.openButtonClass).forEach(function (openButton) {
         openButton.addEventListener('click', function (event) {
           event.preventDefault();
-          that.modalContainer.style.display = that.containerDisplayStyle;
+          that.modalContainer.showModal();
           that.isReediting = true;
         });
       });
@@ -648,14 +644,14 @@
      * @return {boolean}
      */
     isModalOpen: function (container) {
-      return container.style.display === this.containerDisplayStyle;
+      return container.hasAttribute('open');
     },
 
     /**
      * @param {HTMLElement} container
      */
     openModal: function (container) {
-      container.style.display = this.containerDisplayStyle;
+      container.showModal();
       this.closeModalDetails(container);
     },
 
@@ -663,7 +659,7 @@
      * @param {HTMLElement} container
      */
     closeModal: function (container) {
-      container.style.display = 'none';
+      container.close();
       this.closeModalDetails(container);
     },
 

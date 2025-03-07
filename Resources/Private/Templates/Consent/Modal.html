@@ -6,7 +6,7 @@
 
   <f:section name="Content">
     <f:if condition="{configuration.header}">
-      <strong class="cookie-headline">{configuration.header}</strong>
+      <strong id="cookie-headline" class="cookie-headline">{configuration.header}</strong>
     </f:if>
     <div class="hint">{configuration.hint -> f:format.html()}</div>
 
@@ -22,8 +22,6 @@
     <small class="footer-links text-center">
       <f:link.typolink parameter="{configuration.imprint}">{f:translate(key: 'label.imprint', extensionName: 'mindshape_cookie_consent')}</f:link.typolink>&nbsp;|&nbsp;<f:link.typolink parameter="{configuration.datapolicy}">{f:translate(key: 'label.datapolicy', extensionName: 'mindshape_cookie_consent')}</f:link.typolink>
     </small>
-
-
   </f:section>
 
 </html>
