@@ -4,6 +4,12 @@
 Changelog
 =========
 
+* 4.1.0
+
+  * Add missing TCA label/value adjustment for UserFunc items
+  * Migrate documentation from sphinx to PHP based rendering
+  * Adjust Cookie Consent to a11y standards
+
 * 4.0.0
 
   * Add compatibility for TYPO3 v13

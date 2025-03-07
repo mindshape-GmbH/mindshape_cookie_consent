@@ -15,7 +15,7 @@
     "email": "info@mindshape.de",
     "issues": "https://github.com/mindshape-GmbH/mindshape_cookie_consent/issues",
     "source": "https://github.com/mindshape-GmbH/mindshape_cookie_consent",
-    "docs": "https://docs.typo3.org/p/mindshape/mindshape-cookie-consent/4.0/en-us/"
+    "docs": "https://docs.typo3.org/p/mindshape/mindshape-cookie-consent/4.1/en-us/"
   },
   "require": {
     "php": ">=8.1 <8.4",

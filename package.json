@@ -1,9 +1,9 @@
 {
   "name": "mindshape_cookie_consent",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "private": true,
   "engines": {
-    "node": "^22.10"
+    "node": "^22.14"
   },
   "devDependencies": {
     "@babel/core": "^7.26",
@@ -12,10 +12,10 @@
     "cross-env": "^7.0",
     "css-loader": "^7.1",
     "mini-css-extract-plugin": "^2.9",
-    "sass": "^1.80",
+    "sass": "^1.85",
     "sass-loader": "^16.0",
-    "webpack": "^5.95",
-    "webpack-cli": "^5.1"
+    "webpack": "^5.98",
+    "webpack-cli": "^6.0"
   },
   "babel": {
     "presets": [
