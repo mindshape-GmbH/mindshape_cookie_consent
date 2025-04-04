@@ -11,34 +11,34 @@ This is a list of all TypoScript settings for this extension
 +==================================+==================================================================================+================+
 | cookieName                       | The name for the cookie                                                          | cookie_consent |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| expiryDays                       | The number of days for the cookie to expire                                      | 365            |
+| expiryDays                       | Number of days until the cookie expires                                          | 365            |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| containerId                      | ID of the HTML container used for the consent modal                              | cookie-consent |
+| containerId                      | HTML container ID for the consent modal                                          | cookie-consent |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| hideIfJavaScriptDisabled         | Keeps the modal hidden when javascript is disabled                               | 1              |
+| hideIfJavaScriptDisabled         | Keep the modal hidden if JavaScript is disabled                                  | 1              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| pushConsentToTagManager          | Push an event to Google Tagmanager when the user submits the consent             | 0              |
+| pushConsentToTagManager          | Push an event to Google Tag Manager when the user submits consent                | 0              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| lazyloading                      | | Open the consent modal on the first user interaction (move,click,scroll, ...). | 0              |
-|                                  | | This maybe helps to increase the pagespeed score.                              |                |
+| lazyloading                      | | Open the consent modal on first user interaction (e.g., move, click, scroll).  | 0              |
+|                                  | | This may help improve the page speed score.                                    |                |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| lazyloadingTimeout               | Timeout until the lazyloaded consent modal opens automaticaly in seconds         | 120            |
+| lazyloadingTimeout               | Timeout (in seconds) until the lazy-loaded consent modal opens automatically     | 120            |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| hideCategoriesInOverview         | Hide the category titles in the consent modal                                    | 0              |
+| hideCategoriesInOverview         | Hide category titles in the consent modal                                        | 0              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| addNecessaryCookieCategoryInList | Add necessary cookie category in list plugin                                     | 0              |
+| addNecessaryCookieCategoryInList | Include necessary cookie category in the list plugin                             | 0              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| ajaxPageType                     | The TYPO3 page type used for ajax requests                                       | 8641           |
+| ajaxPageType                     | TYPO3 page type used for XHR requests                                            | 8641           |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| addMarkupToFooter                | Add the HTML of the consent modal to the footer                                  | 1              |
+| addMarkupToFooter                | Insert the consent modal HTML into the footer                                    | 1              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| addConfiguration                 | Add the settings as JSON to the header                                           | 1              |
+| addConfiguration                 | Include configuration settings as JSON in the header                             | 1              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| addJavaScript                    | Add the default JavaScript                                                       | 1              |
+| addJavaScript                    | Include the default JavaScript                                                   | 1              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| addStylesheet                    | Add the default StyleSheet                                                       | 1              |
+| addStylesheet                    | Include the default stylesheet                                                   | 1              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| disableConsent                   | Disable the consent                                                              | 0              |
+| disableConsent                   | Disable the consent modal                                                        | 0              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
-| addLanguageToCookie              | Add the current language to consent cookie                                       | 0              |
+| addLanguageToCookie              | Add the current language to the consent cookie                                   | 0              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+

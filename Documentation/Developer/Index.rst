@@ -1,8 +1,8 @@
-.. _for-developers:
+.. _developer-guide:
 
-==============
-For Developers
-==============
+===============
+Developer Guide
+===============
 
 .. toctree::
    :maxdepth: 2
@@ -16,13 +16,13 @@ The Cookie Consent Configuration plugin is set automatically on every root page.
 
 .. figure:: ../Images/ConfigurationListModule.png
    :class: with-shadow
-   :alt: BE View of Cookie Consent Configuration
+   :alt: Backend View of Cookie Consent Configuration
 
-   BE View of Cookie Consent Configuration
+   Backend View of Cookie Consent Configuration
 
 If you want the same configuration for every site you can choose "All Sites" in the configuration details. Otherwise you can configure the cookie consent for every root page separately.
 
-**Important information:** Beware, that the cookie options configured in the Cookie Consent Configuration Plugin in the backend have no effect yet. Names and descriptions of the cookies will appear in the modal in the frontend, but to properly block and allow cookies, you need to use the event listener (s. section below).
+**Important information:** Beware, that the Cookie options configured in the Cookie Consent Configuration Plugin in the backend do not have any functional effect yet. While cookie names and descriptions are displayed in the frontend modal, but to properly block and allow cookies, you need to use the event listener (s. section below).
 
 As the developers of this extension, we have already implemented it for several of our customers. If you need any assistance with the configuration of the cookies on your website, feel free to contact us - we gladly provide assistance on an hourly basis.
 
@@ -58,7 +58,7 @@ Changing the cookie consent options fires an event, that you can work with.
 
     window.addEventListener('cookieConsent', function (event) {
         // check options and do something
-    }
+    });
 
 The options in the event detail are identical to the identifiers chosen in the cookie consent configuration. Pay attention to the exact spelling of the identifier.
 
@@ -111,7 +111,7 @@ Similar to the viewhelper for blocking videos, you can use the consent viewhelpe
 
 In the frontend you get a button instead of the content. Once the user clicks the button, they accept the cookie(s) necessary to show this content and the content will get loaded.
 
-If you need an event, that you can listen to, you implement the viewhelper like this:
+If you need an event, that you can listen to, you can implement the viewhelper as follows:
 
 .. code-block:: html
 
