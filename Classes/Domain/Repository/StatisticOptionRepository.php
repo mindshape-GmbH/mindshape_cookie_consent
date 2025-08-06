@@ -123,7 +123,7 @@ class StatisticOptionRepository extends AbstractStatisticRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieOption|null $cookieOption
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption
      */
-    protected function getOrCreateStatisticOption(QueryInterface $query, Configuration $configuration, CookieOption $cookieOption = null): StatisticOption
+    protected function getOrCreateStatisticOption(QueryInterface $query, Configuration $configuration, ?CookieOption $cookieOption = null): StatisticOption
     {
         /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticOption|null $statisticOption */
         $statisticOption = $query->execute()->getFirst();
