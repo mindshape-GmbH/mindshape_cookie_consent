@@ -148,7 +148,7 @@ class ExtensionDefaultDataService implements SingletonInterface
      * @param array|null $arguments
      * @return string
      */
-    protected function translate(string $key, SiteLanguage $siteLanguage, array $arguments = null): string
+    protected function translate(string $key, SiteLanguage $siteLanguage, ?array $arguments = null): string
     {
         return LocalizationUtility::translate(
             $key,

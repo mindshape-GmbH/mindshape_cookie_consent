@@ -122,7 +122,7 @@ class StatisticCategoryRepository extends AbstractStatisticRepository
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null $cookieCategory
      * @return \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory
      */
-    protected function getOrCreateStatisticCategory(QueryInterface $query, Configuration $configuration, CookieCategory $cookieCategory = null): StatisticCategory
+    protected function getOrCreateStatisticCategory(QueryInterface $query, Configuration $configuration, ?CookieCategory $cookieCategory = null): StatisticCategory
     {
         /** @var \Mindshape\MindshapeCookieConsent\Domain\Model\StatisticCategory|null $statisticCategory */
         $statisticCategory = $query->execute()->getFirst();
