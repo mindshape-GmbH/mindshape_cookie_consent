@@ -37,7 +37,7 @@ class StatisticCategory extends AbstractStatistic
      * @param \DateTime $date
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\CookieCategory|null $cookieCategory
      */
-    public function initialize(Configuration $configuration, DateTime $date, CookieCategory $cookieCategory = null): void
+    public function initialize(Configuration $configuration, DateTime $date, ?CookieCategory $cookieCategory = null): void
     {
         $this->_languageUid = $configuration->getLanguageUid();
         $this->configuration = $configuration;
