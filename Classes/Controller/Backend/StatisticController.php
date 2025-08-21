@@ -180,7 +180,7 @@ class StatisticController
      * @param int $page
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function statisticButtonsAction(DateTime $date = null, int $page = 1): ResponseInterface
+    public function statisticButtonsAction(?DateTime $date = null, int $page = 1): ResponseInterface
     {
         $this->moduleTemplate->setTitle(LocalizationUtility::translate('module.statistic.buttons', 'mindshape_cookie_consent'));
 
@@ -205,7 +205,7 @@ class StatisticController
      * @param int $page
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function statisticCategoriesAction(DateTime $date = null, int $page = 1): ResponseInterface
+    public function statisticCategoriesAction(?DateTime $date = null, int $page = 1): ResponseInterface
     {
         $this->moduleTemplate->setTitle(LocalizationUtility::translate('module.statistic.categories', 'mindshape_cookie_consent'));
 
@@ -234,7 +234,7 @@ class StatisticController
      * @param int $page
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function statisticOptionsAction(DateTime $date = null, int $page = 1): ResponseInterface
+    public function statisticOptionsAction(?DateTime $date = null, int $page = 1): ResponseInterface
     {
         $this->moduleTemplate->setTitle(LocalizationUtility::translate('module.statistic.options', 'mindshape_cookie_consent'));
 
@@ -295,7 +295,7 @@ class StatisticController
      * @param \DateTime|null $date
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface
      */
-    protected function statisticActionMethod(string $entityName, Configuration $configuration, DateTime $date = null): QueryResultInterface
+    protected function statisticActionMethod(string $entityName, Configuration $configuration, ?DateTime $date = null): QueryResultInterface
     {
         $repositoryName = lcfirst($entityName) . 'Repository';
 
