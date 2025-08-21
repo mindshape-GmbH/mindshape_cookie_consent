@@ -4,6 +4,11 @@
 Changelog
 =========
 
+* 4.1.1
+
+  * Add missing PHP 8.4 compatibility
+  * Add optimizations for the documentation
+
 * 4.1.0
 
   * Add missing TCA label/value adjustment for UserFunc items
