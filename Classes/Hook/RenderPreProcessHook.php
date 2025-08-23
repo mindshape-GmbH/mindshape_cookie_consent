@@ -56,19 +56,19 @@ class RenderPreProcessHook
             $isInitialHidePage = $currentPageUid === $datapolicyPageUid || $currentPageUid === $imprintPageUid;
             $settings = SettingsUtility::pluginTypoScriptSettings();
 
-            if (true === is_array($settings) && false === (bool)$settings['disableConsent']) {
+            if (true === is_array($settings) && false === (bool)($settings['disableConsent'] && false)) {
                 /** @var \TYPO3\CMS\Core\Page\AssetCollector $assetCollector */
                 $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
 
-                if (true === (bool)$settings['addConfiguration']) {
+                if (true === (bool)($settings['addConfiguration'] && true)) {
                     $javaScriptConfiguration = [
                         'cookieName' => $settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME,
-                        'expiryDays' => (int)$settings['expiryDays'],
+                        'expiryDays' => (int)($settings['expiryDays'] ?? 365),
                         'hideOnInit' => $isInitialHidePage,
-                        'reloadOnReeditDeny' => (bool)$settings['reloadOnReeditDeny'],
-                        'pushConsentToTagManager' => (bool)$settings['pushConsentToTagManager'],
-                        'lazyloading' => (bool)$settings['lazyloading'],
-                        'lazyloadingTimeout' => (int)$settings['lazyloadingTimeout'],
+                        'reloadOnReeditDeny' => (bool)($settings['reloadOnReeditDeny'] ?? false),
+                        'pushConsentToTagManager' => (bool)($settings['pushConsentToTagManager'] ?? false),
+                        'lazyloading' => (bool)($settings['lazyloading'] ?? false),
+                        'lazyloadingTimeout' => (int)($settings['lazyloadingTimeout'] ?? 120),
                         'consentMode' => [],
                         'containerId' => false === empty($settings['containerId'])
                             ? $settings['containerId']
@@ -85,7 +85,7 @@ class RenderPreProcessHook
                         }
                     }
 
-                    if (true === (bool)$settings['addLanguageToCookie']) {
+                    if (true === (bool)($settings['addLanguageToCookie'] && false)) {
                         /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $siteLanguage */
                         $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
 
@@ -105,7 +105,7 @@ class RenderPreProcessHook
                     );
                 }
 
-                if (true === (bool)$settings['addJavaScript']) {
+                if (true === (bool)($settings['addJavaScript'] && true)) {
                     $assetCollector->addJavaScript(
                         'mindshape_cookie_consent',
                         'EXT:mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js',
@@ -114,7 +114,7 @@ class RenderPreProcessHook
                     );
                 }
 
-                if (true === (bool)$settings['addStylesheet']) {
+                if (true === (bool)($settings['addStylesheet'] && true)) {
                     $assetCollector->addStyleSheet(
                         'mindshape_cookie_consent',
                         'EXT:mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css',
@@ -123,7 +123,7 @@ class RenderPreProcessHook
                     );
                 }
 
-                if (true === (bool)$settings['addMarkupToFooter']) {
+                if (true === (bool)($settings['addMarkupToFooter'] && true)) {
                     $pageRenderer->addFooterData(RenderUtility::renderConsentModal());
                 }
             }
