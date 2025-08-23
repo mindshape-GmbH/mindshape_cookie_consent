@@ -30,11 +30,8 @@ use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Service
@@ -113,8 +110,11 @@ class CookieConsentService implements SingletonInterface
         $this->statisticOptionRepository = $statisticOptionRepository;
         $this->settings = SettingsUtility::pluginTypoScriptSettings();
 
+        /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
+
         try {
-            $this->currentSite = $siteFinder->getSiteByPageId($GLOBALS['TSFE']->id);
+            $this->currentSite = $request->getAttribute('site', new NullSite());
             $this->currentSiteLanguageId = $context->getPropertyFromAspect('language', 'id', 0);
         } catch (AspectNotFoundException|SiteNotFoundException) {
             $this->currentSite = new NullSite();

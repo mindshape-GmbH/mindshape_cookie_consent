@@ -38,7 +38,10 @@ class RenderPreProcessHook
      */
     public function preProcess(array &$params, PageRenderer $pageRenderer): void
     {
-        if (true === ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()) {
+        /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
+
+        if (true === ApplicationType::fromRequest($request)->isFrontend()) {
             /** @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService $cookieConsentService */
             $cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
             $datapolicyPageUid = null;
@@ -52,7 +55,7 @@ class RenderPreProcessHook
                 $imprintPageUid = LinkUtility::parseTypoLinkPageUid($cookieConsentService->getImprintPageTypoLink());
             }
 
-            $currentPageUid = (int)$GLOBALS['TSFE']->id;
+            $currentPageUid = $request->getAttribute('routing')->getPageId();
             $isInitialHidePage = $currentPageUid === $datapolicyPageUid || $currentPageUid === $imprintPageUid;
             $settings = SettingsUtility::pluginTypoScriptSettings();
 

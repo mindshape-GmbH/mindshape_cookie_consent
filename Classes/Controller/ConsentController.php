@@ -62,7 +62,9 @@ class ConsentController extends AbstractController
             }
 
             if (true === empty($redirectUrl)) {
-                $redirectUrl = LinkUtility::renderPageLink($GLOBALS['TSFE']->id);
+                $redirectUrl = LinkUtility::renderPageLink(
+                    $this->request->getAttribute('routing')->getPageId()
+                );
             }
 
             return new RedirectResponse($redirectUrl, 303);
