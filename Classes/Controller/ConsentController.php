@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
 /**
@@ -97,11 +96,30 @@ class ConsentController extends AbstractController
             $consent = new Consent();
         }
 
+        $currentUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+        $parsedUrl = parse_url($currentUrl);
+
+        $excludedParameters = $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] ?? [];
+        
+        if (!empty($parsedUrl['query']) && !empty($excludedParameters)) {
+            parse_str($parsedUrl['query'], $queryParameters);
+
+            $filteredParameters = array_filter(
+                $queryParameters,
+                fn($key) => !in_array($key, $excludedParameters, true),
+                ARRAY_FILTER_USE_KEY
+            );
+
+            $queryString = http_build_query($filteredParameters);
+
+            $currentUrl = preg_replace('/\?.*?(#|$)/', (strlen($queryString) ? '?' . $queryString : '$1'), $currentUrl);
+        }
+
         $this->view->assignMultiple([
             'id' => CookieConsentService::DEFAULT_CONTAINER_ID,
             'consent' => $consent,
             'configuration' => $this->cookieConsentService->currentConfiguration(),
-            'currentUrl' => GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'),
+            'currentUrl' => $currentUrl,
             'currentRootPageUid' => $this->cookieConsentService->currentSite()->getRootPageId(),
         ]);
 
