@@ -120,7 +120,6 @@ class ConsentController extends AbstractController
             'consent' => $consent,
             'configuration' => $this->cookieConsentService->currentConfiguration(),
             'currentUrl' => $currentUrl,
-            'currentRootPageUid' => $this->cookieConsentService->currentSite()->getRootPageId(),
         ]);
 
         return $this->htmlResponse();

@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\Entity\SiteInterface;
-use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -95,7 +93,6 @@ class CookieConsentService implements SingletonInterface
      * @param \Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository $statisticOptionRepository
      */
     public function __construct(
-        SiteFinder $siteFinder,
         Context $context,
         ConfigurationRepository $configurationRepository,
         CookieOptionRepository $cookieOptionRepository,
@@ -272,13 +269,5 @@ class CookieConsentService implements SingletonInterface
         }
 
         return $configuration;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Site\Entity\SiteInterface
-     */
-    public function currentSite(): SiteInterface
-    {
-        return $this->currentSite;
     }
 }
