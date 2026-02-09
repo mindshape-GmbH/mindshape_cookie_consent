@@ -23,14 +23,12 @@ use Traversable;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class GroupViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
 
     /**
      * @var bool
@@ -48,6 +46,15 @@ class GroupViewHelper extends AbstractViewHelper
         $this->registerArgument('field', 'string', 'The field to group by', true);
         $this->registerArgument('fillSmallerGroups', 'bool', 'Fills grouped chunks to be equal in size', false, false);
         $this->registerArgument('as', 'string', 'The field to group by', false, 'groupedObjects');
+    }
+
+    public function render(): string
+    {
+        return self::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
     /**

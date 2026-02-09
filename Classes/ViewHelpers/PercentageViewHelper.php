@@ -18,19 +18,26 @@ use Closure;
 use Mindshape\MindshapeCookieConsent\Exception\NotANumberException;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class PercentageViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
 
     public function initializeArguments(): void
     {
         $this->registerArgument('total', 'mixed', 'The total amount to calculate the percatentage from', true);
         $this->registerArgument('fraction', 'mixed', 'The fraction to calculate the percatentage from', true);
+    }
+
+    public function render(): float|int
+    {
+        return self::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
     /**

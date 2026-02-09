@@ -20,14 +20,12 @@ use Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class ConsentViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
 
     /**
      * @var bool
@@ -40,6 +38,15 @@ class ConsentViewHelper extends AbstractViewHelper
         $this->registerArgument('template', 'string', 'Alternative template', false, 'Default');
         $this->registerArgument('arguments', 'array', 'Additional arguments for the alternative template', false, []);
         $this->registerArgument('scripts', 'array', 'Scripts to inject on consent', false, []);
+    }
+
+    public function render(): string
+    {
+        return self::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
     /**

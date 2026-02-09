@@ -26,14 +26,12 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\PerbitCookieConsent\ViewHelpers
  */
 class MediaConsentViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
 
     /**
      * @var bool
@@ -46,6 +44,15 @@ class MediaConsentViewHelper extends AbstractViewHelper
         $this->registerArgument('additionalConfig', 'array', 'This array can hold additional configuration that is passed though to the Renderer object', false, []);
         $this->registerArgument('width', 'string', 'width of the iframe tag');
         $this->registerArgument('height', 'string', 'height of the iframe tag');
+    }
+
+    public function render(): string
+    {
+        return self::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
     }
 
     /**

@@ -18,19 +18,26 @@ use Closure;
 use Mindshape\MindshapeCookieConsent\Utility\RenderUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class ConsentModalViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
 
     /**
      * @var bool
      */
     protected $escapeOutput = false;
+
+    public function render(): string
+    {
+        return self::renderStatic(
+            $this->arguments,
+            $this->buildRenderChildrenClosure(),
+            $this->renderingContext
+        );
+    }
 
     /**
      * @param array $arguments
