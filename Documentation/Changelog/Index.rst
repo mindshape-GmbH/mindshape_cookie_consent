@@ -4,6 +4,13 @@
 Changelog
 =========
 
+* 4.1.2
+
+  * Add missing defaults for array keys to prevent warnings on missing TypoScript configuration
+  * Remove usage of TypoScriptFrontendController
+  * Remove excluded parameters from current url parameter due to cache flooding issues
+  * Remove root page id for consent form submit target page
+
 * 4.1.1
 
   * Add missing PHP 8.4 compatibility
