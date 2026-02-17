@@ -15,7 +15,6 @@ namespace Mindshape\MindshapeCookieConsent\Controller\Backend;
 
 use DateTime;
 use Exception;
-use GeorgRinger\NumberedPagination\NumberedPagination;
 use Mindshape\MindshapeCookieConsent\Domain\Model\Configuration;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository;
@@ -27,9 +26,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -281,7 +280,7 @@ class StatisticController
     protected function addPaginationToView(QueryResultInterface $queryResult, int $currentPage, int $itemsPerPage): void
     {
         $paginator = new QueryResultPaginator($queryResult, $currentPage, $itemsPerPage);
-        $pagination = new NumberedPagination($paginator, (int)($this->settings['maximumPaginationLinks'] ?? 0));
+        $pagination = new SlidingWindowPagination($paginator, (int)($this->settings['maximumPaginationLinks'] ?? 0));
 
         $this->moduleTemplate->assignMultiple([
             'paginator' => $paginator,
