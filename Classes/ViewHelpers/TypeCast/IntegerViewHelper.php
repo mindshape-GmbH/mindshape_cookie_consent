@@ -14,31 +14,23 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers\TypeCast;
  *
  ***/
 
-use Closure;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class IntegerViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
     protected $escapeOutput = false;
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @return int
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): int
+    public function render(): int
     {
-        return (int)$renderChildrenClosure();
+        return (int)$this->renderChildren();
     }
 }

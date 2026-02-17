@@ -14,24 +14,19 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers\Iterator;
  *
  ***/
 
-use Closure;
 use DateTime;
 use Mindshape\MindshapeCookieConsent\Exception\NonIterableObjectException;
 use Mindshape\MindshapeCookieConsent\Exception\NotAnObjectException;
 use Mindshape\MindshapeCookieConsent\Exception\UnknownObjectException;
 use Traversable;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class GroupViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -51,19 +46,16 @@ class GroupViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @return string
      * @throws \Mindshape\MindshapeCookieConsent\Exception\NonIterableObjectException
      * @throws \Mindshape\MindshapeCookieConsent\Exception\NotAnObjectException
      * @throws \Mindshape\MindshapeCookieConsent\Exception\UnknownObjectException
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         if (
-            !$arguments['objects'] instanceof Traversable &&
-            false === is_array($arguments['objects'])
+            !$this->arguments['objects'] instanceof Traversable &&
+            false === is_array($this->arguments['objects'])
         ) {
             throw new NonIterableObjectException('This viewhelper accepts numbers only');
         }
@@ -72,11 +64,11 @@ class GroupViewHelper extends AbstractViewHelper
         $chunkSize = 0;
 
         /** @var \TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface|array $object */
-        foreach ($arguments['objects'] as $object) {
+        foreach ($this->arguments['objects'] as $object) {
             if ($object instanceof DomainObjectInterface) {
-                $groupValue = $object->_getProperty($arguments['field']);
+                $groupValue = $object->_getProperty($this->arguments['field']);
             } elseif (true === is_array($object)) {
-                $groupValue = $object[$arguments['field']];
+                $groupValue = $object[$this->arguments['field']];
             } elseif (false === is_object($object)) {
                 throw new NotAnObjectException('Expecting an iterable of objects or arrays "' . gettype($object) . '"-item was given');
             } else {
@@ -99,7 +91,7 @@ class GroupViewHelper extends AbstractViewHelper
             }
         }
 
-        if (true === (bool) $arguments['fillSmallerGroups'] && 0 < $chunkSize) {
+        if (true === (bool) $this->arguments['fillSmallerGroups'] && 0 < $chunkSize) {
             foreach ($groupedObjectsChunks as &$groupedObjects) {
                 while ($chunkSize > count($groupedObjects)) {
                     $groupedObjects[] = null;
@@ -107,8 +99,8 @@ class GroupViewHelper extends AbstractViewHelper
             }
         }
 
-        $renderingContext->getVariableProvider()->add($arguments['as'], $groupedObjectsChunks);
+        $this->renderingContext->getVariableProvider()->add($this->arguments['as'], $groupedObjectsChunks);
 
-        return $renderChildrenClosure();
+        return $this->renderChildren();
     }
 }

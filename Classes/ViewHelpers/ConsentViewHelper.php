@@ -14,21 +14,16 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
  *
  ***/
 
-use Closure;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class ConsentViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -43,28 +38,25 @@ class ConsentViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @return string
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         $cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
         $templateRenderingService = GeneralUtility::makeInstance(TemplateRenderingService::class);
 
         return $templateRenderingService->render(
             'Replacement',
-            $arguments['template'],
+            $this->arguments['template'],
             array_merge(
                 [
-                    'replacement' => htmlentities($renderChildrenClosure()),
-                    'scripts' => json_encode($arguments['scripts']),
-                    'cookieOption' => $cookieConsentService->getCookieOptionFromIdentifier($arguments['identifier']),
+                    'replacement' => htmlentities($this->renderChildren() ?? ''),
+                    'scripts' => json_encode($this->arguments['scripts']),
+                    'cookieOption' => $cookieConsentService->getCookieOptionFromIdentifier($this->arguments['identifier']),
                     'datapolicyPageTypoLink' => $cookieConsentService->getDatapolicyPageTypoLink(),
                     'imprintPageTypoLink' => $cookieConsentService->getImprintPageTypoLink(),
                 ],
-                $arguments['arguments']
+                $this->arguments['arguments']
             )
         );
     }

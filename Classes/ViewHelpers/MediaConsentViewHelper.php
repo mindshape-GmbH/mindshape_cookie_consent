@@ -14,27 +14,21 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
  *
  ***/
 
-use Closure;
 use Mindshape\MindshapeCookieConsent\Exception\InvalidFileTypeException;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Service\TemplateRenderingService;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperInterface;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\PerbitCookieConsent\ViewHelpers
  */
 class MediaConsentViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -49,19 +43,16 @@ class MediaConsentViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @return string
      * @throws \Mindshape\MindshapeCookieConsent\Exception\InvalidFileTypeException
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
+    public function render(): string
     {
         /** @var \TYPO3\CMS\Core\Resource\FileInterface $file */
-        $file = $arguments['file'];
-        $width = $arguments['width'];
-        $height = $arguments['height'];
-        $additionalConfig = (array)$arguments['additionalConfig'];
+        $file = $this->arguments['file'];
+        $width = $this->arguments['width'];
+        $height = $this->arguments['height'];
+        $additionalConfig = (array)$this->arguments['additionalConfig'];
 
         if (is_callable([$file, 'getOriginalResource'])) {
             $file = $file->getOriginalResource();

@@ -14,19 +14,14 @@ namespace Mindshape\MindshapeCookieConsent\ViewHelpers;
  *
  ***/
 
-use Closure;
 use Mindshape\MindshapeCookieConsent\Exception\NotANumberException;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\ViewHelpers
  */
 class PercentageViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     public function initializeArguments(): void
     {
         $this->registerArgument('total', 'mixed', 'The total amount to calculate the percatentage from', true);
@@ -34,23 +29,20 @@ class PercentageViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @return float|int
      * @throws \Mindshape\MindshapeCookieConsent\Exception\NotANumberException
      */
-    public static function renderStatic(array $arguments, Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): float|int
+    public function render(): float|int
     {
         if (
-            false === is_numeric($arguments['total']) ||
-            false === is_numeric($arguments['fraction'])
+            false === is_numeric($this->arguments['total']) ||
+            false === is_numeric($this->arguments['fraction'])
         ) {
             throw new NotANumberException('This viewhelper accepts numbers only');
         }
 
-        $total = (float) $arguments['total'];
-        $fraction = (float) $arguments['fraction'];
+        $total = (float) $this->arguments['total'];
+        $fraction = (float) $this->arguments['fraction'];
 
         if ($total === 0.0) {
             return 0;
