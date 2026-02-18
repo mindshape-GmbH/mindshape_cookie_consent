@@ -59,7 +59,7 @@ class RenderPreProcessHook
             $isInitialHidePage = $currentPageUid === $datapolicyPageUid || $currentPageUid === $imprintPageUid;
             $settings = SettingsUtility::pluginTypoScriptSettings();
 
-            if (true === is_array($settings) && false === (bool)($settings['disableConsent'] && false)) {
+            if (true === is_array($settings) && false === (bool)($settings['disableConsent'])) {
                 /** @var \TYPO3\CMS\Core\Page\AssetCollector $assetCollector */
                 $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
 
