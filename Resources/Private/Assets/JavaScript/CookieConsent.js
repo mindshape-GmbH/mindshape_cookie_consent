@@ -114,12 +114,14 @@
         gtag('consent', 'default', consentMode);
       }
 
-      if ('containerId' in configuration) {
-        try {
-          this.modalContainer = document.querySelector('#' + configuration.containerId);
-        } catch (exception) {
-          throw new Error('invalid container selector');
-        }
+      try {
+        this.modalContainer = document.querySelector(
+          'containerId' in configuration
+            ? '#' + configuration.containerId
+            : '#cookie-consent'
+        );
+      } catch (exception) {
+        throw new Error('invalid container selector');
       }
 
       if (null !== this.modalContainer) {
