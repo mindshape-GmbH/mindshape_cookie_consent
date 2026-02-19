@@ -4,6 +4,14 @@
 Changelog
 =========
 
+* 4.1.3
+
+  * Use proper fallback ID for consent container selector
+  * Use proper zero coalescing operator for default settings values
+  * Remove deprecated static rendering in ViewHelpers
+  * Replace Georg Ringer's "NumberedPagination" with core "SlidingWindowPagination"
+  * Add PHP 8.5 support
+
 * 4.1.2
 
   * Add missing defaults for array keys to prevent warnings on missing TypoScript configuration
