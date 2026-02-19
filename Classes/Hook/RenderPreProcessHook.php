@@ -41,17 +41,17 @@ class RenderPreProcessHook
         /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
         $request = $GLOBALS['TYPO3_REQUEST'];
 
-        if (true === ApplicationType::fromRequest($request)->isFrontend()) {
+        if (ApplicationType::fromRequest($request)->isFrontend()) {
             /** @var \Mindshape\MindshapeCookieConsent\Service\CookieConsentService $cookieConsentService */
             $cookieConsentService = GeneralUtility::makeInstance(CookieConsentService::class);
             $datapolicyPageUid = null;
             $imprintPageUid = null;
 
-            if (null !== $cookieConsentService->getDatapolicyPageTypoLink()) {
+            if (!empty($cookieConsentService->getDatapolicyPageTypoLink())) {
                 $datapolicyPageUid = LinkUtility::parseTypoLinkPageUid($cookieConsentService->getDatapolicyPageTypoLink());
             }
 
-            if (null !== $cookieConsentService->getImprintPageTypoLink()) {
+            if (!empty($cookieConsentService->getImprintPageTypoLink())) {
                 $imprintPageUid = LinkUtility::parseTypoLinkPageUid($cookieConsentService->getImprintPageTypoLink());
             }
 
@@ -59,11 +59,14 @@ class RenderPreProcessHook
             $isInitialHidePage = $currentPageUid === $datapolicyPageUid || $currentPageUid === $imprintPageUid;
             $settings = SettingsUtility::pluginTypoScriptSettings();
 
-            if (true === is_array($settings) && false === (bool)($settings['disableConsent'] && false)) {
+            if (
+                is_array($settings) && 
+                !($settings['disableConsent'] ?? false)
+            ) {
                 /** @var \TYPO3\CMS\Core\Page\AssetCollector $assetCollector */
                 $assetCollector = GeneralUtility::makeInstance(AssetCollector::class);
 
-                if (true === (bool)($settings['addConfiguration'] && true)) {
+                if ($settings['addConfiguration'] ?? true) {
                     $javaScriptConfiguration = [
                         'cookieName' => $settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME,
                         'expiryDays' => (int)($settings['expiryDays'] ?? 365),
@@ -88,7 +91,7 @@ class RenderPreProcessHook
                         }
                     }
 
-                    if (true === (bool)($settings['addLanguageToCookie'] && false)) {
+                    if ($settings['addLanguageToCookie'] ?? false) {
                         /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $siteLanguage */
                         $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
 
@@ -108,7 +111,7 @@ class RenderPreProcessHook
                     );
                 }
 
-                if (true === (bool)($settings['addJavaScript'] && true)) {
+                if ($settings['addJavaScript'] ?? true) {
                     $assetCollector->addJavaScript(
                         'mindshape_cookie_consent',
                         'EXT:mindshape_cookie_consent/Resources/Public/JavaScript/cookie_consent.js',
@@ -117,7 +120,7 @@ class RenderPreProcessHook
                     );
                 }
 
-                if (true === (bool)($settings['addStylesheet'] && true)) {
+                if ($settings['addStylesheet'] ?? true) {
                     $assetCollector->addStyleSheet(
                         'mindshape_cookie_consent',
                         'EXT:mindshape_cookie_consent/Resources/Public/Stylesheet/cookie_consent.css',
@@ -126,7 +129,7 @@ class RenderPreProcessHook
                     );
                 }
 
-                if (true === (bool)($settings['addMarkupToFooter'] && true)) {
+                if ($settings['addMarkupToFooter'] ?? true) {
                     $pageRenderer->addFooterData(RenderUtility::renderConsentModal());
                 }
             }
