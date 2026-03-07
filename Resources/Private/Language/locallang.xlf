@@ -78,6 +78,10 @@
         <source>Number of links in the pagination</source>
       </trans-unit>
 
+      <trans-unit id="extensionsettings.disable_statistic_backend_module">
+        <source>Disable statistic backend module</source>
+      </trans-unit>
+
       <trans-unit id="tca.configuration">
         <source>Cookie-Consent Configuration</source>
       </trans-unit>

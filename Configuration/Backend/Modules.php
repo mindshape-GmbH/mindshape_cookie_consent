@@ -1,6 +1,26 @@
 <?php
+declare(strict_types=1);
 
 use Mindshape\MindshapeCookieConsent\Controller\Backend\StatisticController;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
+use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+defined('TYPO3') or die();
+
+/** @var \TYPO3\CMS\Core\Configuration\ExtensionConfiguration $extensionConfiguration */
+$extensionConfiguration = GeneralUtility::makeInstance(ExtensionConfiguration::class);
+
+try {
+    $isDisableStatisticBackendModule = $extensionConfiguration->get('mindshape_cookie_consent', 'disableStatisticBackendModule');
+} catch (ExtensionConfigurationPathDoesNotExistException|ExtensionConfigurationExtensionNotConfiguredException) {
+    $isDisableStatisticBackendModule = false;
+}
+
+if ($isDisableStatisticBackendModule) {
+    return [];
+}
 
 return [
     'mindshapecookieconsent' => [

@@ -78,6 +78,10 @@
         <target>Anzahl Links in der Seitennummerierung</target>
       </trans-unit>
 
+      <trans-unit id="extensionsettings.disable_statistic_backend_module">
+        <target>Deaktiviere das Statistikmodul im Backend</target>
+      </trans-unit>
+
       <trans-unit id="tca.configuration">
         <target>Cookie-Consent Konfiguration</target>
       </trans-unit>

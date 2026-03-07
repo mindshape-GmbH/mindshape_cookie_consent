@@ -1,0 +1,2 @@
+# cat=Settings/enable; type=boolean; label=LLL:EXT:mindshape_cookie_consent/Resources/Private/Language/locallang.xlf:extensionsettings.disable_statistic_backend_module
+disableStatisticBackendModule = 0
