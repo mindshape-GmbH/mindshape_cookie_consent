@@ -19,7 +19,7 @@ return [
         'source' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/Extension.svg'
     ],
     'module-mindshapecookieconsent-statistic' => [
-        'provider' => BitmapIconProvider::class,
-        'source' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/module_statistic.png'
+        'provider' => SvgIconProvider::class,
+        'source' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/module_statistic.svg'
     ],
 ];
