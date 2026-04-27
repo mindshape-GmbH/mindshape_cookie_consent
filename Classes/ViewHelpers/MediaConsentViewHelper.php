@@ -102,7 +102,8 @@ class MediaConsentViewHelper extends AbstractViewHelper
                 'previewImage' => $previewImage,
                 'width' => $width,
                 'height' => $height,
-            ]
+            ],
+            $this->renderingContext
         );
     }
 }
