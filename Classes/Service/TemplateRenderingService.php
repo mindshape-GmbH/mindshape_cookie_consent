@@ -16,6 +16,7 @@ use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Service
@@ -46,9 +47,9 @@ class TemplateRenderingService implements SingletonInterface
      * @param array $variables
      * @return string
      */
-    public function render(string $templateFolder, string $templateName, array $variables = []): string
+    public function render(string $templateFolder, string $templateName, array $variables = [], ?RenderingContextInterface $renderingContext = null): string
     {
-        $view = $this->getView($templateFolder, $templateName);
+        $view = $this->getView($templateFolder, $templateName, $renderingContext);
 
         if (false === array_key_exists('settings', $variables)) {
             $variables['settings'] = $this->settings;
@@ -64,10 +65,14 @@ class TemplateRenderingService implements SingletonInterface
      * @param string $templateName
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
-    protected function getView(string $templateFolder, string $templateName): StandaloneView
+    protected function getView(string $templateFolder, string $templateName, ?RenderingContextInterface $renderingContext = null): StandaloneView
     {
         /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
+
+        if ($renderingContext !== null) {
+            $view->getRenderingContext()->setAttribute(\Psr\Http\Message\ServerRequestInterface::class, $renderingContext->getRequest());
+        }
 
         $view->setFormat('html');
         $view->setTemplateRootPaths($this->viewSettings['templateRootPaths']);
