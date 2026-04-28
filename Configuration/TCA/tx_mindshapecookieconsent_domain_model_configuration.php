@@ -14,7 +14,6 @@ return [
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
-        'searchFields' => 'site,enable_statistic,header,imprint,datapolicy,hint,necessary_cookies_info',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_configuration.png',
         'enablecolumns' => [
             'disabled' => 'hidden',

@@ -23,11 +23,7 @@ call_user_func(
             'special'
         );
 
-        ExtensionManagementUtility::addPiFlexFormValue(
-            '*',
-            'FILE:EXT:mindshape_cookie_consent/Configuration/FlexForms/Settings.xml',
-            'mindshapecookieconsent_consent'
-        );
+        $GLOBALS['TCA']['tt_content']['types']['mindshapecookieconsent_consent']['columnsOverrides']['pi_flexform']['config']['ds'] = 'FILE:EXT:mindshape_cookie_consent/Configuration/FlexForms/Settings.xml';
 
         ExtensionManagementUtility::addToAllTCAtypes(
             'tt_content',

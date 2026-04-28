@@ -20,14 +20,12 @@ use Mindshape\MindshapeCookieConsent\Domain\Repository\ConfigurationRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticButtonRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticCategoryRepository;
 use Mindshape\MindshapeCookieConsent\Domain\Repository\StatisticOptionRepository;
-use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Pagination\SlidingWindowPagination;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -341,19 +339,11 @@ class StatisticController
             if ($site instanceof Site) {
                 $languageLabel = $site->getLanguageById($configuration->getLanguageUid())->getTitle();
             } elseif (0 < $configuration->getLanguageUid()) {
-                if ((new Typo3Version())->getMajorVersion() < 12) {
-                    $languageLabel = DatabaseUtility::databaseConnection()->select(
-                        ['title'],
-                        'sys_language',
-                        ['uid' => $configuration->getLanguageUid()]
-                    )->fetchOne();
-                } else {
-                    $languageLabel = LocalizationUtility::translate(
-                        'module.statistic.language_id',
-                        'mindshape_cookie_consent',
-                        [$configuration->getLanguageUid()]
-                    );
-                }
+                $languageLabel = LocalizationUtility::translate(
+                    'module.statistic.language_id',
+                    'mindshape_cookie_consent',
+                    [$configuration->getLanguageUid()]
+                );
             }
 
             if (true === is_string($languageLabel)) {

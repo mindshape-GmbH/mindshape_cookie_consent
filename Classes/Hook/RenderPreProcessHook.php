@@ -93,11 +93,11 @@ class RenderPreProcessHook
 
                     if ($settings['addLanguageToCookie'] ?? false) {
                         /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $siteLanguage */
-                        $siteLanguage = $GLOBALS['TYPO3_REQUEST']->getAttribute('language');
+                        $siteLanguage = $request->getAttribute('language');
 
                         $javaScriptConfiguration['currentLanguageCode'] = $siteLanguage instanceof SiteLanguage
                             ? $siteLanguage->getLocale()->getLanguageCode()
-                            : $pageRenderer->getLanguage();
+                            : null;
                     }
 
                     $assetCollector->addInlineJavaScript(

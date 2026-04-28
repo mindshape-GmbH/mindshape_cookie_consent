@@ -13,7 +13,6 @@ return [
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
         'sortby' => 'sorting',
-        'searchFields' => 'label,identifier,consent_mode,provider,purpose,cookie_name,cookie_duration,info',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_cookieoption.png',
         'hideTable' => true,
         'enablecolumns' => [

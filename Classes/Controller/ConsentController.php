@@ -53,7 +53,7 @@ class ConsentController extends AbstractController
                 $redirectUrl = $consent->getCurrentUrl();
 
                 $redirectHost = parse_url($redirectUrl, PHP_URL_HOST);
-                $currentHost = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+                $currentHost = $this->request->getUri()->getHost();
 
                 if ($redirectHost !== $currentHost) {
                     throw new PropagateResponseException(new NullResponse(), 400);
@@ -96,11 +96,11 @@ class ConsentController extends AbstractController
             $consent = new Consent();
         }
 
-        $currentUrl = GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL');
+        $currentUrl = (string) $this->request->getUri();
         $parsedUrl = parse_url($currentUrl);
 
         $excludedParameters = $GLOBALS['TYPO3_CONF_VARS']['FE']['cacheHash']['excludedParameters'] ?? [];
-        
+
         if (!empty($parsedUrl['query']) && !empty($excludedParameters)) {
             parse_str($parsedUrl['query'], $queryParameters);
 

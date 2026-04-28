@@ -14,7 +14,6 @@ return [
         'transOrigDiffSourceField' => 'l10n_diffsource',
         'translationSource' => 'l10n_source',
         'sortby' => 'sorting',
-        'searchFields' => 'label,identifier,info',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_cookiecategory.png',
         'hideTable' => true,
         'enablecolumns' => [

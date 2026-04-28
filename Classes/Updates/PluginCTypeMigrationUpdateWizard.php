@@ -15,7 +15,10 @@ namespace Mindshape\MindshapeCookieConsent\Updates;
  ***/
 
 use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Schema\Column;
 use Mindshape\MindshapeCookieConsent\Utility\DatabaseUtility;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
@@ -105,6 +108,10 @@ class PluginCTypeMigrationUpdateWizard implements UpgradeWizardInterface
      */
     protected function getOldPluginRecords(): array
     {
+        if (!$this->tableColumnExists('tt_content', 'list_type')) {
+            return [];
+        }
+
         $queryBuilder = DatabaseUtility::queryBuilder();
 
         return $queryBuilder
@@ -133,5 +140,24 @@ class PluginCTypeMigrationUpdateWizard implements UpgradeWizardInterface
             )
             ->executeQuery()
             ->fetchAllAssociative();
+    }
+
+    /**
+     * @param string $tableName
+     * @param string $columnName
+     */
+    protected function tableColumnExists(string $tableName, string $columnName): bool
+    {
+        /** @var \TYPO3\CMS\Core\Database\ConnectionPool $connectionPool */
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $schemaManager = $connectionPool->getConnectionForTable($tableName)->createSchemaManager();
+
+        $tableColumns = array_filter(
+        // TODO: Switch method to "introspectTableColumns" when upgrading to TYPO3 v15
+            $schemaManager->listTableColumns($tableName),
+            fn(Column $column) => $column->getObjectName()->getIdentifier()->getValue() === $columnName
+        );
+
+        return count($tableColumns) > 0;
     }
 }

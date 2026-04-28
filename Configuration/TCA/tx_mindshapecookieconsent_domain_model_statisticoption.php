@@ -9,7 +9,6 @@ return [
         'label' => 'date',
         'versioningWS' => false,
         'languageField' => 'sys_language_uid',
-        'searchFields' => 'date,cookieoption,counter',
         'iconfile' => 'EXT:mindshape_cookie_consent/Resources/Public/Icons/model_statistic.png',
         'hideTable' => true,
     ],
