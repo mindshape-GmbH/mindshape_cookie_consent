@@ -1,4 +1,5 @@
 <?php
+
 namespace Mindshape\MindshapeCookieConsent\Service;
 
 /***
@@ -15,8 +16,9 @@ namespace Mindshape\MindshapeCookieConsent\Service;
 use Mindshape\MindshapeCookieConsent\Utility\SettingsUtility;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\View\TemplateView;
+use TYPO3Fluid\Fluid\View\ViewInterface;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Service
@@ -45,10 +47,15 @@ class TemplateRenderingService implements SingletonInterface
      * @param string $templateFolder
      * @param string $templateName
      * @param array $variables
+     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface|null $renderingContext
      * @return string
      */
-    public function render(string $templateFolder, string $templateName, array $variables = [], ?RenderingContextInterface $renderingContext = null): string
-    {
+    public function render(
+        string $templateFolder,
+        string $templateName,
+        array $variables = [],
+        ?RenderingContextInterface $renderingContext = null
+    ): string {
         $view = $this->getView($templateFolder, $templateName, $renderingContext);
 
         if (false === array_key_exists('settings', $variables)) {
@@ -63,22 +70,35 @@ class TemplateRenderingService implements SingletonInterface
     /**
      * @param string $templateFolder
      * @param string $templateName
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
+     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface|null $renderingContext
+     * @return \TYPO3Fluid\Fluid\View\ViewInterface
      */
-    protected function getView(string $templateFolder, string $templateName, ?RenderingContextInterface $renderingContext = null): StandaloneView
-    {
-        /** @var \TYPO3\CMS\Fluid\View\StandaloneView $view */
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
+    protected function getView(
+        string $templateFolder,
+        string $templateName,
+        ?RenderingContextInterface $renderingContext = null
+    ): ViewInterface {
+        /** @var \TYPO3Fluid\Fluid\View\TemplateView $view */
+        $view = GeneralUtility::makeInstance(TemplateView::class, $renderingContext);
+        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
 
-        if ($renderingContext !== null) {
-            $view->getRenderingContext()->setAttribute(\Psr\Http\Message\ServerRequestInterface::class, $renderingContext->getRequest());
-        }
+        // We need the absolute path here for TYPO3Fluid\Fluid\View\TemplatePaths, this works different from TYPO3\CMS\Fluid\View\TemplatePaths
+        $templatePaths->setLayoutRootPaths(
+            array_map(GeneralUtility::class . '::getFileAbsFileName', $this->viewSettings['layoutRootPaths'])
+        );
+        $templatePaths->setTemplateRootPaths(
+            array_map(GeneralUtility::class . '::getFileAbsFileName', $this->viewSettings['templateRootPaths'])
+        );
+        $templatePaths->setPartialRootPaths(
+            array_map(GeneralUtility::class . '::getFileAbsFileName', $this->viewSettings['partialRootPaths'])
+        );
 
-        $view->setFormat('html');
-        $view->setTemplateRootPaths($this->viewSettings['templateRootPaths']);
-        $view->setLayoutRootPaths($this->viewSettings['layoutRootPaths']);
-        $view->setPartialRootPaths($this->viewSettings['partialRootPaths']);
-        $view->setTemplate($templateFolder . ('/' === $templateFolder[-1] ?: '/') . $templateName . '.html');
+        $templatePaths->setTemplatePathAndFilename(
+            $templatePaths->resolveTemplateFileForControllerAndActionAndFormat(
+                $templateFolder,
+                $templateName
+            )
+        );
 
         return $view;
     }

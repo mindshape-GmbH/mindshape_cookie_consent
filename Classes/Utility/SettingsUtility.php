@@ -14,61 +14,35 @@ namespace Mindshape\MindshapeCookieConsent\Utility;
  *
  ***/
 
+use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 
-/**
- * @package MindshapeNews
- * @subpackage Utility
- */
 class SettingsUtility
 {
-    /**
-     * @return array|null
-     */
     public static function pluginTypoScriptSettings(): ?array
     {
-        /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
-
-        try {
-            $settings = $configurationManager->getConfiguration(
-                ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
-                'mindshapecookieconsent'
-            );
-        } catch (InvalidConfigurationTypeException) {
-            return null;
-        }
-
-        return $settings;
+        return self::extensionTypoScriptSettings()['settings'] ?? null;
     }
 
-    /**
-     * @return array|null
-     */
     public static function extensionTypoScriptSettings(): ?array
     {
-        /** @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManager $configurationManager */
-        $configurationManager = GeneralUtility::makeInstance(ConfigurationManager::class);
+        /** @var \TYPO3\CMS\Core\Http\ServerRequest $request */
+        $request = $GLOBALS['TYPO3_REQUEST'];
 
-        try {
-            $typoscript = $configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-            $typoscript = GeneralUtility::removeDotsFromTS($typoscript);
+        /** @var \TYPO3\CMS\Core\TypoScript\FrontendTypoScript $typoScirpt */
+        $frontendTypoScript = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript');
 
-            if (
-                false === is_array($typoscript['plugin']) ||
-                false === array_key_exists('tx_mindshapecookieconsent', $typoscript['plugin'])
-            ) {
-                return null;
-            }
-
-            $typoscript = $typoscript['plugin']['tx_mindshapecookieconsent'];
-        } catch (InvalidConfigurationTypeException) {
-            $typoscript = [];
+        if ($frontendTypoScript instanceof FrontendTypoScript && !$frontendTypoScript->hasSetup()) {
+            $site = $request->getAttribute('site');
+            $frontendTypoScript = TypoScriptUtility::getFrontendTypoScriptBySite($site);
         }
 
-        return $typoscript;
+        if ($frontendTypoScript instanceof FrontendTypoScript) {
+            $typoScript = GeneralUtility::removeDotsFromTS($frontendTypoScript->getSetupArray());
+
+            return $typoScript['plugin']['tx_mindshapecookieconsent'] ?? null;
+        }
+
+        return null;
     }
 }
