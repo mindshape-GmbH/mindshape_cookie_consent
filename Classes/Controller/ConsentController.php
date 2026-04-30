@@ -23,12 +23,31 @@ use TYPO3\CMS\Core\Http\PropagateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 
 /**
  * @package Mindshape\MindshapeCookieConsent\Controller
  */
 class ConsentController extends AbstractController
 {
+    /**
+     * @throws \TYPO3\CMS\Core\Http\PropagateResponseException
+     * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+     */
+    public function initializeConsentAction(): void
+    {
+        if (!$this->request->hasArgument('consent')) {
+            $errorResponse = GeneralUtility::makeInstance(ErrorController::class)->customErrorAction(
+                $this->request,
+                400,
+                'Missing consent parameters',
+                'This request is missing necessary parameters for the consent request.',
+            );
+
+            throw new PropagateResponseException($errorResponse);
+        }
+    }
+
     /**
      * @param \Mindshape\MindshapeCookieConsent\Domain\Model\Consent $consent
      * @return \Psr\Http\Message\ResponseInterface
