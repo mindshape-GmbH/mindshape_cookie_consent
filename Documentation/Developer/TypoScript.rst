@@ -81,3 +81,14 @@ By default, ``cookieConsent()`` reads the default cookie name ``cookie_consent``
     [end]
 
 When ``addLanguageToCookie`` is enabled, the function automatically reads the consent state and option identifiers for the current site language.
+
+Page Cache Identifier
+=====================
+
+If you use ``cookieConsent()`` conditions to change cacheable page output, enable the extension setting ``addConsentOptionsToPageCacheIdentifier``.
+
+When enabled, the selected consent option identifiers are added to TYPO3's page cache identifier. This creates separate page cache variants for different consent option combinations and prevents cached output for one consent state from being reused for another consent state.
+
+The setting is disabled by default because it can increase the number of page cache variants. Enable it only when cacheable TypoScript output depends on the accepted consent options.
+
+With ``addConsentOptionsToPageCacheIdentifier`` enabled, pages rendered with the ``youtube`` option accepted use a different page cache identifier than pages rendered without that option.

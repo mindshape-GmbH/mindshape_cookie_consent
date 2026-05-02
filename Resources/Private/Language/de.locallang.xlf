@@ -81,6 +81,9 @@
       <trans-unit id="extensionsettings.disable_statistic_backend_module">
         <target>Deaktiviere das Statistikmodul im Backend</target>
       </trans-unit>
+      <trans-unit id="extensionsettings.add_consentoptions_to_pagecacheidentifier">
+        <target>Füge die ausgewählten Cookie-Zustimmungs-Optionen zur Seiten-Cache-Kennung hinzu</target>
+      </trans-unit>
 
       <trans-unit id="tca.configuration">
         <target>Cookie-Consent Konfiguration</target>

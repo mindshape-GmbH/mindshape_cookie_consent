@@ -23,5 +23,10 @@ services:
       - name: event.listener
         event: TYPO3\CMS\Core\Package\Event\PackageInitializationEvent
 
+  Mindshape\MindshapeCookieConsent\EventListener\BeforePageCacheIdentifierIsHashedEventListener:
+    tags:
+      - name: event.listener
+        event: TYPO3\CMS\Frontend\Event\BeforePageCacheIdentifierIsHashedEvent
+
   Mindshape\MindshapeCookieConsent\Controller\Backend\StatisticController:
     tags: [ 'backend.controller' ]
