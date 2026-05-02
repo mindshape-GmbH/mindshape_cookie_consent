@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
@@ -69,9 +70,9 @@ class CookieConsentService implements SingletonInterface
     protected Site|NullSite $currentSite;
 
     /**
-     * @var int
+     * @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage|null
      */
-    protected int $currentSiteLanguageId;
+    protected ?SiteLanguage $currentSiteLanguage = null;
 
     /**
      * @var array|null
@@ -112,10 +113,9 @@ class CookieConsentService implements SingletonInterface
 
         try {
             $this->currentSite = $request->getAttribute('site', new NullSite());
-            $this->currentSiteLanguageId = $context->getPropertyFromAspect('language', 'id', 0);
+            $this->currentSiteLanguage = $request->getAttribute('language');
         } catch (AspectNotFoundException|SiteNotFoundException) {
             $this->currentSite = new NullSite();
-            $this->currentSiteLanguageId = 0;
         }
     }
 
@@ -141,20 +141,18 @@ class CookieConsentService implements SingletonInterface
      */
     public function getConsentFromCookie(): ?Consent
     {
-        $cookieValue = CookieUtility::getCookieValue(
-            $this->settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME
+        $consentCookie = CookieUtility::getConsentCookie(
+            $this->settings['cookieName'] ?? CookieUtility::DEFAULT_COOKIE_NAME,
+            $this->currentSiteLanguage
         );
 
-        if (
-            false === is_array($cookieValue) ||
-            false === array_key_exists('options', $cookieValue)
-        ) {
+        if (!$consentCookie->hasConsent()) {
             return null;
         }
 
         $consent = new Consent();
 
-        foreach ($cookieValue['options'] as $optionIdentifier) {
+        foreach ($consentCookie->getCookieOptions() as $optionIdentifier) {
             $cookieOption = $this->cookieOptionRepository->findByCookieOptionIdentifier($optionIdentifier);
 
             if ($cookieOption instanceof CookieOption) {
@@ -257,14 +255,14 @@ class CookieConsentService implements SingletonInterface
         if ($this->currentSite instanceof Site) {
             $configuration = $this->configurationRepository->findBySiteIdentifier(
                 $this->currentSite->getIdentifier(),
-                $this->currentSiteLanguageId
+                $this->currentSiteLanguage?->getLanguageId() ?? 0
             );
         }
 
         if (null === $configuration) {
             $configuration = $this->configurationRepository->findBySiteIdentifier(
                 Configuration::SITE_ALL_SITES,
-                $this->currentSiteLanguageId
+                $this->currentSiteLanguage?->getLanguageId() ?? 0
             );
         }
 

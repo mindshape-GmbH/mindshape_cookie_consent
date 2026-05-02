@@ -14,49 +14,31 @@ namespace Mindshape\MindshapeCookieConsent\ExpressionLanguage;
  *
  ***/
 
+use Mindshape\MindshapeCookieConsent\Domain\Model\ConsentCookie;
 use Mindshape\MindshapeCookieConsent\Utility\CookieUtility;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 class CookieConsentWrapper
 {
-    protected bool $consent = false;
-    protected array $consentOptions = [];
-    protected ?string $languageIsoCode = null;
+    protected ConsentCookie $consentCookie;
 
     public function __construct(string $cookieName, ?SiteLanguage $siteLanguage = null)
     {
-        if ($siteLanguage instanceof SiteLanguage) {
-            $this->languageIsoCode = $siteLanguage->getLocale()->getLanguageCode();
-        }
-
-        $cookieValue = CookieUtility::getCookieValue($cookieName);
-
-        $this->consent = !empty($this->languageIsoCode) && array_key_exists('languageConsent', $cookieValue)
-            ? $cookieValue['languageConsent'][$this->languageIsoCode] ?? false
-            : $cookieValue['consent'] ?? false;
-
-        $consentOptions = !empty($this->languageIsoCode) && array_key_exists('languageConsent', $cookieValue)
-            ? $cookieValue['languageOptions'][$this->languageIsoCode] ?? []
-            : $cookieValue['options'] ?? [];
-
-        array_unique($consentOptions);
-        sort($consentOptions);
-
-        $this->consentOptions = $consentOptions;
+        $this->consentCookie = CookieUtility::getConsentCookie($cookieName, $siteLanguage);
     }
 
     public function getConsentOptions(): array
     {
-        return $this->consentOptions;
+        return $this->consentCookie->getCookieOptions();
     }
 
     public function hasConsent(): bool
     {
-        return $this->consent;
+        return $this->consentCookie->hasConsent();
     }
 
     public function hasOption(string $cookieOption): bool
     {
-        return in_array($cookieOption, $this->consentOptions);
+        return in_array($cookieOption, $this->consentCookie->getCookieOptions(), true);
     }
 }

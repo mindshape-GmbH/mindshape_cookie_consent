@@ -26,7 +26,7 @@ class CookieConsentTypoScriptConditionFunctionProvider implements ExpressionFunc
             new ExpressionFunction(
                 'cookieConsent',
                 static fn() => null,
-                static function (array $arguments, string $cookieName = CookieUtility::DEFAULT_COOKIE_NAME): mixed {
+                static function (array $arguments, string $cookieName = CookieUtility::DEFAULT_COOKIE_NAME): CookieConsentWrapper {
                     /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $siteLanguage */
                     $siteLanguage = $arguments['siteLanguage'] ?? null;
 
