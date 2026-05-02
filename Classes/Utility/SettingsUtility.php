@@ -30,7 +30,7 @@ class SettingsUtility
         $request = $GLOBALS['TYPO3_REQUEST'];
 
         /** @var \TYPO3\CMS\Core\TypoScript\FrontendTypoScript $typoScirpt */
-        $frontendTypoScript = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.typoscript');
+        $frontendTypoScript = $request->getAttribute('frontend.typoscript');
 
         if ($frontendTypoScript instanceof FrontendTypoScript && !$frontendTypoScript->hasSetup()) {
             $site = $request->getAttribute('site');

@@ -42,3 +42,42 @@ This is a list of all TypoScript settings for this extension
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
 | addLanguageToCookie              | Add the current language to the consent cookie                                   | 0              |
 +----------------------------------+----------------------------------------------------------------------------------+----------------+
+
+TypoScript Condition
+====================
+
+The extension provides the ``cookieConsent()`` TypoScript condition function. It reads the consent cookie and returns a wrapper with helper methods for TypoScript conditions.
+
+Use ``getConsentOptions()`` to access the accepted cookie option identifiers:
+
+.. code-block:: typoscript
+
+    ['youtube' in cookieConsent().getConsentOptions()]
+      lib.youtubeDsgvo = 1
+    [end]
+
+Use ``hasOption()`` to check a single cookie option identifier:
+
+.. code-block:: typoscript
+
+    [cookieConsent().hasOption('youtube')]
+      lib.youtubeDsgvo = 1
+    [end]
+
+Use ``hasConsent()`` to check whether the user has submitted a consent decision:
+
+.. code-block:: typoscript
+
+    [cookieConsent().hasConsent()]
+      lib.cookieConsentGiven = 1
+    [end]
+
+By default, ``cookieConsent()`` reads the default cookie name ``cookie_consent``. If you configured a custom cookie name, pass it as the first argument:
+
+.. code-block:: typoscript
+
+    [cookieConsent('custom_cookie_name').hasOption('youtube')]
+      lib.youtubeDsgvo = 1
+    [end]
+
+When ``addLanguageToCookie`` is enabled, the function automatically reads the consent state and option identifiers for the current site language.
