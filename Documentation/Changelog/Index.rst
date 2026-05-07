@@ -4,6 +4,14 @@
 Changelog
 =========
 
+* 5.0.0
+
+  * Add support for TYPO3 v14 & drop v12 support
+  * Add extension setting to disable the statistic backend module
+  * Add proper 400 error response for missing consent arguments on likely bot requests
+  * Add custom TypoScript condition function to check consent
+  * Refactor to add dedicated ConsentCookie object and simple utility getter method
+
 * 4.1.3
 
   * Use proper fallback ID for consent container selector
