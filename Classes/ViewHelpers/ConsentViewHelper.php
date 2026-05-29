@@ -57,8 +57,7 @@ class ConsentViewHelper extends AbstractViewHelper
                     'imprintPageTypoLink' => $cookieConsentService->getImprintPageTypoLink(),
                 ],
                 $this->arguments['arguments']
-            ),
-            $this->renderingContext
+            )
         );
     }
 }
