@@ -4,6 +4,10 @@
 Changelog
 =========
 
+* 5.0.1
+
+  * Use FluidViewFactory for standalone template rendering to prevent layout resolving problems
+
 * 5.0.0
 
   * Add support for TYPO3 v14 & drop v12 support
