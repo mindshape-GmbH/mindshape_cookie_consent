@@ -17,6 +17,8 @@ use Mindshape\MindshapeCookieConsent\Domain\Model\Consent;
 use Mindshape\MindshapeCookieConsent\Service\CookieConsentService;
 use Mindshape\MindshapeCookieConsent\Utility\LinkUtility;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
+use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NullResponse;
 use TYPO3\CMS\Core\Http\PropagateResponseException;
@@ -37,11 +39,21 @@ class ConsentController extends AbstractController
     public function initializeConsentAction(): void
     {
         if (!$this->request->hasArgument('consent')) {
-            $errorResponse = GeneralUtility::makeInstance(ErrorController::class)->customErrorAction(
+            /** @var \TYPO3\CMS\Core\Site\Entity\Site $site */
+            $site = $this->request->getAttribute('site');
+
+            try {
+                $errorHandler = $site->getErrorHandler(400);
+                $errorMethod = 'handlePageError';
+            } catch (InvalidPageErrorHandlerException|PageErrorHandlerNotConfiguredException) {
+                $errorHandler = GeneralUtility::makeInstance(ErrorController::class);
+                $errorMethod = 'pageNotFoundAction';
+            }
+
+            $errorResponse = $errorHandler->{$errorMethod}(
                 $this->request,
-                400,
                 'Missing consent parameters',
-                'This request is missing necessary parameters for the consent request.',
+                ['This request is missing necessary parameters for the consent request.']
             );
 
             throw new PropagateResponseException($errorResponse);
