@@ -4,6 +4,10 @@
 Changelog
 =========
 
+* 5.0.2
+
+  * Refactor error handling due to unavailable method in v13
+
 * 5.0.1
 
   * Use FluidViewFactory for standalone template rendering to prevent layout resolving problems
