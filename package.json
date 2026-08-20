@@ -6,27 +6,19 @@
     "node": "^24.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.29",
-    "@babel/preset-env": "^7.29",
-    "@babel/register": "^7.28",
     "cross-env": "^10.1",
     "css-loader": "^7.1",
     "mini-css-extract-plugin": "^2.10",
-    "sass": "^1.99",
-    "sass-loader": "^16.0",
-    "webpack": "^5.106",
-    "webpack-cli": "^7.0"
-  },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
+    "sass": "^1.103",
+    "sass-loader": "^17.0",
+    "webpack": "^5.109",
+    "webpack-cli": "^7.2"
   },
   "browserslist": [
     "defaults"
   ],
   "scripts": {
-    "build:production": "cross-env NODE_ENV=production webpack --config ./Build/webpack.config.babel.js --progress",
-    "build:development": "cross-env NODE_ENV=development webpack --config ./Build/webpack.config.babel.js --progress"
+    "build:production": "cross-env NODE_ENV=production webpack --config ./Build/webpack.config.mjs --progress",
+    "build:development": "cross-env NODE_ENV=development webpack --config ./Build/webpack.config.mjs --progress"
   }
 }

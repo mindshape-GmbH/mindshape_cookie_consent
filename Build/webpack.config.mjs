@@ -1,14 +1,14 @@
 import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-module.exports = {
+const config = {
   mode: process.env.NODE_ENV,
   entry: [
-    path.resolve(__dirname, './../Resources/Private/Assets/JavaScript/CookieConsent.js'),
-    path.resolve(__dirname, './../Resources/Private/Assets/Scss/Styles.scss')
+    path.resolve(import.meta.dirname, './../Resources/Private/Assets/JavaScript/CookieConsent.js'),
+    path.resolve(import.meta.dirname, './../Resources/Private/Assets/Scss/Styles.scss')
   ],
   output: {
-    path: path.resolve(__dirname, './../Resources/Public'),
+    path: path.resolve(import.meta.dirname, './../Resources/Public'),
     filename: './JavaScript/cookie_consent.js',
     chunkFilename: './JavaScript/Chunks/[name].js'
   },
@@ -43,6 +43,8 @@ module.exports = {
 };
 
 if ('development' === process.env.NODE_ENV) {
-  module.exports['devtool'] = 'source-map';
-  module.exports['watch'] = true;
+  config.devtool = 'source-map';
+  config.watch = true;
 }
+
+export default config;
